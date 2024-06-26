@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:get_my_properties/utils/theme/light_theme.dart';
-void main() {
+import 'helper/gi_dart.dart' as di;
+Future<void> main() async {
+  await di.init();
   runApp(const MyApp());
 }
 

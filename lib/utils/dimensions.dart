@@ -18,6 +18,8 @@ class Dimensions {
 
   static const double paddingSize4 = 4.0;
   static const double paddingSize5 = 5.0;
+  static const double paddingSize7 = 7.0;
+  static const double paddingSize8 = 8.0;
   static const double paddingSize10 = 10.0;
   static const double paddingSize12 = 12.0;
   static const double paddingSizeDefault = 15.0;
