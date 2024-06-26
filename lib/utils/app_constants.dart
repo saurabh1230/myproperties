@@ -2,6 +2,8 @@
 class AppConstants {
   static const String appName = 'Get My Properties'; //Download from Scriptzhub.com
   static const double appVersion = 1.0;
+  static const String fontFamily = 'Sen';
+
 
 
 
