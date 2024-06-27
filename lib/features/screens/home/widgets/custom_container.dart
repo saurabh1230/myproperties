@@ -6,11 +6,13 @@ class PrimaryCardContainer extends StatelessWidget {
   final Widget child;
   final double? padding;
   final Color? color;
-  const PrimaryCardContainer({super.key, required this.child,  this.padding, this.color});
+  final double? margin;
+  const PrimaryCardContainer({super.key, required this.child,  this.padding, this.color, this.margin});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: margin?? 0),
       padding: EdgeInsets.all(padding?? Dimensions.paddingSize8),
       decoration: BoxDecoration(
           color:color ?? Theme.of(context).cardColor,
@@ -21,3 +23,23 @@ class PrimaryCardContainer extends StatelessWidget {
     );
   }
 }
+
+
+class CustomDecoratedContainer extends StatelessWidget {
+  final double? radius;
+  final Widget child;
+  final Color? color;
+  const CustomDecoratedContainer({super.key,  this.radius, required this.child, this.color});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5,horizontal: Dimensions.paddingSize10),
+      decoration: BoxDecoration(
+          color:color ?? Theme.of(context).disabledColor.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(radius ?? Dimensions.radius10)
+      ),
+      child: child,
+    );
+  }
+}
+

@@ -5,6 +5,18 @@ Widget sizedBox40() {
   return const SizedBox(height: Dimensions.paddingSize40);
 }
 
+Widget sizedBox50() {
+  return const SizedBox(height: Dimensions.paddingSize50);
+}
+Widget sizedBox75() {
+  return const SizedBox(height: Dimensions.paddingSize75);
+}
+Widget sizedBox65() {
+  return const SizedBox(height: Dimensions.paddingSize65);
+}
+
+
+
 Widget sizedBox100() {
   return const SizedBox(height: Dimensions.paddingSize100);
 }
@@ -27,9 +39,20 @@ Widget sizedBox8() {
 Widget sizedBoxW5() {
   return const SizedBox(width: Dimensions.paddingSize5);
 }
+Widget sizedBoxW10() {
+  return const SizedBox(width: Dimensions.paddingSize10);
+}
 Widget sizedBoxW7() {
   return const SizedBox(width: Dimensions.paddingSize7);
 }
+
+Widget sizedBoxW15() {
+  return const SizedBox(width: Dimensions.paddingSizeDefault);
+}
 Widget sizedBox12() {
   return const SizedBox(height: Dimensions.paddingSize12);
+}
+
+Widget sizedBox10() {
+  return const SizedBox(height: Dimensions.paddingSize10);
 }

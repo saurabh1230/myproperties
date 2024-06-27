@@ -21,4 +21,5 @@ class Images {
   static const String ribbonHolder = 'assets/images/ribbonholder.png';
   static const String rentAHousePlaceHolderImage = 'assets/images/rent_a_house_placeholder.png';
   static const String buyAHousePlaceHolderImage = 'assets/images/buy_a_house_placeholder.png';
+  static const String appartmentImage = 'assets/icons/ic_appartment.png';
 }

@@ -11,16 +11,22 @@ import 'package:get/get.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 
 
-class SavedScreen extends StatefulWidget {
-  SavedScreen({Key? key}) : super(key: key);
+class ExploreScreen extends StatefulWidget {
+  ExploreScreen({Key? key}) : super(key: key);
 
   @override
-  _SavedScreenState createState() => _SavedScreenState();
+  _ExploreScreenState createState() => _ExploreScreenState();
 }
 
-class _SavedScreenState extends State<SavedScreen> {
+class _ExploreScreenState extends State<ExploreScreen> {
   int _currentPage = 0;
   final PageController _pageController = PageController(viewportFraction: 1);
+  List<String> _imageUrls = [
+    'assets/images/explore_building_image.png',
+    'assets/images/explore_building_image.png',
+    'assets/images/explore_building_image.png',
+    'assets/images/explore_building_image.png',
+  ];
 
   @override
   void initState() {
@@ -42,13 +48,42 @@ class _SavedScreenState extends State<SavedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Saved",
+        title: "Explore",
         menuWidget: CustomNotificationButton(
           tap: () {},
         ),
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+            child: Row(
+              children: [
+                Expanded(child: CustomOutlineButton(title: 'Location',
+                  tap: () {  },)),
+                sizedBoxW5(),
+                Expanded(child: CustomOutlineButton(
+                  title: 'Filters',
+                  filter: true,
+                  filterText: "  (2)",
+                  tap: () {
+                    Get.bottomSheet(
+                      FilterBottomSheet(),
+                      backgroundColor: Colors.transparent, isScrollControlled: true,
+                    );
+                  },)),
+                sizedBoxW5(),
+                Expanded(child: CustomButtonWidget(
+                  height: 35,
+                  radius: Dimensions.radius5,
+
+                  isBold: false,
+                  buttonText: "Save Search",onPressed: () {},
+                  fontSize:  Dimensions.fontSize12,))
+
+              ],
+            ),
+          ),
           sizedBox8(),
           Expanded(
             child: SingleChildScrollView(

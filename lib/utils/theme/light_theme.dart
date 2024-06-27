@@ -9,5 +9,5 @@ ThemeData light = ThemeData(
   brightness: Brightness.light,
   hintColor: const Color(0xFFFFA216),
   cardColor: Colors.white,
-  textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: const Color(0xFFC02332))), colorScheme: const ColorScheme.light(primary: Color(0xFFC02332), secondary: Color(0xFFC02332)).copyWith(error: const Color(0xFFC02332)),
+  textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: const Color(0xFF3B9EFB))), colorScheme: const ColorScheme.light(primary: Color(0xFF3B9EFB), secondary: Color(0xFF3B9EFB)).copyWith(error: const Color(0xFF3B9EFB)),
 );

@@ -14,7 +14,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function? onBackPressed;
   final Widget? menuWidget;
 
-  const CustomAppBar({Key? key, required this.title, this.onBackPressed, this.isBackButtonExist = false, this.menuWidget,}) : super(key: key);
+  const CustomAppBar({Key? key, required this.title, this.onBackPressed, this.isBackButtonExist = false, this.menuWidget, }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
       backgroundColor: Theme.of(context).primaryColor,
       elevation: 0,
-      actions: menuWidget != null ? [menuWidget!] : null,
+      actions: menuWidget != null ? [Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+        child: menuWidget!,
+      )] : null,
     );
   }
 

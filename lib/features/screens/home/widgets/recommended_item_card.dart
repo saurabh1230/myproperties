@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_my_properties/features/widgets/custom_button.dart';
+import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
