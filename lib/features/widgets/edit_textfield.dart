@@ -120,28 +120,6 @@
 //               const SizedBox(width: Dimensions.paddingSize5,),
 //
 //               Text("+ 91",style: senRegular.copyWith(color: Theme.of(context).disabledColor.withOpacity(0.40),)),
-//               // Container(
-//               //     width: 85,height: 50,
-//               //     decoration:  BoxDecoration(
-//               //       borderRadius: BorderRadius.only(
-//               //         topLeft: Radius.circular(Dimensions.radius5),
-//               //         bottomLeft: Radius.circular(Dimensions.radius5),
-//               //       ),
-//               //     ),
-//               //     margin: const EdgeInsets.only(right: 0),
-//               //     padding: const EdgeInsets.only(left: 5),
-//               //     child: Center(
-//               //       child: CodePickerWidget(
-//               //         flagWidth: 25,
-//               //         padding: EdgeInsets.zero,
-//               //         onChanged: widget.onCountryChanged,
-//               //         initialSelection: widget.countryDialCode,
-//               //         favorite: [widget.countryDialCode!],
-//               //         textStyle: nunitoSansBold.copyWith(
-//               //           fontSize: Dimensions.fontSize14, color: Theme.of(context).textTheme.bodyMedium!.color,
-//               //         ),
-//               //       ),
-//               //     )),
 //               const SizedBox(width: Dimensions.paddingSize5,),
 //
 //               Container(
@@ -180,12 +158,8 @@
 //
 //
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_my_properties/utils/dimensions.dart';
-import 'package:get_my_properties/utils/sizeboxes.dart';
-import 'package:get_my_properties/utils/styles.dart';
 
 class CustomTextField extends StatefulWidget {
   final String hintText;
@@ -268,7 +242,7 @@ class CustomTextFieldState extends State<CustomTextField> {
           maxLines: widget.maxLines,
           controller: widget.controller,
           focusNode: widget.focusNode,
-          style: const TextStyle(fontSize: 16), // Adjust text style as needed
+          style: TextStyle(fontSize: 16), // Adjust text style as needed
           textInputAction: widget.inputAction,
           keyboardType: widget.isAmount
               ? TextInputType.number
@@ -384,23 +358,21 @@ class CustomTextFieldState extends State<CustomTextField> {
                     ? Icons.visibility_off
                     : Icons.visibility,
                 color: Theme.of(context)
-                    .primaryColor,
+                    .hintColor
+                    .withOpacity(0.3),
               ),
               onPressed: _toggle,
             )
                 : widget.editText
-                ? Container(
-                   width: 60,
-                  child: Row(
-                    children: [
-                      Icon(Icons.edit,
-                        color: Theme.of(context).primaryColor,),
-                      sizedBoxW5(),
-                      Text("Edit",style: senRegular.copyWith(fontSize: Dimensions.fontSize12,
-                      color: Theme.of(context).primaryColor),)
-                    ],
-                  ),
-                )
+                ? IconButton(
+              icon: Icon(
+                Icons.edit,
+                color: Colors.grey,
+              ),
+              onPressed: () {
+                // Handle edit text action
+              },
+            )
                 : null,
           ),
           onSubmitted: (text) => widget.nextFocus != null

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_my_properties/features/screens/dashboard/nav_bar_item.dart';
 import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
 import 'package:get_my_properties/features/screens/home/home_screen.dart';
+import 'package:get_my_properties/features/screens/profile/profile_screen.dart';
 import 'package:get_my_properties/features/screens/saved/saved_screen.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
@@ -38,7 +39,7 @@ class DashboardScreenState extends State<DashboardScreen> {
        ExploreScreen(),
        Container(),
        SavedScreen(),
-       Container(),
+       ProfileScreen(),
     ];
 
     Future.delayed(const Duration(seconds: 1), () {
