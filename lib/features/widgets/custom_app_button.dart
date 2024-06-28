@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
+import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 
 
@@ -56,6 +57,11 @@ class CustomButtonWidget extends StatelessWidget {
           Text('Loading', style: senMedium.copyWith(color: Colors.white)),
         ]),
         ) : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          icon != null ? Padding(
+            padding:  const EdgeInsets.only(right: 0),
+            child: Icon(icon, color: transparent ? Theme.of(context).primaryColor : Theme.of(context).cardColor,size: Dimensions.fontSizeDefault,),
+          ) : const SizedBox(),
+          sizedBoxW5(),
 
           Text(buttonText, textAlign: TextAlign.center,  style: isBold ? senBold.copyWith(
             color: textColor ?? (transparent ? Theme.of(context).primaryColor : Colors.white),
@@ -65,10 +71,7 @@ class CustomButtonWidget extends StatelessWidget {
             fontSize: fontSize ?? Dimensions.fontSize18,
           )
           ),
-          icon != null ? Padding(
-            padding:  const EdgeInsets.only(right: 0),
-            child: Icon(icon, color: transparent ? Theme.of(context).primaryColor : Theme.of(context).cardColor,size: Dimensions.fontSizeDefault,),
-          ) : const SizedBox(),
+
         ]),
       ),
     )));

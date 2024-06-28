@@ -13,15 +13,15 @@ import 'package:get_my_properties/features/screens/saved/saved_screen.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 
-class DashboardScreen extends StatefulWidget {
+class SellerDashboardScreen extends StatefulWidget {
   final int pageIndex;
-  const DashboardScreen({Key? key, required this.pageIndex}) : super(key: key);
+  const SellerDashboardScreen({Key? key, required this.pageIndex}) : super(key: key);
 
   @override
-  DashboardScreenState createState() => DashboardScreenState();
+  SellerDashboardScreenState createState() => SellerDashboardScreenState();
 }
 
-class DashboardScreenState extends State<DashboardScreen> {
+class SellerDashboardScreenState extends State<SellerDashboardScreen> {
   PageController? _pageController;
   int _pageIndex = 0;
   late List<Widget> _screens;
@@ -37,11 +37,11 @@ class DashboardScreenState extends State<DashboardScreen> {
     _pageController = PageController(initialPage: widget.pageIndex);
 
     _screens = [
-       HomeScreen(),
-       ExploreScreen(),
-       const SellerHome(),
-       SavedScreen(),
-       ProfileScreen(),
+      HomeScreen(),
+      ExploreScreen(),
+      const SellerHome(),
+      SavedScreen(),
+      ProfileScreen(),
     ];
 
     Future.delayed(const Duration(seconds: 1), () {
@@ -83,13 +83,13 @@ class DashboardScreenState extends State<DashboardScreen> {
           child: Padding(
             padding: const EdgeInsets.all(0/*Dimensions.paddingSize20*/),
             child: Row(children: [
-              BottomNavItem(img: Images.navBarHome, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home',),
-              BottomNavItem(img: Images.navBarExplore, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Explore',),
+              BottomNavItem(img: Images.icSellerDashboardIcon, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: '',),
+              BottomNavItem(img: Images.navBarExplore, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: '',),
               const Expanded(child: SizedBox()),
-              BottomNavItem(img: Images.navBarSave, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Saved',),
+              BottomNavItem(img: Images.navBarSave, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: '',),
               BottomNavItem(img:Images.navBarProfile, isSelected: _pageIndex == 4, tap: () {
                 _setPage(4);
-              }, title: 'Profile',),
+              }, title: '',),
             ]),
           ),
         ),

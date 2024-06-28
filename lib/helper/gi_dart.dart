@@ -2,6 +2,7 @@
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/explore_controller.dart';
 import 'package:get_my_properties/controller/home_controller.dart';
+import 'package:get_my_properties/controller/properties_controller.dart';
 
 
 
@@ -26,6 +27,8 @@ Future<void>   init() async {
 
   Get.lazyPut(() => HomeController());
   Get.lazyPut(() => ExploreController());
+  Get.lazyPut(() => PropertiesController());
+
 
 
 }

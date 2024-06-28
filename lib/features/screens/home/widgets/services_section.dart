@@ -15,42 +15,46 @@ class ServicesSection extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault,vertical:Dimensions.paddingSizeDefault ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text("Services",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
             sizedBoxDefault(),
-            SizedBox(height: Get.size.height * 0.28,
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Number of columns
-                  crossAxisSpacing: Dimensions.paddingSizeDefault, // Horizontal spacing between columns
-                  mainAxisSpacing: Dimensions.paddingSizeDefault, // Vertical spacing between rows
-                  childAspectRatio: 1.5, // Aspect ratio of each item
-                ),
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: controller.servicesNames.length,
-                itemBuilder: (_, i) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.08),
-                      borderRadius: BorderRadius.circular(Dimensions.radius10)
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(controller.servicesImages[i], height: 36),
-                        const SizedBox(height: 4),
-                        Text(
-                          controller.servicesNames[i],
-                          style: senRegular.copyWith(
-                            fontSize: Dimensions.fontSize12,
-                            color: Theme.of(context).primaryColor,
+            SizedBox(height: Get.size.height * 0.24,
+              child: Container(
+                child: GridView.builder(
+                  padding: EdgeInsets.zero,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, // Number of columns
+                    crossAxisSpacing: Dimensions.paddingSizeDefault, // Horizontal spacing between columns
+                    mainAxisSpacing: Dimensions.paddingSizeDefault, // Vertical spacing between rows
+                    childAspectRatio: 1.8, // Aspect ratio of each item
+                  ),
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.servicesNames.length,
+                  itemBuilder: (_, i) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor.withOpacity(0.08),
+                        borderRadius: BorderRadius.circular(Dimensions.radius10)
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(controller.servicesImages[i], height: 36),
+                          const SizedBox(height: 4),
+                          Text(
+                            controller.servicesNames[i],
+                            style: senRegular.copyWith(
+                              fontSize: Dimensions.fontSize12,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
 

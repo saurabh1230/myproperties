@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
+import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 
 class CustomNotificationButton extends StatelessWidget {
@@ -167,6 +168,47 @@ class CustomChipButton extends StatelessWidget {
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
+      ),
+    );
+  }
+}
+
+
+class PrefixIconButton extends StatelessWidget {
+  final Function() tap;
+  final String title;
+  final bool? prefixIconBool;
+  final Color? backgroundColor;
+  final Color? textColor;
+  final IconData? prefixIcon;
+  const PrefixIconButton({super.key,
+    this.prefixIconBool = false,
+    required this.tap,
+    required this.title,
+    this.backgroundColor, this.textColor, this.prefixIcon,});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: tap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: backgroundColor ?? Colors.transparent,
+          borderRadius: BorderRadius.circular(Dimensions.paddingSize10),
+          border: Border.all(width: 1,color: Theme.of(context).primaryColor)
+        ),
+        padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize12),
+        child: Row(mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon( prefixIconBool! ?  prefixIcon ?? Icons.call: Icons.chat , size: Dimensions.fontSizeDefault,
+            color: textColor?? Theme.of(context).primaryColor,),
+            sizedBoxW10(),
+            Text(
+              title,
+              style: senRegular.copyWith(fontSize: Dimensions.fontSize12,color:textColor?? Theme.of(context).primaryColor),
+            ),
+          ],
+        ),
       ),
     );
   }

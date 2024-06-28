@@ -27,8 +27,8 @@ class Dimensions {
   static const double paddingSize25 = 25.0;
   static const double paddingSize30 = 30.0;
   static const double paddingSize34 = 34.0;
-  static const double paddingSize50 = 40.0;
-  static const double paddingSize40 = 50.0;
+  static const double paddingSize40 = 40.0;
+  static const double paddingSize50 = 50.0;
   static const double paddingSize65 = 65.0;
   static const double paddingSize75 = 75.0;
   static const double paddingSize100 = 100.0;

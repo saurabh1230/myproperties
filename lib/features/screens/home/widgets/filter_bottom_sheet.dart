@@ -266,7 +266,9 @@ class FilterBottomSheet extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                              child: TextButton(onPressed: () {},
+                              child: TextButton(onPressed: () {
+                                Get.back();
+                              },
                                   child: Row(
                                     children: [
                                       Text("Clear All",style: senRegular.copyWith(color:Theme.of(context).primaryColor ),),
@@ -276,7 +278,9 @@ class FilterBottomSheet extends StatelessWidget {
                             ),
                             Expanded(
                               child: CustomButtonWidget(buttonText: "Apply",
-                              onPressed: () {},),
+                              onPressed: () {
+                                Get.back();
+                              },),
                             )
                           ],
                         )

@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/explore/widgets/explore_card_widget.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/home/widgets/filter_bottom_sheet.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
+import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
@@ -47,6 +49,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const CustomDrawer(),
       appBar: CustomAppBar(
         title: "Explore",
         menuWidget: CustomNotificationButton(
@@ -68,7 +71,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   filterText: "  (2)",
                   tap: () {
                     Get.bottomSheet(
-                      FilterBottomSheet(),
+                      const FilterBottomSheet(),
                       backgroundColor: Colors.transparent, isScrollControlled: true,
                     );
                   },)),
@@ -76,7 +79,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 Expanded(child: CustomButtonWidget(
                   height: 35,
                   radius: Dimensions.radius5,
-
                   isBold: false,
                   buttonText: "Save Search",onPressed: () {},
                   fontSize:  Dimensions.fontSize12,))
@@ -99,7 +101,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       ratingText: "4.2",
                       imagesLength: "4",
                       likeTap: () {},
-                      detailsTap: () {},
+                      detailsTap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("La Convent")),
                       propertyCategory: "Apartment",
                       title: 'La Convent',
                       description: '3,4 BHK Apartment in Entally, Kolkata Central',

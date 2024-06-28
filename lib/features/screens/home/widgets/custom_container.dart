@@ -29,11 +29,13 @@ class CustomDecoratedContainer extends StatelessWidget {
   final double? radius;
   final Widget child;
   final Color? color;
-  const CustomDecoratedContainer({super.key,  this.radius, required this.child, this.color});
+  final double? vertical;
+  final double? horizontal;
+  const CustomDecoratedContainer({super.key,  this.radius, required this.child, this.color, this.vertical, this.horizontal});
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5,horizontal: Dimensions.paddingSize10),
+      padding:  EdgeInsets.symmetric(vertical:vertical?? Dimensions.paddingSize5,horizontal:horizontal?? Dimensions.paddingSize10),
       decoration: BoxDecoration(
           color:color ?? Theme.of(context).disabledColor.withOpacity(0.15),
           borderRadius: BorderRadius.circular(radius ?? Dimensions.radius10)

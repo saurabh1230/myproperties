@@ -22,4 +22,9 @@ class Images {
   static const String rentAHousePlaceHolderImage = 'assets/images/rent_a_house_placeholder.png';
   static const String buyAHousePlaceHolderImage = 'assets/images/buy_a_house_placeholder.png';
   static const String appartmentImage = 'assets/icons/ic_appartment.png';
+  static const String icAppartmentImageLight = 'assets/icons/ic_appartmentlight.png';
+  static const String icCentralCityLight = 'assets/icons/ic_central_city_light.png';
+  static const String icHandHomeLight = 'assets/icons/ic_hand_home_light.png';
+  static const String icBuildingLight = 'assets/icons/icbuildinglight.png';
+  static const String icSellerDashboardIcon = 'assets/icons/ic_seller_dashboard_icon.png';
 }

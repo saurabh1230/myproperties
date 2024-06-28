@@ -1,18 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/explore/widgets/explore_card_widget.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/home/widgets/filter_bottom_sheet.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
+import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 
 
 class SavedScreen extends StatefulWidget {
-  SavedScreen({Key? key}) : super(key: key);
+  final bool? isHistory;
+  SavedScreen({Key? key,  this.isHistory = false}) : super(key: key);
 
   @override
   _SavedScreenState createState() => _SavedScreenState();
@@ -41,8 +44,10 @@ class _SavedScreenState extends State<SavedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const CustomDrawer(),
       appBar: CustomAppBar(
-        title: "Saved",
+        isBackButtonExist: widget.isHistory! ? true : false,
+        title: widget.isHistory! ? "History" : "Saved",
         menuWidget: CustomNotificationButton(
           tap: () {},
         ),
@@ -64,7 +69,7 @@ class _SavedScreenState extends State<SavedScreen> {
                       ratingText: "4.2",
                       imagesLength: "4",
                       likeTap: () {},
-                      detailsTap: () {},
+                      detailsTap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("La Convent")),
                       propertyCategory: "Apartment",
                       title: 'La Convent',
                       description: '3,4 BHK Apartment in Entally, Kolkata Central',
