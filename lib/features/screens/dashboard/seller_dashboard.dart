@@ -38,9 +38,9 @@ class SellerDashboardScreenState extends State<SellerDashboardScreen> {
     _pageController = PageController(initialPage: widget.pageIndex);
 
     _screens = [
-      const SellerHome(),
+       SellerHome(),
        SellerPropertiesScreen(),
-      const SellerHome(),
+       SellerHome(),
       SavedScreen(),
       ProfileScreen(),
     ];

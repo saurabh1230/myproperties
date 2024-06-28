@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/home_controller.dart';
+import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/dashboard/widgets/inquiry_request_section.dart';
 
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
@@ -10,14 +11,18 @@ import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 class SellerHome extends StatelessWidget {
-  const SellerHome({super.key});
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: const CustomDrawer(),
       appBar: CustomAppBar(title: "Dashboard",menuWidget: CustomNotificationButton(
-        tap: () {},
+        tap: () {
+
+        },
       ),),
       body: GetBuilder<HomeController>(builder: (controller) {
         return SingleChildScrollView(
