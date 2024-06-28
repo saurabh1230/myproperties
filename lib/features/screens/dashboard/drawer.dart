@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
+import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
@@ -56,6 +58,7 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
               sizedBox10(),
+              Get.find<AuthController>().loginType == 0 ? const SizedBox() :
               Padding(
                 padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,7 +100,12 @@ class CustomDrawer extends StatelessWidget {
                         buildContainer(context,"Rating & Reviews"),
                         buildContainer(context,"Terms & Conditions"),
                         buildContainer(context,"Help Center"),
-                        sizedBox100()
+                        sizedBoxDefault(),
+                        CustomButtonWidget(
+                          isBold: false,
+                          buttonText: "LogOut",fontSize: Dimensions.fontSize14,
+                          onPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},),
+                        sizedBox30()
                       ],
                     ),
                   ),

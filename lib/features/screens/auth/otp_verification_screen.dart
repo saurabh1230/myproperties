@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
@@ -24,7 +25,10 @@ class OtpVerificationScreen extends StatelessWidget {
                 if(_otpController.text.length != 4) {
                   showCustomSnackBar('Please enter valid Otp', isError: true);
                 } else {
-                  Get.toNamed(RouteHelper.getDashboardRoute());
+                  Get.find<AuthController>().loginType == 0?
+                  Get.toNamed(RouteHelper.getDashboardRoute()) :
+                  Get.toNamed(RouteHelper.getAdminDashboardRoute());
+
                 }
                 },)
             ],

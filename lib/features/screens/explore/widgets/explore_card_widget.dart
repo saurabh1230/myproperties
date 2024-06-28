@@ -20,8 +20,9 @@ class ExploreCardWidget extends StatelessWidget {
   final String description;
   final String price;
   final PageController pageController;
+  final bool? isEdit;
 
-  const ExploreCardWidget({super.key, required this.itemCount, required this.image, required this.ratingText, required this.imagesLength, required this.likeTap, required this.detailsTap, required this.propertyCategory, required this.title, required this.description, required this.price, required this.pageController});
+  const ExploreCardWidget({super.key, required this.itemCount, required this.image, required this.ratingText, required this.imagesLength, required this.likeTap, required this.detailsTap, required this.propertyCategory, required this.title, required this.description, required this.price, required this.pageController, this.isEdit = false});
 
   @override
   Widget build(BuildContext context) {

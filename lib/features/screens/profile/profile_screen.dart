@@ -19,15 +19,14 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: _scaffoldKey,
-      // drawer: const CustomDrawer(),
-      // drawer: const CustomDrawer(),
+      key: _scaffoldKey,
+      drawer: const CustomDrawer(),
       appBar: AppBar(
         elevation: 0,
         automaticallyImplyLeading: false,
         leading:InkWell(
           onTap: () {
-            // _scaffoldKey.currentState?.openDrawer();
+            _scaffoldKey.currentState?.openDrawer();
           },
           child: Container(
             padding:  const EdgeInsets.all(Dimensions.paddingSizeDefault),
@@ -156,7 +155,8 @@ class ProfileScreen extends StatelessWidget {
 
 
                       },
-                        buttonText: "Save Changes")
+                        buttonText: "Save Changes"),
+                    sizedBox20(),
                   ],
                 ),
               ),

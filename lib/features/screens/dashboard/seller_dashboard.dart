@@ -10,6 +10,7 @@ import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
 import 'package:get_my_properties/features/screens/home/home_screen.dart';
 import 'package:get_my_properties/features/screens/profile/profile_screen.dart';
 import 'package:get_my_properties/features/screens/saved/saved_screen.dart';
+import 'package:get_my_properties/features/screens/seller_screens/seller_properties_screen.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 
@@ -37,8 +38,8 @@ class SellerDashboardScreenState extends State<SellerDashboardScreen> {
     _pageController = PageController(initialPage: widget.pageIndex);
 
     _screens = [
-      HomeScreen(),
-      ExploreScreen(),
+      const SellerHome(),
+       SellerPropertiesScreen(),
       const SellerHome(),
       SavedScreen(),
       ProfileScreen(),
@@ -83,13 +84,13 @@ class SellerDashboardScreenState extends State<SellerDashboardScreen> {
           child: Padding(
             padding: const EdgeInsets.all(0/*Dimensions.paddingSize20*/),
             child: Row(children: [
-              BottomNavItem(img: Images.icSellerDashboardIcon, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: '',),
-              BottomNavItem(img: Images.navBarExplore, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: '',),
+              BottomNavItem(img: Images.icSellerDashboardIcon, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home',),
+              BottomNavItem(img: Images.navBarExplore, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Properties',),
               const Expanded(child: SizedBox()),
-              BottomNavItem(img: Images.navBarSave, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: '',),
+              BottomNavItem(img: Images.navBarSave, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Saved',),
               BottomNavItem(img:Images.navBarProfile, isSelected: _pageIndex == 4, tap: () {
                 _setPage(4);
-              }, title: '',),
+              }, title: 'Profile',),
             ]),
           ),
         ),

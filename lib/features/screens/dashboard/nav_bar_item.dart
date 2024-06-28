@@ -16,14 +16,16 @@ class BottomNavItem extends StatelessWidget {
     return Expanded(
         child:  GestureDetector(
             onTap:tap as void Function()?,
-            child: Container(
-                padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
-                child: Column(
-                  children: [
-                    Image.asset(img,height: 28,width: 28,color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withOpacity(0.30)),
-                    Text(title,style: senRegular.copyWith(fontSize: Dimensions.fontSize12,color:isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withOpacity(0.30) ),)
-                  ],
-                )))
+            child: SingleChildScrollView(
+              child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
+                  child: Column(
+                    children: [
+                      Image.asset(img,height: 28,width: 28,color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withOpacity(0.30)),
+                      Text(title,style: senRegular.copyWith(fontSize: Dimensions.fontSize12,color:isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withOpacity(0.30) ),)
+                    ],
+                  )),
+            ))
     );
   }
 }

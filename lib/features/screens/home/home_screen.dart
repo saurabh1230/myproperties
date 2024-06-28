@@ -7,11 +7,12 @@ import 'package:get_my_properties/features/screens/home/widgets/popular_in_locat
 import 'package:get_my_properties/features/screens/home/widgets/recomended_section.dart';
 import 'package:get_my_properties/features/screens/home/widgets/services_section.dart';
 import 'package:get_my_properties/features/screens/home/widgets/suitable_property_section.dart';
+import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
-
+import 'package:get/get.dart';
 class HomeScreen extends StatelessWidget {
   final TextEditingController filter = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -51,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              InkWell(
+                              GestureDetector(behavior: HitTestBehavior.translucent,
                                 onTap: () {
                                   _scaffoldKey.currentState?.openDrawer();
                                 },
@@ -94,50 +95,54 @@ class HomeScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                 child: Column(children: [
-                    Container(
-                      height: 45,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.paddingSize5),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.paddingSize5),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 5)
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "  Search  ",
-                                  style: senRegular.copyWith(
-                                      fontSize: Dimensions.fontSize13,
-                                      color: Theme.of(context)
-                                          .hintColor), // Different color for "resend"
-                                ),
-                                TextSpan(
-                                  text: "City | Locality | Landmark",
-                                  style: senRegular.copyWith(
-                                      fontSize: Dimensions.fontSize12,
-                                      color: Theme.of(context)
-                                          .disabledColor
-                                          .withOpacity(0.40)), // Default text color
-                                ),
-                              ],
+                    InkWell(onTap: () {
+                      Get.toNamed(RouteHelper.getSearchRoute());
+                    },
+                      child: Container(
+                        height: 45,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Dimensions.paddingSize5),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.paddingSize5),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 5)
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "  Search  ",
+                                    style: senRegular.copyWith(
+                                        fontSize: Dimensions.fontSize13,
+                                        color: Theme.of(context)
+                                            .hintColor), // Different color for "resend"
+                                  ),
+                                  TextSpan(
+                                    text: "City | Locality | Landmark",
+                                    style: senRegular.copyWith(
+                                        fontSize: Dimensions.fontSize12,
+                                        color: Theme.of(context)
+                                            .disabledColor
+                                            .withOpacity(0.40)), // Default text color
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          const Spacer(),
-                          Icon(
-                            Icons.search,
-                            color: Theme.of(context).hintColor,
-                          )
-                        ],
+                            const Spacer(),
+                            Icon(
+                              Icons.search,
+                              color: Theme.of(context).hintColor,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],

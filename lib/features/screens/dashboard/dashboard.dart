@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
 import 'package:get_my_properties/features/screens/home/home_screen.dart';
 import 'package:get_my_properties/features/screens/profile/profile_screen.dart';
 import 'package:get_my_properties/features/screens/saved/saved_screen.dart';
+import 'package:get_my_properties/features/screens/search/search_screen.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 
@@ -39,7 +41,7 @@ class DashboardScreenState extends State<DashboardScreen> {
     _screens = [
        HomeScreen(),
        ExploreScreen(),
-       const SellerHome(),
+       const SearchScreen(isBackButton: false,),
        SavedScreen(),
        ProfileScreen(),
     ];
@@ -69,7 +71,7 @@ class DashboardScreenState extends State<DashboardScreen> {
           backgroundColor: _pageIndex == 2 ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
           onPressed: () => _setPage(2),
           child: Icon(
-            Icons.add, size: Dimensions.paddingSize34,
+            CupertinoIcons.search, size: Dimensions.paddingSize34,
             color: _pageIndex == 2 ? Theme.of(context).cardColor : Theme.of(context).disabledColor.withOpacity(0.30),
           ),
         ),
