@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/explore/widgets/explore_card_widget.dart';
-import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/home/widgets/filter_bottom_sheet.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
@@ -14,7 +13,9 @@ import 'package:get_my_properties/utils/sizeboxes.dart';
 
 
 class ExploreScreen extends StatefulWidget {
-  ExploreScreen({Key? key}) : super(key: key);
+  final bool? isBrowser;
+  final String? title;
+  ExploreScreen({Key? key, this.isBrowser= false, this.title}) : super(key: key);
 
   @override
   _ExploreScreenState createState() => _ExploreScreenState();
@@ -51,7 +52,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return Scaffold(
       drawer: const CustomDrawer(),
       appBar: CustomAppBar(
-        title: "Explore",
+        isBackButtonExist: widget.isBrowser! ? true : false,
+        title:widget.isBrowser! ? '${widget.title}' : "Explore",
         menuWidget: CustomNotificationButton(
           tap: () {},
         ),

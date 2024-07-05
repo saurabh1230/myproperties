@@ -46,6 +46,8 @@ dev_dependencies:
   draggable_home: ^1.0.5
   fan_carousel_image_slider: ^1.0.1
   syncfusion_flutter_charts: ^26.1.39
+  image_picker: ^1.1.2
+  carousel_slider: ^4.2.1
 
 
   # The "flutter_lints" package below contains a set of recommended lints to

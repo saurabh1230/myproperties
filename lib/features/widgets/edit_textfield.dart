@@ -160,6 +160,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_my_properties/utils/dimensions.dart';
+import 'package:get_my_properties/utils/styles.dart';
 
 class CustomTextField extends StatefulWidget {
   final String hintText;
@@ -187,6 +189,7 @@ class CustomTextField extends StatefulWidget {
   final bool isRequired;
   final bool readOnly;
   final bool editText; // New property to show edit text suffix
+  final TextStyle? titleStyle;
 
   const CustomTextField({
     Key? key,
@@ -214,7 +217,7 @@ class CustomTextField extends StatefulWidget {
     this.iconSize = 18,
     this.isRequired = false,
     this.readOnly = false,
-    this.editText = false, // Default value for edit text suffix
+    this.editText = false, this.titleStyle, // Default value for edit text suffix
   }) : super(key: key);
 
   @override
@@ -232,6 +235,7 @@ class CustomTextFieldState extends State<CustomTextField> {
         widget.showTitle
             ? Text(
           widget.hintText,
+          style: widget.titleStyle ?? senRegular.copyWith(fontSize: Dimensions.fontSize15,color: Theme.of(context).disabledColor),
           // Adjust style as needed
         )
             : const SizedBox(),

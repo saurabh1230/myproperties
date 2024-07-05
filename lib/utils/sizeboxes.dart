@@ -33,6 +33,9 @@ Widget sizedBoxDefault() {
 Widget sizedBox4() {
   return const SizedBox(height: Dimensions.paddingSize4);
 }
+Widget sizedBox5() {
+  return const SizedBox(height: Dimensions.paddingSize5);
+}
 Widget sizedBox8() {
   return  const SizedBox(height: Dimensions.paddingSize8);
 }

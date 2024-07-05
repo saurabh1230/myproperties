@@ -5,6 +5,7 @@ import 'package:get_my_properties/features/screens/auth/otp_verification_screen.
 import 'package:get_my_properties/features/screens/auth/sign_up.dart';
 import 'package:get_my_properties/features/screens/dashboard/dashboard.dart';
 import 'package:get_my_properties/features/screens/dashboard/seller_dashboard.dart';
+import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
 import 'package:get_my_properties/features/screens/home/home_screen.dart';
 import 'package:get_my_properties/features/screens/onboard/onboarding_screen.dart';
 import 'package:get_my_properties/features/screens/onboard/splash_screen.dart';
@@ -23,6 +24,7 @@ class RouteHelper {
   static const String propertiesDetails = '/properties-details-screen';
   static const String saved = '/saved';
   static const String search = '/search';
+  static const String explore = '/explore';
 
 
 
@@ -38,6 +40,8 @@ class RouteHelper {
   static String getPropertiesDetailsScreen(String title) => '$propertiesDetails?title=$title';
   static String getSavedRoute({bool isHistory = false}) => '$saved?isHistory=${isHistory.toString()}';
   static String getSearchRoute() => search;
+  static String getExploreRoute({bool isBrowser = false, String? title}) =>
+      '$explore?isBrowser=${isBrowser.toString()}&title=$title';
 
 
 
@@ -55,6 +59,8 @@ class RouteHelper {
     GetPage(name: search, page: () =>  const SearchScreen()),
     GetPage(name: propertiesDetails, page: () =>  PropertiesDetailsScreen(title: Get.parameters['title'])),
     GetPage(name: saved, page: () => SavedScreen(isHistory: Get.parameters['isHistory'] == 'true')),
+    GetPage(name: explore, page: () => ExploreScreen(isBrowser: Get.parameters['isBrowser'] == 'true',title: Get.parameters["title"],),
+    ),
 
   ];
 }

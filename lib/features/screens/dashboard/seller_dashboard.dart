@@ -10,6 +10,7 @@ import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
 import 'package:get_my_properties/features/screens/home/home_screen.dart';
 import 'package:get_my_properties/features/screens/profile/profile_screen.dart';
 import 'package:get_my_properties/features/screens/saved/saved_screen.dart';
+import 'package:get_my_properties/features/screens/seller_screens/property/post_property_screen.dart';
 import 'package:get_my_properties/features/screens/seller_screens/seller_properties_screen.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
@@ -40,7 +41,7 @@ class SellerDashboardScreenState extends State<SellerDashboardScreen> {
     _screens = [
        SellerHome(),
        SellerPropertiesScreen(),
-       SellerHome(),
+      PostPropertyScreen(),
       SavedScreen(),
       ProfileScreen(),
     ];

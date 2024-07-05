@@ -13,7 +13,8 @@ class PopularInLocationSectionSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault,vertical:Dimensions.paddingSizeDefault ),
+      padding: const EdgeInsets.only(left:Dimensions.paddingSizeDefault,top:Dimensions.paddingSizeDefault,
+        bottom:Dimensions.paddingSizeDefault,),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Popular In Location",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
