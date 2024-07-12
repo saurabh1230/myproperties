@@ -12,20 +12,21 @@ class RecommendedItemCard extends StatelessWidget {
   final String price;
   final Function() routeTap;
   final Function() tap;
-  const RecommendedItemCard({super.key, required this.image, required this.title, required this.description, required this.price, required this.tap, required this.routeTap});
+  final bool? vertical;
+  const RecommendedItemCard({super.key, required this.image, required this.title, required this.description, required this.price, required this.tap, required this.routeTap,  this.vertical = false});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: routeTap,
       child: Container(
-        width: 220,
+        width: vertical! ? Get.size.width : 220,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 126,width: 220,
-              child: Image.asset(image),
+              height: 126,width:vertical! ? Get.size.width : 220,
+              child: Image.asset(image,fit: BoxFit.cover,),
             ),
             sizedBox8(),
             Text(title,style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault,),maxLines: 1,overflow: TextOverflow.ellipsis,),

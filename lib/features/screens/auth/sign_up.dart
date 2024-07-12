@@ -69,6 +69,8 @@ class SignUpScreen extends StatelessWidget {
                       hintText: "Enter your mobile number here",
                     ),
                     sizedBox20(),
+                    Center(child: Text("Login As",style: senBold.copyWith(color: Theme.of(context).disabledColor.withOpacity(0.60),fontSize: Dimensions.fontSize15),)),
+                    sizedBoxDefault(),
                     Center(
                       child: Wrap(
                         spacing: 8.0, // Space between chips

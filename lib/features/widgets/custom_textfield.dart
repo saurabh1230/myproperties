@@ -340,16 +340,16 @@ class CustomTextFieldState extends State<CustomTextField> {
               width: 55,
               child: Row(
                 children:  [
-                  SizedBox(width: 5),
+                  const SizedBox(width: 5),
                   Text(
-                    "+ 91",
+                    " + 91",
                     style: TextStyle(
                       color: Theme.of(context)
                           .disabledColor
                           .withOpacity(0.40),
                     ),
                   ),
-                  SizedBox(width: 5),
+                  const SizedBox(width: 5),
                   Container(
                     height: 20,
                     width: 2,

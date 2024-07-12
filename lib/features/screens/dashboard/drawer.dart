@@ -73,33 +73,54 @@ class CustomDrawer extends StatelessWidget {
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                    padding:  EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("Property For Sale",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                        buildContainer(context,"Apartment"),
-                        buildContainer(context,"House"),
-                        buildContainer(context,"Land/ Plot"),
+                        buildContainer(context,"Apartment",tap : () {
+                          Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "Apartment"));
+                        }),
+                        buildContainer(context,"House", tap: () {
+                          Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "House"));
+                        }),
+                        buildContainer(context,"Land/ Plot", tap: () {
+                          Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "Land/ Plot"));
+                        }),
                         sizedBoxDefault(),
                         Text("Property For Rent",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                        buildContainer(context,"Apartment"),
-                        buildContainer(context,"House"),
-                        buildContainer(context,"Land/ Plot"),
+                        buildContainer(context,"Apartment", tap: () {
+                          Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Rent", "Apartment"));
+                        }),
+                        buildContainer(context,"House", tap: () {
+                          Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Rent", "House"));
+                        }),
+                        buildContainer(context,"Land/ Plot", tap: () {
+                          Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("rent", "Land/ Plot"));
+                        }),
                         sizedBoxDefault(),
                         Text("Explore",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                        buildContainer(context,"Near Locality"),
-                        buildContainer(context,"Newly Constructed"),
-                        buildContainer(context,"Featured Properties"),
+                        buildContainer(context,"Near Locality", tap: () {
+                          Get.toNamed(RouteHelper.getExploreSearchRoute("Near Locality"));
+                        }),
+                        buildContainer(context,"Newly Constructed", tap: () {
+                          Get.toNamed(RouteHelper.getExploreSearchRoute("Newly Constructed"));
+                        }),
+                        buildContainer(context,"Featured Properties", tap: () {
+                          Get.toNamed(RouteHelper.getExploreSearchRoute("Featured Properties"));
+                        }),
                         sizedBoxDefault(),
                         Text("Our Services",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                        buildContainer(context,"Home Inspection"),
-                        buildContainer(context,"Rent Agreement"),
-                        buildContainer(context,"Tenant Verification"),
-                        buildContainer(context,"Property Valuation"),
-                        buildContainer(context,"Recent Searches"),
-                        buildContainer(context,"Rating & Reviews"),
-                        buildContainer(context,"Terms & Conditions"),
-                        buildContainer(context,"Help Center"),
+                        buildContainer(context,"Home Inspection", tap: () {  }),
+                        buildContainer(context,"Rent Agreement", tap: () {  }),
+                        buildContainer(context,"Tenant Verification", tap: () {  }),
+                        buildContainer(context,"Property Valuation", tap: () {  }),
+                        buildContainer(context,"Recent Searches", tap: () {
+                          Get.toNamed(RouteHelper.getSearchRoute());
+
+                        }),
+                        buildContainer(context,"Rating & Reviews", tap: () {Get.toNamed(RouteHelper.getRatingsAndReviewRoute());}),
+                        buildContainer(context,"Terms & Conditions", tap: () {  }),
+                        buildContainer(context,"Help Center", tap: () {  }),
                         sizedBoxDefault(),
                         CustomButtonWidget(
                           isBold: false,
@@ -120,13 +141,16 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  Container buildContainer(BuildContext context,String title) {
-    return Container(width: Get.size.width,
-                margin: const EdgeInsets.only(top: Dimensions.paddingSize10),
-                padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize10,horizontal: Dimensions.paddingSize10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Dimensions.radius5),
-                 color: Theme.of(context).primaryColor.withOpacity(0.04)),
-                child: Text(title,style: senRegular.copyWith(fontSize: Dimensions.fontSize13,color: Theme.of(context).disabledColor)));
+  InkWell buildContainer(BuildContext context,String title,  {required  Function() tap}) {
+    return InkWell(
+      onTap:  tap,
+      child: Container(width: Get.size.width,
+                  margin: const EdgeInsets.only(top: Dimensions.paddingSize10),
+                  padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize10,horizontal: Dimensions.paddingSize10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Dimensions.radius5),
+                   color: Theme.of(context).primaryColor.withOpacity(0.04)),
+                  child: Text(title,style: senRegular.copyWith(fontSize: Dimensions.fontSize13,color: Theme.of(context).disabledColor))),
+    );
   }
 }

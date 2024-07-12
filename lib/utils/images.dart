@@ -28,4 +28,5 @@ class Images {
   static const String icBuildingLight = 'assets/icons/icbuildinglight.png';
   static const String icSellerDashboardIcon = 'assets/icons/ic_seller_dashboard_icon.png';
   static const String placeholder = 'assets/images/placeholder.png';
+  static const String icRatings = 'assets/icons/ic_rating.png';
 }
