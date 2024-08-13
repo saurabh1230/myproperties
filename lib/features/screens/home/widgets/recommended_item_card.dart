@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
+import 'package:get_my_properties/features/widgets/custom_image_widget.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
+import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
@@ -21,12 +23,15 @@ class RecommendedItemCard extends StatelessWidget {
       onTap: routeTap,
       child: Container(
         width: vertical! ? Get.size.width : 220,
+        padding:  EdgeInsets.only(right:vertical! ? 0 : Dimensions.paddingSizeDefault),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: 126,width:vertical! ? Get.size.width : 220,
-              child: Image.asset(image,fit: BoxFit.cover,),
+              child: CustomNetworkImageWidget(
+                radius: Dimensions.radius5,
+                  image: '${AppConstants.imgBaseUrl}${image}'),
             ),
             sizedBox8(),
             Text(title,style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault,),maxLines: 1,overflow: TextOverflow.ellipsis,),

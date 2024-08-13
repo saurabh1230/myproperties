@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/home/widgets/filter_bottom_sheet.dart';
 import 'package:get_my_properties/features/screens/property/sale_and_rent_dashboard/sale_and_rent_property_section.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
+import 'package:get_my_properties/features/widgets/empty_data_widget.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get/get.dart';
+import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 
 class SaleAndRentDashboard extends StatefulWidget {
   final int pageIndex;
   final String? type;
-  const SaleAndRentDashboard({Key? key, required this.pageIndex, required this.type}) : super(key: key);
+  final String? typeId;
+  final String? purposeId;
+  const SaleAndRentDashboard({Key? key, required this.pageIndex, required this.type, this.typeId, this.purposeId}) : super(key: key);
 
   @override
   _SaleAndRentDashboardState createState() => _SaleAndRentDashboardState();
@@ -27,13 +32,14 @@ class _SaleAndRentDashboardState extends State<SaleAndRentDashboard> {
     _pageIndex = widget.pageIndex;
     _pageController = PageController(initialPage: widget.pageIndex);
     _screens = [
-      SaleAndRentPropertySection(type: widget.type!,),
-      SaleAndRentPropertySection(type: widget.type!,),
+      SaleAndRentPropertySection(type: widget.type!,typeId: widget.typeId!,purposeId: widget.purposeId! ,),
+      SaleAndRentPropertySection(type: widget.type!,typeId: widget.typeId!,purposeId: widget.purposeId!),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -57,11 +63,11 @@ class _SaleAndRentDashboardState extends State<SaleAndRentDashboard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {Get.back();},
+                  onTap: () {Get.back();},
                   child: Container(
-                    padding: const EdgeInsets.all(Dimensions.paddingSize4),
-                    decoration: BoxDecoration(shape: BoxShape.circle,
-                      color: Theme.of(context).primaryColor,),
+                      padding: const EdgeInsets.all(Dimensions.paddingSize4),
+                      decoration: BoxDecoration(shape: BoxShape.circle,
+                        color: Theme.of(context).primaryColor,),
                       child: Icon(Icons.arrow_back,color: Theme.of(context).cardColor,))),
               sizedBoxW10(),
               sizedBoxW5(),
@@ -75,7 +81,7 @@ class _SaleAndRentDashboardState extends State<SaleAndRentDashboard> {
                       color: _pageIndex == 0 ? Theme.of(context).primaryColor : Colors.transparent,
                       borderRadius: BorderRadius.circular(Dimensions.radius10),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSize20),
+                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSize20),
                     child: Center(
                       child: Text(
                         "Buy",
@@ -115,7 +121,8 @@ class _SaleAndRentDashboardState extends State<SaleAndRentDashboard> {
           ),
         ),
       ),
-      body: Column(
+      body:
+      Column(
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
@@ -174,6 +181,7 @@ class _SaleAndRentDashboardState extends State<SaleAndRentDashboard> {
         ],
       ),
     );
+
   }
 
   void _setPage(int pageIndex) {

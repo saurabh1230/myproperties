@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
+import 'package:get_my_properties/controller/profile_controller.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
@@ -15,129 +16,176 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<AuthController>().getHomeDataApi();
+    });
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          width: Get.size.width,
-          color: Colors.white,
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize20,horizontal: Dimensions.paddingSizeDefault),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(Dimensions.radius20),
-                    bottomRight: Radius.circular(Dimensions.radius20),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        GestureDetector(onTap: () {
-                          Get.back();
-                        },
-                            child: Icon(Icons.arrow_back,color: Theme.of(context).cardColor,)),
-                        sizedBoxW10(),
-                        Text("Welcome",style: senRegular.copyWith(fontSize: Dimensions.fontSize18, color: Theme.of(context).cardColor),),
-                        const Spacer(),
-                        CustomNotificationButton(
-                          icon: Icons.person,
-                          tap: () {},
-                        ),
-                      ],
-                    ),
-                    sizedBoxDefault(),
-                    CustomButtonWidget(color: Theme.of(context).cardColor,
-                      isBold: false,
-                      fontSize: Dimensions.fontSize15,
-                      buttonText: "Register",onPressed: () {},
-                    textColor: Theme.of(context).primaryColor)
-                  ],
-                ),
-              ),
-              sizedBox10(),
-              Get.find<AuthController>().loginType == 0 ? const SizedBox() :
-              Padding(
-                padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Post Property",style: senRegular.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).disabledColor),),
-                    IconButton(onPressed: () {  },
-                      icon: const Icon(Icons.add),
-                      color: Theme.of(context).primaryColor,)
-                  ],
-                ),
-              ),sizedBoxDefault(),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Property For Sale",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                        buildContainer(context,"Apartment",tap : () {
-                          Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "Apartment"));
-                        }),
-                        buildContainer(context,"House", tap: () {
-                          Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "House"));
-                        }),
-                        buildContainer(context,"Land/ Plot", tap: () {
-                          Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "Land/ Plot"));
-                        }),
-                        sizedBoxDefault(),
-                        Text("Property For Rent",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                        buildContainer(context,"Apartment", tap: () {
-                          Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Rent", "Apartment"));
-                        }),
-                        buildContainer(context,"House", tap: () {
-                          Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Rent", "House"));
-                        }),
-                        buildContainer(context,"Land/ Plot", tap: () {
-                          Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("rent", "Land/ Plot"));
-                        }),
-                        sizedBoxDefault(),
-                        Text("Explore",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                        buildContainer(context,"Near Locality", tap: () {
-                          Get.toNamed(RouteHelper.getExploreSearchRoute("Near Locality"));
-                        }),
-                        buildContainer(context,"Newly Constructed", tap: () {
-                          Get.toNamed(RouteHelper.getExploreSearchRoute("Newly Constructed"));
-                        }),
-                        buildContainer(context,"Featured Properties", tap: () {
-                          Get.toNamed(RouteHelper.getExploreSearchRoute("Featured Properties"));
-                        }),
-                        sizedBoxDefault(),
-                        Text("Our Services",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                        buildContainer(context,"Home Inspection", tap: () {  }),
-                        buildContainer(context,"Rent Agreement", tap: () {  }),
-                        buildContainer(context,"Tenant Verification", tap: () {  }),
-                        buildContainer(context,"Property Valuation", tap: () {  }),
-                        buildContainer(context,"Recent Searches", tap: () {
-                          Get.toNamed(RouteHelper.getSearchRoute());
+      body: GetBuilder<AuthController>(builder: (authControl) {
+        return
+              authControl.homeData == null ||
+              authControl.profileData == null
+              ? const Center(child: CircularProgressIndicator()) :
 
-                        }),
-                        buildContainer(context,"Rating & Reviews", tap: () {Get.toNamed(RouteHelper.getRatingsAndReviewRoute());}),
-                        buildContainer(context,"Terms & Conditions", tap: () {  }),
-                        buildContainer(context,"Help Center", tap: () {  }),
-                        sizedBoxDefault(),
-                        CustomButtonWidget(
+         SafeArea(
+          child: Container(
+            width: Get.size.width,
+            color: Colors.white,
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize20,horizontal: Dimensions.paddingSizeDefault),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(Dimensions.radius20),
+                      bottomRight: Radius.circular(Dimensions.radius20),
+                    ),
+                  ),
+                  child:
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          GestureDetector(onTap: () {
+                            Get.back();
+                          }, child: Icon(Icons.arrow_back,color: Theme.of(context).cardColor,)),
+                          sizedBoxW10(),
+                          Text("Welcome",style: senRegular.copyWith(fontSize: Dimensions.fontSize18, color: Theme.of(context).cardColor),),
+                          const Spacer(),
+                          CustomNotificationButton(
+                            icon: Icons.person,
+                            tap: () {},
+                          ),
+                        ],
+                      ),
+
+
+
+                      Get.find<AuthController>().profileData!.userType == 'customer' ?
+                      const SizedBox():
+                      CustomButtonWidget(color: Theme.of(context).cardColor,
                           isBold: false,
-                          buttonText: "LogOut",fontSize: Dimensions.fontSize14,
-                          onPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},),
-                        sizedBox30()
-                      ],
+                          fontSize: Dimensions.fontSize15,
+                          buttonText: "Register",onPressed: () {},
+                          textColor: Theme.of(context).primaryColor)
+                    ],
+                  ),
+                ),
+                    sizedBox10(),
+
+                Get.find<AuthController>().loginType == 0 ? const SizedBox() :
+                Padding(
+                  padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Post Property",style: senRegular.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).disabledColor),),
+                      IconButton(onPressed: () {  },
+                        icon: const Icon(Icons.add),
+                        color: Theme.of(context).primaryColor,)
+                    ],
+                  ),
+                ),sizedBoxDefault(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding:  const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Property For Sale",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                          ListView.builder(
+                              itemCount: authControl.homeData!.propertyTypes!.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (_,i) {
+                            return
+                            buildContainer(context,authControl.homeData!.propertyTypes![i].name.toString(),tap : () {
+                              Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
+                                  "Sale",
+                                  authControl.homeData!.propertyTypes![i].name.toString(),
+                                authControl.homeData!.propertyTypes![i].sId.toString(),
+                                '66b097948e94ad0e435526ee'
+                                // authControl.homeData!.propertyPurposes![i].sId.toString(),
+                              ));
+
+                            });
+                          }),
+                          // buildContainer(context,"Apartment",tap : () {
+                          //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "Apartment",''));
+                          // }),
+                          // buildContainer(context,"House", tap: () {
+                          //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "House",''));
+                          // }),
+                          // buildContainer(context,"Land/ Plot", tap: () {
+                          //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "Land/ Plot",''));
+                          // }),
+                          sizedBoxDefault(),
+                          Text("Property For Rent",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                          ListView.builder(
+                              itemCount: authControl.homeData!.propertyTypes!.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (_,i) {
+                                return
+                                  buildContainer(context,authControl.homeData!.propertyTypes![i].name.toString(),tap : () {
+                                    Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
+                                      "Rent",
+                                      authControl.homeData!.propertyTypes![i].name.toString(),
+                                      authControl.homeData!.propertyTypes![i].sId.toString(),
+                                    '66b097878e94ad0e435526ea'));
+                                  });
+                              }),
+                          // buildContainer(context,"Apartment", tap: () {
+                          //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Rent", "Apartment",''));
+                          // }),
+                          // buildContainer(context,"House", tap: () {
+                          //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Rent", "House",''));
+                          // }),
+                          // buildContainer(context,"Land/ Plot", tap: () {
+                          //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("rent", "Land/ Plot",''));
+                          // }),
+                          sizedBoxDefault(),
+                          Text("Explore",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                          buildContainer(context,"Near Locality", tap: () {
+                            Get.toNamed(RouteHelper.getExploreSearchRoute("Near Locality"));
+                          }),
+                          buildContainer(context,"Newly Constructed", tap: () {
+                            Get.toNamed(RouteHelper.getExploreSearchRoute("Newly Constructed"));
+                          }),
+                          buildContainer(context,"Featured Properties", tap: () {
+                            Get.toNamed(RouteHelper.getExploreSearchRoute("Featured Properties"));
+                          }),
+                          sizedBoxDefault(),
+                          Text("Our Services",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                          buildContainer(context,"Home Inspection", tap: () {  }),
+                          buildContainer(context,"Rent Agreement", tap: () {  }),
+                          buildContainer(context,"Tenant Verification", tap: () {  }),
+                          buildContainer(context,"Property Valuation", tap: () {  }),
+                          buildContainer(context,"Recent Searches", tap: () {
+                            Get.toNamed(RouteHelper.getSearchRoute());
+
+                          }),
+                          buildContainer(context,"Rating & Reviews", tap: () {Get.toNamed(RouteHelper.getRatingsAndReviewRoute());}),
+                          buildContainer(context,"Terms & Conditions", tap: () {  }),
+                          buildContainer(context,"Help Center", tap: () {  }),
+                          sizedBoxDefault(),
+                          CustomButtonWidget(
+                            isBold: false,
+                            buttonText: "LogOut",fontSize: Dimensions.fontSize14,
+                            onPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},),
+                          sizedBox30()
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
 
 
-            ],
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      })
+
     );
   }
 

@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/features/screens/dashboard/nav_bar_item.dart';
-import 'package:get_my_properties/features/screens/dashboard/seller_dashboard.dart';
-import 'package:get_my_properties/features/screens/dashboard/seller_home.dart';
+
 import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
 import 'package:get_my_properties/features/screens/home/home_screen.dart';
 import 'package:get_my_properties/features/screens/profile/profile_screen.dart';
@@ -32,6 +32,10 @@ class DashboardScreenState extends State<DashboardScreen> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<AuthController>().profileDetailsApi();
+      Get.find<AuthController>().getHomeDataApi();
+    });
     super.initState();
 
     _pageIndex = widget.pageIndex;

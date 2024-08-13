@@ -27,6 +27,8 @@ class Images {
   static const String icHandHomeLight = 'assets/icons/ic_hand_home_light.png';
   static const String icBuildingLight = 'assets/icons/icbuildinglight.png';
   static const String icSellerDashboardIcon = 'assets/icons/ic_seller_dashboard_icon.png';
-  static const String placeholder = 'assets/images/placeholder.png';
+  static const String placeholder = 'assets/images/img_placeholder.png';
+  static const String profilePlaceholder = 'assets/images/ic_profile_placeholder.png';
   static const String icRatings = 'assets/icons/ic_rating.png';
+  static const String emptyDataImage = 'assets/images/ic_empty_data_image.png';
 }

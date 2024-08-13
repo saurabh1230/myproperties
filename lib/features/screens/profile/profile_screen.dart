@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
@@ -16,6 +17,11 @@ class ProfileScreen extends StatelessWidget {
 
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _nameController = TextEditingController();
+   final _addressController = TextEditingController();
+   final _emailController = TextEditingController();
+   final _phoneController = TextEditingController();
+   final _registerTypeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,129 +47,157 @@ class ProfileScreen extends StatelessWidget {
           ),
         )],
       ),
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              Column(
-                children: [
-                  Container(height: 100,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(Dimensions.radius20),
-                      bottomRight: Radius.circular(Dimensions.radius20),
-                    )
-                  ),),
-                  Container(
-                    height: 80,
-                  ),
-                ],
-              ),
-              Positioned(bottom: 0,left: 0,right: 0,
-                  child: ClipOval(child: Image.asset("assets/images/profile_person.png",height: 150,)))
+      body: GetBuilder<AuthController>(builder: (authControl) {
+        _nameController.text = authControl.profileData?.name?.toString() ?? '';
+        _addressController.text = authControl.profileData?.address?.toString() ?? '';
+        _emailController.text = authControl.profileData?.email?.toString() ?? '';
+        _phoneController.text = authControl.profileData?.phoneNumber?.toString() ?? '';
+        _registerTypeController.text = authControl.profileData?.userType?.toString() ?? '';
 
-            ],
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
-                child: Column(
+        return Column(
+          children: [
+            Stack(
+              children: [
+                Column(
                   children: [
-                    const CustomTextField(
-                      showTitle: true,
-                      hintText: "Name",
-                      editText: true,),
-                    sizedBoxDefault(),
-                    const CustomTextField(
-                      showTitle: true,
-                      hintText: "State",
-                      editText: true,),
-                    sizedBoxDefault(),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: const CustomTextField(
-                            showTitle: true,
-                            hintText: "City",
-                            editText: false,),
-                        ),
-                        sizedBoxW10(),
-                        Expanded(
-                          child: const CustomTextField(
-                            showTitle: true,
-                            hintText: "Zip-Code",
-                            editText: false,),
-                        ),
-                      ],
+                    Container(height: 100,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(Dimensions.radius20),
+                            bottomRight: Radius.circular(Dimensions.radius20),
+                          )
+                      ),),
+                    Container(
+                      height: 80,
                     ),
-                    sizedBoxDefault(),
-                    const CustomTextField(
-                      showTitle: true,
-                      maxLines: 4,
-                      hintText: "Address",
-                      editText: true,),
-                    sizedBoxDefault(),
-                    const CustomTextField(
-                      showTitle: true,
-                      hintText: "Website Link",
-                      editText: true,),
-                    sizedBoxDefault(),
-                    Align(alignment: Alignment.centerLeft,
-                        child: Text("Sign In & Security",style: senRegular.copyWith(fontSize: Dimensions.fontSize15,color: Theme.of(context).primaryColor),)),
-                    sizedBox4(),
-                    const CustomTextField(
-                      showTitle: true,
-                      hintText: "Registered As",
-                      editText: true,),
-                    sizedBoxDefault(),
-                    const CustomTextField(
-                      showTitle: true,
-                      hintText: "Email Address",
-                      editText: true,),
-                    sizedBoxDefault(),
-                    const CustomTextField(
-                      isAmount: true,
-                      isNumber: true,
-                      showTitle: true,
-                      hintText: "Phone No",
-                      editText: true,),
-                    sizedBoxDefault(),
-                    const CustomTextField(
-                      showTitle: true,
-                      hintText: "Password",
-                      isPassword: true,),
-                    sizedBoxDefault(),
-                    OutlinedButton(onPressed: () {
-                      Get.toNamed(RouteHelper.getSavedRoute(isHistory: true));
+                  ],
+                ),
+                Positioned(bottom: 0,left: 0,right: 0,
+                    child: ClipOval(child: Image.asset("assets/images/profile_person.png",height: 150,)))
 
-                    }, child: Padding(
-                      padding:  const EdgeInsets.symmetric(vertical: Dimensions.paddingSize12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ],
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                  child: Column(
+                    children: [
+                       CustomTextField(
+                        controller: _nameController,
+                        showTitle: true,
+                        hintText: "Name",
+                        editText: true,),
+                      authControl.profileData!.userType == "customer" ?
+                          const SizedBox() :
+                      Column(
                         children: [
-                          Text("History",style: senRegular.copyWith(fontSize: Dimensions.fontSize15,color: Theme.of(context).disabledColor),),
-                          const Icon(Icons.arrow_forward)
+                          sizedBoxDefault(),
+                          const CustomTextField(
+                            showTitle: true,
+                            hintText: "State",
+                            editText: true,),
+                          sizedBoxDefault(),
+                          Row(
+                            children: [
+                              const Expanded(
+                                child: CustomTextField(
+                                  showTitle: true,
+                                  hintText: "City",
+                                  editText: false,),
+                              ),
+                              sizedBoxW10(),
+                              const Expanded(
+                                child: CustomTextField(
+                                  showTitle: true,
+                                  hintText: "Zip-Code",
+                                  editText: false,),
+                              ),
+                            ],
+                          ),
 
                         ],
                       ),
-                    )),
-                    sizedBoxDefault(),
-                    CustomButtonWidget(
-                      onPressed: () {
+                      sizedBoxDefault(),
+                       CustomTextField(
+                         controller: _addressController,
+                        showTitle: true,
+                        maxLines: 4,
+                        hintText: "Address",
+                        editText: true,),
+                      authControl.profileData!.userType == "customer" ?
+                      const SizedBox() :
+                      Column(
+                        children: [
+                          sizedBoxDefault(),
+                          const CustomTextField(
+                            showTitle: true,
+                            hintText: "Website Link",
+                            editText: true,),
+                        ],
+                      ),
+                      sizedBoxDefault(),
+                      Align(alignment: Alignment.centerLeft,
+                          child: Text("Sign In & Security",style: senRegular.copyWith(fontSize: Dimensions.fontSize15,color: Theme.of(context).primaryColor),)),
+                      sizedBox4(),
+                       CustomTextField(
+                        controller: _registerTypeController,
+                        showTitle: true,
+                        hintText: "Registered As",
+                        editText: true,),
+                      sizedBoxDefault(),
+                       CustomTextField(
+                        controller: _emailController,
+                        showTitle: true,
+                        hintText: "Email Address",
+                        editText: true,),
+                      sizedBoxDefault(),
+                       CustomTextField(
+                         controller: _phoneController,
+                        isAmount: true,
+                        isNumber: true,
+                        showTitle: true,
+                        hintText: "Phone No",
+                        editText: true,),
+                      sizedBoxDefault(),
+                      /*const CustomTextField(
+                        showTitle: true,
+                        hintText: "Password",
+                        isPassword: true,),
+                      sizedBoxDefault(),*/
+                      OutlinedButton(onPressed: () {
+                        Get.toNamed(RouteHelper.getSavedRoute(isHistory: true));
+
+                      }, child: Padding(
+                        padding:  const EdgeInsets.symmetric(vertical: Dimensions.paddingSize12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("History",style: senRegular.copyWith(fontSize: Dimensions.fontSize15,color: Theme.of(context).disabledColor),),
+                            const Icon(Icons.arrow_forward)
+
+                          ],
+                        ),
+                      )),
+                      sizedBoxDefault(),
+                      CustomButtonWidget(
+                          onPressed: () {
 
 
-                      },
-                        buttonText: "Save Changes"),
-                    sizedBox20(),
-                  ],
+                          },
+                          buttonText: "Save Changes"),
+                      sizedBox20(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
-      ),
+            )
+          ],
+        );
+      })
+
+
 
 
 

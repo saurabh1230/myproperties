@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
+import 'package:get_my_properties/features/widgets/custom_image_widget.dart';
+import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
@@ -19,10 +21,10 @@ class ExploreCardWidget extends StatelessWidget {
   final String title;
   final String description;
   final String price;
-  final PageController pageController;
+  // final PageController pageController;
   final bool? isEdit;
 
-  const ExploreCardWidget({super.key, required this.itemCount, required this.image, required this.ratingText, required this.imagesLength, required this.likeTap, required this.detailsTap, required this.propertyCategory, required this.title, required this.description, required this.price, required this.pageController, this.isEdit = false});
+  const ExploreCardWidget({super.key, required this.itemCount, required this.image, required this.ratingText, required this.imagesLength, required this.likeTap, required this.detailsTap, required this.propertyCategory, required this.title, required this.description, required this.price,/* required this.pageController, */this.isEdit = false});
 
   @override
   Widget build(BuildContext context) {
@@ -46,20 +48,22 @@ class ExploreCardWidget extends StatelessWidget {
               padding: const EdgeInsets.all(Dimensions.paddingSize8),
               child: Stack(
                 children: [
-                  PageView.builder(
-                    controller: pageController,
-                    itemCount: itemCount,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        clipBehavior: Clip.hardEdge,
-                        child: Image.asset(image,fit: BoxFit.cover,),
-                      );
-                    },
-                  ),
-
+                  CustomNetworkImageWidget(
+                      radius: Dimensions.radius5,
+                      image: '${AppConstants.imgBaseUrl}$image'),
+                  // PageView.builder(
+                  //   controller: pageController,
+                  //   itemCount: itemCount,
+                  //   itemBuilder: (context, index) {
+                  //     return Container(
+                  //       decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //       ),
+                  //       clipBehavior: Clip.hardEdge,
+                  //       child: Image.asset(image,fit: BoxFit.cover,),
+                  //     );
+                  //   },
+                  // ),
                   Align(alignment: Alignment.topCenter,
                     child: Padding(
                       padding: const EdgeInsets.all(Dimensions.paddingSize10),

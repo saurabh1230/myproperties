@@ -40,7 +40,8 @@ class RouteHelper {
   static String getSplashRoute() => splash;
   static String getOnboardingRoute() => onboarding;
   static String getSignUpRoute() => signUp;
-  static String getOtpVerificationRoute() => otpVerification;
+  // static String getOtpVerificationRoute() => otpVerification;
+  static String getOtpVerificationRoute(String? phoneNo,) => '$otpVerification?phoneNo=$phoneNo';
   static String getDashboardRoute() => dashboard;
   static String getAdminDashboardRoute() => adminDashboard;
   static String getHomeRoute() => home;
@@ -49,7 +50,7 @@ class RouteHelper {
   static String getSearchRoute() => search;
   static String getExploreRoute({bool isBrowser = false, String? title}) =>
       '$explore?isBrowser=${isBrowser.toString()}&title=$title';
-  static String getSellAndRentDashboardRoute(String page, String? type) => '$sellRentDashboard?page=$page&type=$type';
+  static String getSellAndRentDashboardRoute(String page, String? type, String? typeId,String? purposeId,) => '$sellRentDashboard?page=$page&type=$type&typeId=$typeId&purposeId=$purposeId';
   static String getExploreSearchRoute(String? title) =>
       '$exploreSearch?&title=$title';
   static String getRatingsAndReviewRoute() => ratingsAndReviews;
@@ -63,7 +64,7 @@ class RouteHelper {
     GetPage(name: initial, page: () => const SplashScreen()),
     GetPage(name: onboarding, page: () => const OnboardingScreen()),
     GetPage(name: signUp, page: () =>  SignUpScreen()),
-    GetPage(name: otpVerification, page: () =>  OtpVerificationScreen()),
+    GetPage(name: otpVerification, page: () =>  OtpVerificationScreen(phoneNo :Get.parameters['phoneNo'])),
     GetPage(name: dashboard, page: () =>  const DashboardScreen(pageIndex: 0)),
     GetPage(name: adminDashboard, page: () =>  const SellerDashboardScreen(pageIndex: 0)),
     GetPage(name: home, page: () =>  HomeScreen()),
@@ -71,7 +72,7 @@ class RouteHelper {
     GetPage(name: propertiesDetails, page: () =>  PropertiesDetailsScreen(title: Get.parameters['title'])),
     GetPage(name: saved, page: () => SavedScreen(isHistory: Get.parameters['isHistory'] == 'true')),
     GetPage(name: explore, page: () => ExploreScreen(isBrowser: Get.parameters['isBrowser'] == 'true',title: Get.parameters["title"],),),
-    GetPage(name: sellRentDashboard, page: () => SaleAndRentDashboard(pageIndex:Get.parameters['page'] == 'Sale' ? 0 : 1, type: Get.parameters['type'],),),
+    GetPage(name: sellRentDashboard, page: () => SaleAndRentDashboard(pageIndex:Get.parameters['page'] == 'Sale' ? 0 : 1, type: Get.parameters['type'],typeId: Get.parameters['typeId'],purposeId: Get.parameters['purposeId'],),),
     GetPage(name: exploreSearch, page: () => ExploreSearchScreen(title: Get.parameters["title"],),),
     GetPage(name: ratingsAndReviews, page: () => const RatingsAndReviewScreen()),
 

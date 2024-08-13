@@ -213,9 +213,10 @@ class CustomTextField extends StatefulWidget {
   final bool isRequired;
   final bool readOnly;
   final bool editText; // New property to show edit text suffix
+  final FormFieldValidator<String>? validation;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     this.hintText = 'Write something...',
     this.controller,
     this.focusNode,
@@ -240,8 +241,9 @@ class CustomTextField extends StatefulWidget {
     this.iconSize = 18,
     this.isRequired = false,
     this.readOnly = false,
-    this.editText = false, // Default value for edit text suffix
-  }) : super(key: key);
+    this.editText = false,
+    this.validation,
+  });
 
   @override
   CustomTextFieldState createState() => CustomTextFieldState();
@@ -263,7 +265,8 @@ class CustomTextFieldState extends State<CustomTextField> {
             : const SizedBox(),
         SizedBox(height: widget.showTitle ? 5 : 0),
 
-        TextField(
+        TextFormField(
+          validator: widget.validation,
           readOnly: widget.readOnly,
           maxLines: widget.maxLines,
           controller: widget.controller,
@@ -403,11 +406,11 @@ class CustomTextFieldState extends State<CustomTextField> {
                 )
                 : null,
           ),
-          onSubmitted: (text) => widget.nextFocus != null
-              ? FocusScope.of(context).requestFocus(widget.nextFocus)
-              : widget.onSubmit != null
-              ? widget.onSubmit!(text)
-              : null,
+          // onSubmitted: (text) => widget.nextFocus != null
+          //     ? FocusScope.of(context).requestFocus(widget.nextFocus)
+          //     : widget.onSubmit != null
+          //     ? widget.onSubmit!(text)
+          //     : null,
           onChanged: widget.onChanged as void Function(String)?,
         ),
 

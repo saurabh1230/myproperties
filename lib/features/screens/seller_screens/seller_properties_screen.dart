@@ -45,7 +45,8 @@ class SellerPropertiesScreen extends StatelessWidget {
                       title: 'La Convent',
                       description: '3,4 BHK Apartment in Entally, Kolkata Central',
                       price: '₹ 2.9 - 3.6 Cr',
-                      pageController: _pageController);
+                      // pageController: _pageController
+                  );
                 },
                 separatorBuilder: (BuildContext context, int index) => SizedBox(height: Dimensions.paddingSizeDefault),
               ),

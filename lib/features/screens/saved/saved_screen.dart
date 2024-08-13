@@ -2,10 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/explore/widgets/explore_card_widget.dart';
-import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
-import 'package:get_my_properties/features/screens/home/widgets/filter_bottom_sheet.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
-import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
@@ -74,7 +71,8 @@ class _SavedScreenState extends State<SavedScreen> {
                       title: 'La Convent',
                       description: '3,4 BHK Apartment in Entally, Kolkata Central',
                       price: '₹ 2.9 - 3.6 Cr',
-                      pageController: _pageController);
+                      // pageController: _pageController
+                  );
                 },
                 separatorBuilder: (BuildContext context, int index) => SizedBox(height: Dimensions.paddingSizeDefault),
               ),
