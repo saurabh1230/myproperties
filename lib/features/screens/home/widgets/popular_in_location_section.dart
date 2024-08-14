@@ -50,7 +50,8 @@ class PopularInLocationSectionSection extends StatelessWidget {
                     title: list[i].title.toString(),
                     description: list[i].description.toString(),
                     price: '₹ ${list[i].price.toString()}',
-                    routeTap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("Natural Aqua Waves",'')),);
+                    propertyId: list[i].sId.toString(),
+                  );
                 }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: Dimensions.paddingSizeDefault,),),
             )
           ],);

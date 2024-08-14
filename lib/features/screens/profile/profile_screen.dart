@@ -10,6 +10,7 @@ import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/features/widgets/custom_image_widget.dart';
 import 'package:get_my_properties/features/widgets/custom_textfield.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
+import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
@@ -30,6 +31,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<AuthController>().profileDetailsApi();
+      Get.find<ProfileController>().pickImage(isRemove: true);
     });
     return Scaffold(
         key: _scaffoldKey,
@@ -59,7 +61,6 @@ class ProfileScreen extends StatelessWidget {
 
 
         GetBuilder<AuthController>(builder: (authControl) {
-
           return authControl.profileData == null || authControl.profileDetailsLoading ?
               const Center(child: CircularProgressIndicator()) :
            GetBuilder<ProfileController>(builder: (profileControl) {
@@ -113,7 +114,7 @@ class ProfileScreen extends StatelessWidget {
                                       CustomNetworkImageWidget(
                                        imagePadding: Dimensions.paddingSize40,
                                       height: 150, width: 150,
-                                       image: authControl.profileData!.profileImage!.toString(),
+                                       image: '${AppConstants.imgProfileBaseUrl}${authControl.profileData!.profileImage!.toString()}',
                                        placeholder: Images.profilePlaceholder,
                                       fit: BoxFit.cover,)
                                 ),
@@ -264,7 +265,9 @@ class ProfileScreen extends StatelessWidget {
                                     name: _nameController.text,
                                     email: _emailController.text,
                                     address: _addressController.text,
-                                    image: profileControl.pickedImage!);
+                                     image: profileControl.pickedImage != null && profileControl.pickedImage!.path.isNotEmpty
+                                      ? profileControl.pickedImage
+                                      : null,);
                                 Get.back();
                             },),
                           sizedBox20(),

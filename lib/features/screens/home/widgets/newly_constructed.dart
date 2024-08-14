@@ -48,7 +48,10 @@ class NewlyConstructedSection extends StatelessWidget {
                 itemCount: list!.length > 6 ? 6 : list.length,
                 itemBuilder: (_,i) {
                   return InkWell(
-                    onTap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("Natural Aqua Waves",'')),
+                    onTap: () => Get.toNamed(
+                        RouteHelper.getPropertiesDetailsScreen(
+                            list[i].title.toString(),
+                            list[i].sId.toString())),
                     child: SizedBox(
                       width: 307,
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start,

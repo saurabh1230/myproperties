@@ -21,7 +21,7 @@ class ExploreScreen extends StatefulWidget {
   final String? propertyTypeId;
   final String? purposeId;
 
-  ExploreScreen({Key? key, this.isBrowser= false, this.title, this.propertyTypeId, this.purposeId}) : super(key: key);
+  const ExploreScreen({Key? key, this.isBrowser= false, this.title, this.propertyTypeId, this.purposeId}) : super(key: key);
 
   @override
   _ExploreScreenState createState() => _ExploreScreenState();

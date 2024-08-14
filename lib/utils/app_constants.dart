@@ -2,6 +2,7 @@
 class AppConstants {
   static const String baseUrl = "https://dev.invoidea.in/gmp/api/";
   static const String imgBaseUrl = "https://dev.invoidea.in/gmp/file/";
+  static const String imgProfileBaseUrl = "https://dev.invoidea.in/gmp/image/";
   static const String appName = 'Get My Properties'; //Download from Scriptzhub.com
   static const double appVersion = 1.0;
   static const String fontFamily = 'Sen';

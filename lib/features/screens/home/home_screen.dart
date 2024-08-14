@@ -38,16 +38,16 @@ class _HomeScreenState extends State<HomeScreen> {
       key: _scaffoldKey,
       drawer: const CustomDrawer(),
       body: GetBuilder<AuthController>(builder: (authControl) {
-        if (authControl.profileData != null &&
-            (authControl.profileData!.email == null || authControl.profileData!.email!.isEmpty) &&
-            (authControl.profileData!.name == null || authControl.profileData!.name!.isEmpty)) {
-          Future.delayed(Duration.zero, () {
-            Get.dialog(
-               SignUpDetailsDialog(),
-              barrierDismissible: false,
-            );
-          });
-        }
+        // if (authControl.profileData != null &&
+        //     (authControl.profileData!.email == null || authControl.profileData!.email!.isEmpty) &&
+        //     (authControl.profileData!.name == null || authControl.profileData!.name!.isEmpty)) {
+        //   Future.delayed(Duration.zero, () {
+        //     Get.dialog(
+        //        SignUpDetailsDialog(),
+        //       barrierDismissible: false,
+        //     );
+        //   });
+        // }
         return CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(

@@ -12,15 +12,19 @@ class RecommendedItemCard extends StatelessWidget {
   final String title;
   final String description;
   final String price;
-  final Function() routeTap;
-  // final Function() tap;
+  final String propertyId;
   final bool? vertical;
-  const RecommendedItemCard({super.key, required this.image, required this.title, required this.description, required this.price,/* required this.tap, */required this.routeTap,  this.vertical = false});
+  const RecommendedItemCard({super.key, required this.image, required this.title, required this.description, required this.price,this.vertical = false, required this.propertyId});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: routeTap,
+      onTap: () {
+        Get.toNamed(
+            RouteHelper.getPropertiesDetailsScreen(
+                title,
+                propertyId));
+      },
       child: Container(
         width: vertical! ? Get.size.width : 220,
         padding:  EdgeInsets.only(right:vertical! ? 0 : Dimensions.paddingSizeDefault),
@@ -43,7 +47,13 @@ class RecommendedItemCard extends StatelessWidget {
               children: [
                 Expanded(child: Text(price,style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).hintColor),)),
                 Expanded(
-                  child: CheckoutArrowButton(tap: routeTap,),
+                  child: CheckoutArrowButton(
+                    tap: () {
+                      Get.toNamed(
+                          RouteHelper.getPropertiesDetailsScreen(
+                              title,
+                              propertyId));
+                    },),
                 )
               ],)
           ],

@@ -95,11 +95,11 @@ class ExploreSearchScreen extends StatelessWidget {
                       itemBuilder: (_,i) {
                         return RecommendedItemCard(
                           vertical: true,
-                          routeTap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("Natural Aqua Waves",'')),
+
                           image: 'assets/images/recommended_property.png',
                           title: 'Natural Aqua Waves',
                           description: '2,3 BHK Apartment in New Town, Kolkata East',
-                          price: '₹ 1.9 Cr',);
+                          price: '₹ 1.9 Cr', propertyId: '',);
                       }, separatorBuilder: (BuildContext context, int index) => const SizedBox(height: Dimensions.paddingSizeDefault,),),
                   ],
                 ),

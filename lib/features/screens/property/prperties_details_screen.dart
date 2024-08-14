@@ -43,14 +43,11 @@ class PropertiesDetailsScreen extends StatelessWidget {
       ),
       body: GetBuilder<PropertyController>(builder: (propertyControl) {
         final list = propertyControl.propertyDetails;
-        final isListEmpty = list == null;
-        final isLoading = propertyControl.isPropertyLoading;
+        final isListEmpty = list == null || list.galleryImages == null;
+        final isLoading = propertyControl.isLoading;
         return isListEmpty && isLoading
-            ? const Padding(
-          padding: EdgeInsets.only(top: Dimensions.paddingSize100),
-          child: Center(
-              child: Center(child: CircularProgressIndicator())),
-        ) :
+            ? const Center(
+                child: Center(child: CircularProgressIndicator())) :
 
           Padding(
           padding: const EdgeInsets.symmetric(
@@ -82,7 +79,8 @@ class PropertiesDetailsScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       PropertiesImageSection(galleryImages: list!.galleryImages!,),
+                       PropertiesImageSection(
+                         galleryImages: list!.galleryImages!,),
                       sizedBoxDefault(),
                        PropertyDetailsSection(
                         propertyTitle: title!,

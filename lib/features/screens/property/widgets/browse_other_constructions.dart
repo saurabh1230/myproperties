@@ -41,17 +41,14 @@ class BrowseOtherConstructionsSection extends StatelessWidget {
               height: Get.size.height * 0.28,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: 5,
+                itemCount: list!.length,
                 itemBuilder: (_,i) {
                   return RecommendedItemCard(
-                    routeTap: () => Get.toNamed(
-                        RouteHelper.getPropertiesDetailsScreen(
-                            list[i].title.toString(),
-                            list[i].sId.toString())),
-                    image: list![i].displayImage!.image.toString(),
+                    image: list[i].displayImage!.image.toString(),
                     title: list[i].title.toString(),
                     description: list[i].description.toString(),
                     price: '₹ ${list[i].price.toString()}',
+                    propertyId: list[i].sId.toString(),
                   );
                 }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: Dimensions.paddingSizeDefault,),),
             )

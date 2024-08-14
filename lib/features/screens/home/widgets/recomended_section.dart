@@ -54,14 +54,11 @@ class RecomendedSection extends StatelessWidget {
                       itemCount: list!.length > 6 ? 6 : list.length,
                       itemBuilder: (_, i) {
                         return RecommendedItemCard(
-                          routeTap: () => Get.toNamed(
-                              RouteHelper.getPropertiesDetailsScreen(
-                                  list[i].title.toString(),
-                                  list[i].sId.toString())),
                           image: list[i].displayImage!.image.toString(),
                           title: list[i].title.toString(),
                           description: list[i].description.toString(),
                           price: '₹ ${list[i].price.toString()}',
+                          propertyId: list[i].sId.toString(),
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
