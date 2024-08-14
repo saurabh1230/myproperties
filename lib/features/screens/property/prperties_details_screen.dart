@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/properties_controller.dart';
+import 'package:get_my_properties/controller/property_controller.dart';
 
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/property/widgets/browse_other_constructions.dart';
@@ -21,11 +22,17 @@ import 'package:get_my_properties/utils/styles.dart';
 
 class PropertiesDetailsScreen extends StatelessWidget {
   final String? title;
+  final String? propertyId;
 
-  const PropertiesDetailsScreen({super.key, required this.title});
+  const PropertiesDetailsScreen({super.key, required this.title, this.propertyId});
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<PropertyController>().getPropertyDetailsApi(propertyId);
+
+    });
+
     return Scaffold(
       appBar: CustomAppBar(
         title: title,
@@ -34,8 +41,18 @@ class PropertiesDetailsScreen extends StatelessWidget {
           tap: () {},
         ),
       ),
-      body: GetBuilder<PropertiesController>(builder: (controller) {
-        return Padding(
+      body: GetBuilder<PropertyController>(builder: (propertyControl) {
+        final list = propertyControl.propertyDetails;
+        final isListEmpty = list == null;
+        final isLoading = propertyControl.isPropertyLoading;
+        return isListEmpty && isLoading
+            ? const Padding(
+          padding: EdgeInsets.only(top: Dimensions.paddingSize100),
+          child: Center(
+              child: Center(child: CircularProgressIndicator())),
+        ) :
+
+          Padding(
           padding: const EdgeInsets.symmetric(
               // horizontal: Dimensions.paddingSizeDefault,
               vertical: Dimensions.paddingSizeDefault),
@@ -65,17 +82,26 @@ class PropertiesDetailsScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const PropertiesImageSection(),
+                       PropertiesImageSection(galleryImages: list!.galleryImages!,),
                       sizedBoxDefault(),
                        PropertyDetailsSection(
                         propertyTitle: title!,
-                          address: 'Building Address Here- Apartment in Entally, Kolkata Central',
-                          price: '4.04 - 4.94 Cr',
-                          propertyType: 'Appartment',
-                          beds: '2',
-                          bath: '3',
-                          sqFt: '1520', floors: '10', HOA: '89/mo', city: 'Central City',),
-                      const HighlightFactsSection(),
+                          address: list.address.toString(),
+                          price:  list.price.toString(),
+                          propertyType:  list.typeId!.name.toString(),
+                          beds: list.bedroom.toString(),
+                          bath: list.bathroom.toString(),
+                          sqFt: list.area.toString(),
+                         floors:  list.floor.toString(),
+                         HOA: '89/mo',
+                         city:  list.cityId!.name.toString(),),
+                       HighlightFactsSection(
+                        room: list.room.toString(),
+                        space: list.space.toString(),
+                        floor: list.floor.toString(),
+                        kitchen: list.kitchen.toString(),
+                        bedRoom: list.bedroom.toString(),
+                        bathRoom:  list.bathroom.toString(),),
                       const FloorPlansPricingSection(),
                       const LocationAdvantageSection(),
                       EmiCalculator(),

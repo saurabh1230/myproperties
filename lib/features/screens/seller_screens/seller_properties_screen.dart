@@ -40,7 +40,7 @@ class SellerPropertiesScreen extends StatelessWidget {
                       ratingText: "4.2",
                       imagesLength: "4",
                       likeTap: () {},
-                      detailsTap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("La Convent")),
+                      detailsTap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("La Convent",'')),
                       propertyCategory: "Apartment",
                       title: 'La Convent',
                       description: '3,4 BHK Apartment in Entally, Kolkata Central',

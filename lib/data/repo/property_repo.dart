@@ -106,6 +106,12 @@ class PropertyRepo {
     );
   }
 
+  Future<Response> getPropertyDetails(String? propertyId) {
+    print('${AppConstants.userPropertyDetails}$propertyId');
+    return apiClient.getData('${AppConstants.userPropertyDetails}$propertyId',method: 'GET');
+  }
+
+
 
 
 

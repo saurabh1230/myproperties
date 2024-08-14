@@ -14,6 +14,7 @@ class AppConstants {
   static const String userProfileUpdateUrl = 'user';
   static const String userGetPropertyUrl = 'user/property';
   static const String userGetHomeData = 'user/homepage';
+  static const String userPropertyDetails = 'user/property/';
 
 
 

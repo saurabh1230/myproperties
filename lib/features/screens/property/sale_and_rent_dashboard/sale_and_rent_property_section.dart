@@ -49,12 +49,12 @@ class SaleAndRentPropertySection extends StatelessWidget {
                 itemBuilder: (_,i) {
                   return RecommendedItemCard(
                     vertical: true,
-                    routeTap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("Natural Aqua Waves")),
+                    routeTap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("Natural Aqua Waves",'')),
                     image: list[i].displayImage!.image.toString(),
                     title:  list[i].title.toString(),
                     description:  list[i].description.toString(),
                     price: '₹ ${list[i].price}',
-                    tap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("Natural Aqua Waves")),);
+                    );
                 }, separatorBuilder: (BuildContext context, int index) => const SizedBox(height: Dimensions.paddingSizeDefault,),),
             )
           ],),

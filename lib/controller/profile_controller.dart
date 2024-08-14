@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import '../data/repo/profile_repo.dart';
 import '../data/api/api_client.dart';
-
+import 'package:http_parser/http_parser.dart';
 class ProfileController extends GetxController implements GetxService {
   final ProfileRepo profileRepo;
   final ApiClient apiClient;
@@ -60,6 +60,8 @@ class ProfileController extends GetxController implements GetxService {
       update();
     }
   }
+
+
   Future<dynamic> updateProfile({
     required String name,
     required String email,
@@ -69,8 +71,13 @@ class ProfileController extends GetxController implements GetxService {
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? token = sharedPreferences.getString(AppConstants.token);
 
+    _isLoading = true;
+    update();
+
     if (token == null || token.isEmpty) {
       print('Token is null or empty');
+      _isLoading = false;
+      update();
       return false;
     }
 
@@ -91,9 +98,11 @@ class ProfileController extends GetxController implements GetxService {
     });
 
     if (image != null && image.path.isNotEmpty) {
+      var mimeType = image.path.split('.').last; // e.g., jpg, png
       request.files.add(await http.MultipartFile.fromPath(
         'profile_image',
         image.path,
+        contentType: MediaType('image', mimeType), // Set the correct MIME type
       ));
     }
 
@@ -122,6 +131,10 @@ class ProfileController extends GetxController implements GetxService {
     } catch (e) {
       print('Exception: $e');
       return false;
+    } finally {
+      // Get.find<AuthController>().profileDetailsApi();
+      _isLoading = false;
+      update();
     }
   }
 }

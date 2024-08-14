@@ -13,7 +13,8 @@ class CustomNetworkImageWidget extends StatelessWidget {
   final BoxFit? fit;
   final String placeholder;
   final double? radius;
-  const CustomNetworkImageWidget({super.key, required this.image, this.height, this.width, this.fit = BoxFit.cover, this.placeholder = '', this.radius});
+  final double? imagePadding;
+  const CustomNetworkImageWidget({super.key, required this.image, this.height, this.width, this.fit = BoxFit.cover, this.placeholder = '', this.radius, this.imagePadding});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +27,14 @@ class CustomNetworkImageWidget extends StatelessWidget {
       ),
       child: CachedNetworkImage(
         imageUrl: image, height: height, width: width, fit: fit,
-        placeholder: (context, url) => Image.asset(placeholder.isNotEmpty ? placeholder: Images.placeholder, fit: fit),
-        errorWidget: (context, url, error) => Image.asset(placeholder.isNotEmpty ? placeholder  : Images.placeholder, fit: fit),
+        placeholder: (context, url) => Padding(
+          padding:  EdgeInsets.all(imagePadding ?? 0),
+          child: Image.asset(placeholder.isNotEmpty ? placeholder: Images.placeholder, fit: fit),
+        ),
+        errorWidget: (context, url, error) => Padding(
+          padding:  EdgeInsets.all(imagePadding ?? 0),
+          child: Image.asset(placeholder.isNotEmpty ? placeholder  : Images.placeholder, fit: fit),
+        ),
       ),
     );
   }

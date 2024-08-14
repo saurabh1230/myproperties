@@ -21,11 +21,9 @@ class CustomDrawer extends StatelessWidget {
     });
     return Scaffold(
       body: GetBuilder<AuthController>(builder: (authControl) {
-        return
-              authControl.homeData == null ||
+        return authControl.homeData == null ||
               authControl.profileData == null
               ? const Center(child: CircularProgressIndicator()) :
-
          SafeArea(
           child: Container(
             width: Get.size.width,
@@ -106,7 +104,6 @@ class CustomDrawer extends StatelessWidget {
                                 '66b097948e94ad0e435526ee'
                                 // authControl.homeData!.propertyPurposes![i].sId.toString(),
                               ));
-
                             });
                           }),
                           // buildContainer(context,"Apartment",tap : () {

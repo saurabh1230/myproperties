@@ -101,6 +101,14 @@ class SignUpDetailsDialog extends StatelessWidget {
                     capitalization: TextCapitalization.words,
                     showTitle: true,
                     hintText: "Name",
+                     validation: (value) {
+                       if (value == null || value.isEmpty) {
+                         return 'Please enter your full name';
+                       } else if (RegExp(r'[^\p{L}\s]', unicode: true).hasMatch(value)) {
+                         return 'Full name must not contain special characters';
+                       }
+                       return null;
+                     },
                     editText: false,),
                   sizedBox12(),
                    CustomTextField(
@@ -123,8 +131,10 @@ class SignUpDetailsDialog extends StatelessWidget {
                     buttonText: 'Continue',
                     onPressed: () {
                       if(_formKey.currentState!.validate()) {
-                        profileControl.updateProfile(name: _nameController.text,
+                        profileControl.updateProfile(
+                            name: _nameController.text,
                             email: _emailController.text, address: '', image: profileControl.pickedImage!);
+                        Get.back();
                       }
 
 

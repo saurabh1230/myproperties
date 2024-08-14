@@ -7,11 +7,14 @@ import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
+
+
 class BrowseMoreSection extends StatelessWidget {
   final String title;
   final String description;
   final String image;
-  const BrowseMoreSection({super.key, required this.title, required this.description, required this.image});
+  final Function() onTap;
+  const BrowseMoreSection({super.key, required this.title, required this.description, required this.image, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class BrowseMoreSection extends StatelessWidget {
           textAlign: TextAlign.center,maxLines: 2,),
           sizedBoxDefault(),
           CustomButtonWidget(buttonText: "Browse ",
-            onPressed: () => Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: title)),
+            onPressed: onTap,
           icon: Icons.arrow_forward,)
 
         ],

@@ -17,7 +17,6 @@ import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
 class HomeScreen extends StatefulWidget {
-
   HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -31,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
    @override
   void initState() {
-
     super.initState();
   }
   @override
@@ -40,16 +38,16 @@ class _HomeScreenState extends State<HomeScreen> {
       key: _scaffoldKey,
       drawer: const CustomDrawer(),
       body: GetBuilder<AuthController>(builder: (authControl) {
-        // if (authControl.profileData != null &&
-        //     (authControl.profileData!.email == null || authControl.profileData!.email!.isEmpty) &&
-        //     (authControl.profileData!.name == null || authControl.profileData!.name!.isEmpty)) {
-        //   Future.delayed(Duration.zero, () {
-        //     Get.dialog(
-        //        SignUpDetailsDialog(),
-        //       barrierDismissible: false,
-        //     );
-        //   });
-        // }
+        if (authControl.profileData != null &&
+            (authControl.profileData!.email == null || authControl.profileData!.email!.isEmpty) &&
+            (authControl.profileData!.name == null || authControl.profileData!.name!.isEmpty)) {
+          Future.delayed(Duration.zero, () {
+            Get.dialog(
+               SignUpDetailsDialog(),
+              barrierDismissible: false,
+            );
+          });
+        }
         return CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -102,12 +100,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ],
                             ),
-                            Text(
-                              "Sign Up",
-                              style: senBold.copyWith(
-                                  color: Theme.of(context).cardColor,
-                                  fontSize: Dimensions.fontSize14),
-                            )
+                            // Text(
+                            //   "Sign Up",
+                            //   style: senBold.copyWith(
+                            //       color: Theme.of(context).cardColor,
+                            //       fontSize: Dimensions.fontSize14),
+                            // )
                           ],
                         ),
                       ],
@@ -175,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            const SliverToBoxAdapter(
+             SliverToBoxAdapter(
               child: Column(
                 children: [
                   SuitablePropertySection(),
@@ -188,12 +186,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     description:
                     'Discover your location with the most listings, including exclusive items, and an immersive photo experience.',
                     image: Images.buyAHousePlaceHolderImage,
+
+                    onTap: () {
+                      Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Buy A House',
+                      propertyTypeId: '66b097b38e94ad0e435526f4',
+                      purposeId: '66b097948e94ad0e435526ee'));
+                    },
                   ),
                   BrowseMoreSection(
                     title: 'Rent A House',
                     description:
                     'Creating a seamless online rental process: browse top listings, apply, and pay rent easily for a hassle-free experience.',
                     image: Images.rentAHousePlaceHolderImage,
+                    onTap: () {
+                      Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Buy A House',
+                          propertyTypeId:'66b097b38e94ad0e435526f4',
+                          purposeId: '66b097948e94ad0e435526ee'));
+                    },
                   ),
                 ],
               ),

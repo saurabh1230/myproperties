@@ -13,9 +13,9 @@ class RecommendedItemCard extends StatelessWidget {
   final String description;
   final String price;
   final Function() routeTap;
-  final Function() tap;
+  // final Function() tap;
   final bool? vertical;
-  const RecommendedItemCard({super.key, required this.image, required this.title, required this.description, required this.price, required this.tap, required this.routeTap,  this.vertical = false});
+  const RecommendedItemCard({super.key, required this.image, required this.title, required this.description, required this.price,/* required this.tap, */required this.routeTap,  this.vertical = false});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class RecommendedItemCard extends StatelessWidget {
               children: [
                 Expanded(child: Text(price,style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).hintColor),)),
                 Expanded(
-                  child: CheckoutArrowButton(tap: tap,),
+                  child: CheckoutArrowButton(tap: routeTap,),
                 )
               ],)
           ],

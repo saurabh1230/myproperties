@@ -45,11 +45,11 @@ class RouteHelper {
   static String getDashboardRoute() => dashboard;
   static String getAdminDashboardRoute() => adminDashboard;
   static String getHomeRoute() => home;
-  static String getPropertiesDetailsScreen(String title) => '$propertiesDetails?title=$title';
+  static String getPropertiesDetailsScreen(String title,String propertyId) => '$propertiesDetails?title=$title&propertyId=$propertyId';
   static String getSavedRoute({bool isHistory = false}) => '$saved?isHistory=${isHistory.toString()}';
   static String getSearchRoute() => search;
-  static String getExploreRoute({bool isBrowser = false, String? title}) =>
-      '$explore?isBrowser=${isBrowser.toString()}&title=$title';
+  static String getExploreRoute({bool isBrowser = false, String? title, String? propertyTypeId, String? purposeId}) =>
+      '$explore?isBrowser=${isBrowser.toString()}&title=$title&propertyTypeId=$propertyTypeId&purposeId=$purposeId';
   static String getSellAndRentDashboardRoute(String page, String? type, String? typeId,String? purposeId,) => '$sellRentDashboard?page=$page&type=$type&typeId=$typeId&purposeId=$purposeId';
   static String getExploreSearchRoute(String? title) =>
       '$exploreSearch?&title=$title';
@@ -69,9 +69,10 @@ class RouteHelper {
     GetPage(name: adminDashboard, page: () =>  const SellerDashboardScreen(pageIndex: 0)),
     GetPage(name: home, page: () =>  HomeScreen()),
     GetPage(name: search, page: () =>   SearchScreen()),
-    GetPage(name: propertiesDetails, page: () =>  PropertiesDetailsScreen(title: Get.parameters['title'])),
+    GetPage(name: propertiesDetails, page: () =>  PropertiesDetailsScreen(title: Get.parameters['title'],propertyId: Get.parameters['propertyId'],)),
     GetPage(name: saved, page: () => SavedScreen(isHistory: Get.parameters['isHistory'] == 'true')),
-    GetPage(name: explore, page: () => ExploreScreen(isBrowser: Get.parameters['isBrowser'] == 'true',title: Get.parameters["title"],),),
+    GetPage(name: explore, page: () => ExploreScreen(
+      isBrowser: Get.parameters['isBrowser'] == 'true',title: Get.parameters["title"],propertyTypeId: Get.parameters["propertyTypeId"],purposeId: Get.parameters["purposeId"] ,),),
     GetPage(name: sellRentDashboard, page: () => SaleAndRentDashboard(pageIndex:Get.parameters['page'] == 'Sale' ? 0 : 1, type: Get.parameters['type'],typeId: Get.parameters['typeId'],purposeId: Get.parameters['purposeId'],),),
     GetPage(name: exploreSearch, page: () => ExploreSearchScreen(title: Get.parameters["title"],),),
     GetPage(name: ratingsAndReviews, page: () => const RatingsAndReviewScreen()),

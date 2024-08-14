@@ -54,14 +54,17 @@ class PropertyDetailsSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(
-                  "₹ ${price}",
-                  style: senRegular.copyWith(fontSize: Dimensions.fontSize24),
-                ),
-                sizedBoxW30(),
                 Expanded(
-                    child: PrefixIconTextHolder(img: Images.appartmentImage, text: propertyType,)
-                )
+                  flex: 1,
+                  child: Text(
+                    "₹ ${price}",
+                    style: senRegular.copyWith(fontSize: Dimensions.fontSize24),
+                  ),
+                ),
+                // sizedBoxW30(),
+                // Expanded(
+                //     child: PrefixIconTextHolder(img: Images.appartmentImage, text: propertyType,)
+                // )
               ],
             ),
             sizedBox10(),
@@ -75,7 +78,10 @@ class PropertyDetailsSection extends StatelessWidget {
               ],
             ),
             sizedBox10(),
-            Text(propertyTitle,style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+            Text(propertyTitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault,)),
             sizedBox10(),
             const SeeMoreText(
               text: 'Discover this fully upgraded 4-bedroom, 2-bathroom manufactured home, perfect for modern living. The heart of this residence is the kitchen, equipped with quartz countertops, stainless steel appliances, and striking black & white shaker cabinets with soft-closing features.',

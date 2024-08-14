@@ -56,14 +56,12 @@ class RecomendedSection extends StatelessWidget {
                         return RecommendedItemCard(
                           routeTap: () => Get.toNamed(
                               RouteHelper.getPropertiesDetailsScreen(
-                                  "Natural Aqua Waves")),
+                                  list[i].title.toString(),
+                                  list[i].sId.toString())),
                           image: list[i].displayImage!.image.toString(),
                           title: list[i].title.toString(),
                           description: list[i].description.toString(),
                           price: '₹ ${list[i].price.toString()}',
-                          tap: () => Get.toNamed(
-                              RouteHelper.getPropertiesDetailsScreen(
-                                  "Natural Aqua Waves")),
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) =>

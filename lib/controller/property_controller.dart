@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
+import 'package:get_my_properties/data/models/response/property_detail_model.dart';
 import 'package:get_my_properties/data/models/response/property_model.dart';
 import 'package:get_my_properties/data/repo/property_repo.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
@@ -217,46 +218,26 @@ class PropertyController extends GetxController implements GetxService {
   }
 
 
-  Future<dynamic> getMatchesApi({
-    required String page,
-    required String gender,
-    required String religion,
-    required String profession,
-    required String state,
-    required String height,
-    required String country,
-    required String montherTongue,
-    required String community,
-  }) async  {
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? token = sharedPreferences.getString(AppConstants.token);
-    var headers = {
-      'Authorization': 'Bearer $token'
-    };
-    var request = http.MultipartRequest('POST', Uri.parse('${AppConstants.baseUrl}${AppConstants.userGetPropertyUrl}'));
-    request.fields.addAll({
-      'gender': gender,
-      "religion" : religion,
-      "profession" : profession,
-      "state" : state,
-      "height" : religion,
-      "country" : country,
-      "mother_tongue" : montherTongue,
-      "community" :community });
-    request.headers.addAll(headers);
-    print('=================> ${request.fields}');
-    http.StreamedResponse response = await request.send();
-    var resp = jsonDecode(await response.stream.bytesToString());
-    print(resp);
-    print(headers);
+
+
+
+  PropertyDetailModel? _propertyDetails;
+  PropertyDetailModel? get propertyDetails => _propertyDetails;
+
+
+  Future<PropertyDetailModel?> getPropertyDetailsApi(String? propertyId) async {
+    _isLoading = true;
+    _propertyDetails = null;
+    update();
+    Response response = await propertyRepo.getPropertyDetails(propertyId);
     if (response.statusCode == 200) {
-      return resp;
+      Map<String, dynamic> responseData = response.body['data'];
+      _propertyDetails = PropertyDetailModel.fromJson(responseData);
     } else {
-      print(resp);
-      print(response.reasonPhrase);
-      print(response.statusCode);
-      return resp;
     }
+    _isLoading = false;
+    update();
+    return _propertyDetails;
   }
 
 

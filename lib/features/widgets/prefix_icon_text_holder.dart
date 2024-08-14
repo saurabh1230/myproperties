@@ -20,22 +20,26 @@ class PrefixIconTextHolder extends StatelessWidget {
       color: backgroundColor ?? Theme.of(context).primaryColor.withOpacity(0.10),
       vertical: Dimensions.paddingSize12,
       horizontal: Dimensions.paddingSize4,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            img,
-            height: Dimensions.fontSize14,
-            color: iconColor ?? Theme.of(context).primaryColor,
-          ),
-          sizedBoxW5(),
-          Text(
-            text,
-            style: senRegular.copyWith(
-                fontSize: Dimensions.fontSize12,
-                color: textColor?? Theme.of(context).primaryColor),
-          )
-        ],
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              img,
+              height: Dimensions.fontSize14,
+              color: iconColor ?? Theme.of(context).primaryColor,
+            ),
+            sizedBoxW5(),
+            Expanded(
+              child: Text(
+                text,
+                style: senRegular.copyWith(
+                    fontSize: Dimensions.fontSize12,
+                    color: textColor?? Theme.of(context).primaryColor),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

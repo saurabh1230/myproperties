@@ -18,7 +18,10 @@ import 'package:get_my_properties/utils/sizeboxes.dart';
 class ExploreScreen extends StatefulWidget {
   final bool? isBrowser;
   final String? title;
-  ExploreScreen({Key? key, this.isBrowser= false, this.title}) : super(key: key);
+  final String? propertyTypeId;
+  final String? purposeId;
+
+  ExploreScreen({Key? key, this.isBrowser= false, this.title, this.propertyTypeId, this.purposeId}) : super(key: key);
 
   @override
   _ExploreScreenState createState() => _ExploreScreenState();
@@ -27,12 +30,6 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
   int _currentPage = 0;
   final PageController _pageController = PageController(viewportFraction: 1);
-  List<String> _imageUrls = [
-    'assets/images/explore_building_image.png',
-    'assets/images/explore_building_image.png',
-    'assets/images/explore_building_image.png',
-    'assets/images/explore_building_image.png',
-  ];
 
   @override
   void initState() {
@@ -52,6 +49,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print('=====================> Category Id  ${widget.propertyTypeId}');
+      print('=====================> Category Id  ${widget.purposeId}');
+      Get.find<PropertyController>().getPropertyList(page: '1',
+          purposeId: widget.purposeId,
+          typeId:widget.propertyTypeId);
+    });
     return Scaffold(
       drawer: const CustomDrawer(),
       appBar: CustomAppBar(
@@ -67,15 +71,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
         final isLoading = propertyControl.isPropertyLoading;
         return
           isListEmpty && !isLoading
-              ? Padding(
-            padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
-            child: Center(
-                child: EmptyDataWidget(
-                  image: Images.emptyDataImage,
-                  fontColor: Theme.of(context).disabledColor,
-                  text: 'No Properties yet',
-                )),
-          ) :
+              ? Center(
+                  child: EmptyDataWidget(
+                    image: Images.emptyDataImage,
+                    fontColor: Theme.of(context).disabledColor,
+                    text: 'No Properties yet',
+                  )) :
           Column(
           children: [
             Padding(
@@ -121,7 +122,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         ratingText: "4.2",
                         imagesLength:  list[i].galleryImages!.length.toString(),
                         likeTap: () {},
-                        detailsTap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("La Convent")),
+                        detailsTap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("La Convent",'')),
                         propertyCategory:  list[i].category!.name.toString(),
                         title:  list[i].title.toString(),
                         description: list[i].description.toString(),
