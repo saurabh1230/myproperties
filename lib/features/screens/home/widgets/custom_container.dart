@@ -10,6 +10,7 @@ class PrimaryCardContainer extends StatelessWidget {
   final Color? color;
   final double? margin;
   final double? width;
+  final double? height;
   final Function()? onTap;
 
   const PrimaryCardContainer({
@@ -19,7 +20,7 @@ class PrimaryCardContainer extends StatelessWidget {
     this.color,
     this.margin,
     this.width,
-    this.onTap,
+    this.onTap, this.height,
   });
 
   @override
@@ -27,6 +28,7 @@ class PrimaryCardContainer extends StatelessWidget {
     return GestureDetector(
       onTap: onTap, // No need to force unwrap with !, as it is optional
       child: Container(
+        height: height ?? 120,
         width: width ?? Get.size.width,
         margin: EdgeInsets.symmetric(horizontal: margin ?? 0),
         padding: EdgeInsets.all(padding ?? Dimensions.paddingSize8),

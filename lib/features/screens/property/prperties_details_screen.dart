@@ -92,7 +92,8 @@ class PropertiesDetailsScreen extends StatelessWidget {
                           sqFt: list.area.toString(),
                          floors:  list.floor.toString(),
                          HOA: '89/mo',
-                         city:  list.cityId!.name.toString(),),
+                         city:  list.cityId!.name.toString(),
+                         propertyDesc:  list.description.toString(),),
                        HighlightFactsSection(
                         room: list.room.toString(),
                         space: list.space.toString(),
@@ -100,10 +101,10 @@ class PropertiesDetailsScreen extends StatelessWidget {
                         kitchen: list.kitchen.toString(),
                         bedRoom: list.bedroom.toString(),
                         bathRoom:  list.bathroom.toString(),),
-                      const FloorPlansPricingSection(),
+                      // const FloorPlansPricingSection(),
                       const LocationAdvantageSection(),
                       EmiCalculator(),
-                      const RatingAndReviewSection(),
+                      // const RatingAndReviewSection(),
                       const BrowseOtherConstructionsSection()
 
                     ],

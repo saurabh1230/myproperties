@@ -20,7 +20,8 @@ class PropertiesImageSection extends StatelessWidget {
         .toList();
 
     return GetBuilder<PropertiesController>(builder: (controller) {
-      return FanCarouselImageSlider.sliderType2(
+      return
+        FanCarouselImageSlider.sliderType2(
         indicatorActiveColor: Theme.of(context).primaryColor,
         imagesLink: fullImageUrls, // Use the mapped list of URLs
         isAssets: false,

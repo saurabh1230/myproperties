@@ -52,13 +52,17 @@ class CustomDrawer extends StatelessWidget {
                           const Spacer(),
                           CustomNotificationButton(
                             icon: Icons.person,
-                            tap: () {},
+                            tap: () {
+                              CustomNotificationButton(
+                                tap: () {
+
+
+                                },
+                              );
+                            },
                           ),
                         ],
                       ),
-
-
-
                       Get.find<AuthController>().profileData!.userType == 'customer' ?
                       const SizedBox():
                       CustomButtonWidget(color: Theme.of(context).cardColor,
@@ -95,17 +99,17 @@ class CustomDrawer extends StatelessWidget {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (_,i) {
-                            return
-                            buildContainer(context,authControl.homeData!.propertyTypes![i].name.toString(),tap : () {
+                            return buildContainer(context,authControl.homeData!.propertyTypes![i].name.toString(),tap : () {
                               Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
                                   "Sale",
                                   authControl.homeData!.propertyTypes![i].name.toString(),
-                                authControl.homeData!.propertyTypes![i].sId.toString(),
-                                '66b097948e94ad0e435526ee'
+                                  authControl.homeData!.propertyTypes![i].sId.toString(),
+                                  '66b097948e94ad0e435526ee'
                                 // authControl.homeData!.propertyPurposes![i].sId.toString(),
                               ));
                             });
                           }),
+
                           // buildContainer(context,"Apartment",tap : () {
                           //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "Apartment",''));
                           // }),
@@ -143,13 +147,28 @@ class CustomDrawer extends StatelessWidget {
                           sizedBoxDefault(),
                           Text("Explore",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
                           buildContainer(context,"Near Locality", tap: () {
-                            Get.toNamed(RouteHelper.getExploreSearchRoute("Near Locality"));
+                            Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
+                                "Sale",
+                                "Near Locality",
+                                "66b097c68e94ad0e435526fc",
+                                '66b097878e94ad0e435526ea'
+                            ));
                           }),
                           buildContainer(context,"Newly Constructed", tap: () {
-                            Get.toNamed(RouteHelper.getExploreSearchRoute("Newly Constructed"));
+                            Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
+                                "Sale",
+                                "Near Locality",
+                                "66b097c68e94ad0e435526fc",
+                                '66b097878e94ad0e435526ea'
+                            ));
                           }),
                           buildContainer(context,"Featured Properties", tap: () {
-                            Get.toNamed(RouteHelper.getExploreSearchRoute("Featured Properties"));
+                            Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
+                                "Sale",
+                                "Near Locality",
+                                "66b097c68e94ad0e435526fc",
+                                '66b097878e94ad0e435526ea'
+                            ));
                           }),
                           sizedBoxDefault(),
                           Text("Our Services",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
+import 'package:get_my_properties/features/screens/home/widgets/recomended_section.dart';
 import 'package:get_my_properties/features/screens/home/widgets/recommended_item_card.dart';
 import 'package:get_my_properties/features/widgets/custom_button.dart';
 import 'package:get_my_properties/features/widgets/empty_data_widget.dart';
@@ -34,7 +35,8 @@ class PopularInLocationSectionSection extends StatelessWidget {
                 fontColor: Theme.of(context).disabledColor,
                 text: 'No Popular Properties yet',
               )),
-        ) :
+        ) : isLoading ?
+        const RecommendedSectionShimmer(title: 'Popular In Location',) :
         Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Popular In Location",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
@@ -51,6 +53,8 @@ class PopularInLocationSectionSection extends StatelessWidget {
                     description: list[i].description.toString(),
                     price: '₹ ${list[i].price.toString()}',
                     propertyId: list[i].sId.toString(),
+                    ratingText: '',
+                    likeTap: () {  },
                   );
                 }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: Dimensions.paddingSizeDefault,),),
             )

@@ -5,6 +5,7 @@ class TypeDataModel {
   List<PropertyPurposes>? propertyPurposes;
   List<PropertyTypes>? propertyTypes;
   List<PropertyAmenities>? propertyAmenities;
+  List<PropertyCategory>? propertyCategory;
 
   TypeDataModel(
       {this.nearbyState,
@@ -12,7 +13,9 @@ class TypeDataModel {
         this.propertyMaxPrice,
         this.propertyPurposes,
         this.propertyTypes,
-        this.propertyAmenities});
+        this.propertyAmenities,
+        this.propertyCategory,
+      });
 
   TypeDataModel.fromJson(Map<String, dynamic> json) {
     if (json['nearby_state'] != null) {
@@ -46,6 +49,12 @@ class TypeDataModel {
         propertyAmenities!.add(new PropertyAmenities.fromJson(v));
       });
     }
+    if (json['property_category'] != null) {
+      propertyCategory = <PropertyCategory>[];
+      json['property_category'].forEach((v) {
+        propertyCategory!.add(new PropertyCategory.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -69,6 +78,10 @@ class TypeDataModel {
     if (this.propertyAmenities != null) {
       data['property_amenities'] =
           this.propertyAmenities!.map((v) => v.toJson()).toList();
+    }
+    if (this.propertyCategory != null) {
+      data['property_category'] =
+          this.propertyCategory!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -204,4 +217,36 @@ class PropertyTypes {
     data['created_at'] = this.createdAt;
     return data;
   }
+
+
+}
+
+class PropertyCategory {
+  String? sId;
+  String? name;
+  String? slug;
+  String? status;
+  String? createdAt;
+
+  PropertyCategory({this.sId, this.name, this.slug, this.status, this.createdAt});
+
+  PropertyCategory.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    slug = json['slug'];
+    status = json['status'];
+    createdAt = json['created_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['name'] = this.name;
+    data['slug'] = this.slug;
+    data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    return data;
+  }
+
+
 }

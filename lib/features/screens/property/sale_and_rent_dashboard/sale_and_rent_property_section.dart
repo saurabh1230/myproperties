@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
+import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
 import 'package:get_my_properties/features/screens/home/widgets/recommended_item_card.dart';
 import 'package:get_my_properties/features/widgets/custom_button.dart';
 import 'package:get_my_properties/features/widgets/empty_data_widget.dart';
@@ -35,6 +36,7 @@ class SaleAndRentPropertySection extends StatelessWidget {
                 fontColor: Theme.of(context).disabledColor,
                 text: 'No ${type} Properties yet',
               )) :
+        isLoading ? const ExploreScreenShimmer() :
         Padding(
         padding: const EdgeInsets.all(Dimensions.paddingSizeDefault,),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start,

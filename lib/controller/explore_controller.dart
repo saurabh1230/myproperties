@@ -1,6 +1,5 @@
-import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ExploreController extends GetxController implements GetxService {
   ExploreController();
@@ -21,10 +20,25 @@ class ExploreController extends GetxController implements GetxService {
     update();
   }
 
-  static final List<String> _propertyFor = ['Rent',"Buy"];
+  String _propertyTypeID = '';
+  String get propertyTypeID => _propertyTypeID;
+
+  void selectPropertyTypeId(String val) {
+    _propertyTypeID = val;
+    update();
+  }
+
+  String _propertyPurposeID = '';
+  String get propertyPurposeID => _propertyPurposeID;
+  void selectPropertyPurposeId(String val) {
+    _propertyPurposeID = val;
+    update();
+  }
+
+  static final List<String> _propertyFor = ['Rent', "Buy"];
   List<String> get propertyFor => _propertyFor;
 
-  static final List<String> _propertyType = ['Apartment',"House","Multi-family","PG","Plot/ Land","Multi Story"];
+  static final List<String> _propertyType = ['Apartment', "House", "Multi-family", "PG", "Plot/ Land", "Multi Story"];
   List<String> get propertyType => _propertyType;
 
   int _spaceTypeIndex = 0;
@@ -35,9 +49,22 @@ class ExploreController extends GetxController implements GetxService {
     update();
   }
 
-  static final List<String> _spaceType = ['1 BHK','2 BHK','3 BHK','4 BHK',];
-  List<String> get spaceType => _spaceType;
+  final List<String> spaceType = ['1', '2', '3', '4', '5', '6', '7', '+8'];
 
+  String _spaceTypeID = '';
+  String get spaceTypeID => _spaceTypeID;
+  void selectSpaceTypeID(String val) {
+    _spaceTypeID = val;
+    update();
+  }
+
+  final List<String> bathroomType = ['1', '2', '3', '+4'];
+  String _bathroomID = '';
+  String get bathroomID => _bathroomID;
+  void selectBathroomTypeID(String val) {
+    _bathroomID = val;
+    update();
+  }
 
   int _budgetTypeMin = 0;
   int get budgetTypeMin => _budgetTypeMin;
@@ -71,11 +98,10 @@ class ExploreController extends GetxController implements GetxService {
     update();
   }
 
-
-  static final List<String> _budgetTypeList = ['1 BHK','2 BHK','3 BHK','4 BHK',];
+  static final List<String> _budgetTypeList = ['1 BHK', '2 BHK', '3 BHK', '4 BHK'];
   List<String> get budgetTypeList => _budgetTypeList;
 
-  static final List<String> _bathroomTypeList = ['1','2','3','4',];
+  static final List<String> _bathroomTypeList = ['1', '2', '3', '4'];
   List<String> get bathroomTypeList => _bathroomTypeList;
 
   int _bathroomTypeIndex = 0;
@@ -92,6 +118,86 @@ class ExploreController extends GetxController implements GetxService {
   void SelectOptionIndex(int index) {
     _otherOptionIndex = index;
     update();
+  }
+
+  final RxDouble startPriceValue = 0.0.obs;
+  final RxDouble endPriceValue = 10000000.0.obs;
+
+  void setPriceValue(RangeValues newValues) {
+    startPriceValue.value = newValues.start;
+    endPriceValue.value = newValues.end;
+    update();
+  }
+
+  // Optional: Format numbers as currency
+  String formatCurrency(double value) {
+    return '₹${value.toStringAsFixed(0)}'; // Formatting as integer
+  }
+
+  String ? _stateId;
+  String? get stateId => _stateId;
+
+  void setStateId(String val) {
+    _stateId = val;
+    update();
+  }
+
+  String ? _nearByLocationId;
+  String? get nearByLocationId => _nearByLocationId;
+
+  void setNearByLocationId(String val) {
+    _nearByLocationId = val;
+    update();
+  }
+
+  String ? _amenityId;
+  String? get amenityId => _amenityId;
+
+  void setAmenityId(String val) {
+    _amenityId = val;
+    update();
+  }
+
+  // String ? _propertyCategoryId;
+  // String? get propertyCategoryId => _propertyCategoryId;
+  //
+  // void setPropertyCategoryId(String val) {
+  //   _propertyCategoryId = val;
+  //   update();
+  // }
+
+
+  // final List<String> _propertyCategoryIds = [];
+  // List<String> get propertyCategoryIds => _propertyCategoryIds;
+  //
+  // void setPropertyCategoryIds(String val) {
+  //   if (_propertyCategoryIds.contains(val)) {
+  //     _propertyCategoryIds.remove(val);
+  //   } else {
+  //     _propertyCategoryIds.add(val);
+  //   }
+  //   update();
+  // }
+  final RxList<String> _propertyCategoryName = <String>[].obs;
+  List<String> get propertyCategoryName => _propertyCategoryName.toList();
+
+  void setPropertyCategoryName(String val) {
+    if (_propertyCategoryName.contains(val)) {
+      _propertyCategoryName.remove(val);
+    } else {
+      _propertyCategoryName.add(val);
+    }
+  }
+
+  final RxList<String> _propertyCategoryIds = <String>[].obs;
+  List<String> get propertyCategoryIds => _propertyCategoryIds.toList();
+
+  void setPropertyCategoryIds(String val) {
+    if (_propertyCategoryIds.contains(val)) {
+      _propertyCategoryIds.remove(val);
+    } else {
+      _propertyCategoryIds.add(val);
+    }
   }
 
 

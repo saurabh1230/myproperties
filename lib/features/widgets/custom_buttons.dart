@@ -84,8 +84,8 @@ class CustomOutlineButton extends StatelessWidget {
               filterText!,
               style: senRegular.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).hintColor),
             ),
-          ) : Padding(
-            padding: const EdgeInsets.only(left: Dimensions.paddingSize5),
+          ) : const Padding(
+            padding: EdgeInsets.only(left: Dimensions.paddingSize5),
             child: Icon(Icons.keyboard_arrow_down_outlined,size:Dimensions.fontSize12 ,),
           )
         ],
@@ -108,7 +108,7 @@ class CustomSelectedButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
             horizontal: Dimensions.paddingSize25, vertical: Dimensions.paddingSize8),
         decoration: BoxDecoration(
-          border: Border.all(width: 0.5,color: isSelected == true
+          border: Border.all(width: 1,color: isSelected == true
               ? Theme.of(context).primaryColor
               : Theme.of(context).primaryColor.withOpacity(0.40)),
           color: Theme.of(context).primaryColor.withOpacity(0.10),
@@ -117,6 +117,7 @@ class CustomSelectedButton extends StatelessWidget {
         child: Text(
           title,
           style: senRegular.copyWith(fontSize: Dimensions.fontSizeDefault,
+          fontWeight: isSelected == true ? FontWeight.w600 : FontWeight.w300,
           color: isSelected == true ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacity(0.70)   ),
           // style: TextStyle(
           //   color: isSelected == true

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
+import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
+import 'package:get_my_properties/features/screens/home/widgets/recomended_section.dart';
 import 'package:get_my_properties/features/widgets/custom_image_widget.dart';
+import 'package:get_my_properties/features/widgets/custom_shimmer_holders.dart';
 import 'package:get_my_properties/features/widgets/empty_data_widget.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
@@ -28,15 +31,13 @@ class NewlyConstructedSection extends StatelessWidget {
         final isListEmpty = list == null || list.isEmpty;
         final isLoading = propertyControl.isPropertyLoading;
         return  isListEmpty && !isLoading
-            ? Padding(
-          padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
-          child: Center(
-              child: EmptyDataWidget(
-                image: Images.emptyDataImage,
-                fontColor: Theme.of(context).disabledColor,
-                text: 'No Popular Properties yet',
-              )),
-        ) :
+            ? Center(
+                child: EmptyDataWidget(
+                  image: Images.emptyDataImage,
+                  fontColor: Theme.of(context).disabledColor,
+                  text: 'No Popular Properties yet',
+                )) : isLoading ?
+        const NewlyConstructedSectionShimmer() :
           Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Newly Constructed",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
@@ -107,5 +108,73 @@ class NewlyConstructedSection extends StatelessWidget {
 
 
     );
+  }
+}
+
+class NewlyConstructedSectionShimmer extends StatelessWidget {
+
+  const NewlyConstructedSectionShimmer({super.key, });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Newly Constructed",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
+        sizedBox12(),
+        SizedBox(
+          height: Get.size.height * 0.40,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: 6,
+            itemBuilder: (_,i) {
+              return SizedBox(
+                width: 307,
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: [
+                        Column(
+                          children: [
+                            PrimaryCardContainer(
+                              color: Colors.black.withOpacity(0.1),
+                              width: 307,
+                              height: 222,
+                              onTap: () {},
+                              child: const SizedBox(),
+                            ),
+                            Container(
+                              height: Dimensions.paddingSize40,
+                            ),
+                          ],
+                        ),
+                        Positioned(bottom: 0,left: 0,
+                            child: Stack(
+                              children: [
+                                Image.asset(Images.ribbonHolder,width: 286,),
+                                Positioned(left: 0,bottom:Dimensions.paddingSize20,
+                                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const CustomShimmerTextHolder(width: 140,horizontalPadding: Dimensions.paddingSize20,),
+                                      sizedBox10(),
+                                      const CustomShimmerTextHolder(width: 80,horizontalPadding: Dimensions.paddingSize20,),
+                                      sizedBox10(),
+                                      const CustomShimmerTextHolder(width: 80,horizontalPadding: Dimensions.paddingSize20,),
+                                    ],),
+                                )
+                              ],
+                            ))
+
+                      ],
+                    ),
+
+                  ],
+                ),
+              );
+            }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: Dimensions.paddingSizeDefault,),),
+        )
+      ],);
+
+
+
   }
 }

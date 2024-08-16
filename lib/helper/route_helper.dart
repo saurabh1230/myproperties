@@ -7,6 +7,7 @@ import 'package:get_my_properties/features/screens/dashboard/seller_dashboard.da
 import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
 import 'package:get_my_properties/features/screens/explore/ratings_and_review_screen.dart';
 import 'package:get_my_properties/features/screens/home/home_screen.dart';
+import 'package:get_my_properties/features/screens/notification/notification_screen.dart';
 import 'package:get_my_properties/features/screens/onboard/onboarding_screen.dart';
 import 'package:get_my_properties/features/screens/onboard/splash_screen.dart';
 import 'package:get_my_properties/features/screens/property/prperties_details_screen.dart';
@@ -32,6 +33,7 @@ class RouteHelper {
   static const String explore = '/explore';
   static const String exploreSearch = '/explore-search';
   static const String ratingsAndReviews = '/rating-and-reviews';
+  static const String notification = '/notification';
 
 
 
@@ -54,6 +56,7 @@ class RouteHelper {
   static String getExploreSearchRoute(String? title) =>
       '$exploreSearch?&title=$title';
   static String getRatingsAndReviewRoute() => ratingsAndReviews;
+  static String getNotificationRoute() => notification;
 
 
 
@@ -76,6 +79,7 @@ class RouteHelper {
     GetPage(name: sellRentDashboard, page: () => SaleAndRentDashboard(pageIndex:Get.parameters['page'] == 'Sale' ? 0 : 1, type: Get.parameters['type'],typeId: Get.parameters['typeId'],purposeId: Get.parameters['purposeId'],),),
     GetPage(name: exploreSearch, page: () => ExploreSearchScreen(title: Get.parameters["title"],),),
     GetPage(name: ratingsAndReviews, page: () => const RatingsAndReviewScreen()),
+    GetPage(name: notification, page: () => const NotificationScreen()),
 
 
   ];

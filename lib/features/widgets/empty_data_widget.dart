@@ -17,7 +17,7 @@ class EmptyDataWidget extends StatelessWidget {
       children: [
         Image.asset(image,height: 120,),
         sizedBox10(),
-        Text(text,style: senRegular.copyWith(fontSize: Dimensions.fontSize14,color:fontColor?? Theme.of(context).cardColor),)
+        Text(text,style: senRegular.copyWith(fontSize: Dimensions.fontSize14,color:fontColor?? Theme.of(context).disabledColor),)
       ],
     );
   }

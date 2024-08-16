@@ -16,11 +16,12 @@ class PropertyDetailsSection extends StatelessWidget {
   final String bath;
   final String sqFt;
   final String propertyTitle;
+  final String propertyDesc;
   final String floors;
   final String HOA;
   final String city;
 
-  const PropertyDetailsSection({super.key, required this.address, required this.price, required this.propertyType, required this.beds, required this.bath, required this.sqFt, required this.propertyTitle, required this.floors, required this.HOA, required this.city});
+  const PropertyDetailsSection({super.key, required this.address, required this.price, required this.propertyType, required this.beds, required this.bath, required this.sqFt, required this.propertyTitle, required this.floors, required this.HOA, required this.city, required this.propertyDesc});
 
   @override
   Widget build(BuildContext context) {
@@ -83,8 +84,9 @@ class PropertyDetailsSection extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault,)),
             sizedBox10(),
-            const SeeMoreText(
-              text: 'Discover this fully upgraded 4-bedroom, 2-bathroom manufactured home, perfect for modern living. The heart of this residence is the kitchen, equipped with quartz countertops, stainless steel appliances, and striking black & white shaker cabinets with soft-closing features.',
+             SeeMoreText(
+               maxLines: 3,
+              text: propertyDesc,
             ),
             sizedBox10(),
             Row(

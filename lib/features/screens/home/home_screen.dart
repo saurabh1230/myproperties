@@ -4,6 +4,7 @@ import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/home/widgets/browse_more_section.dart';
+import 'package:get_my_properties/features/screens/home/widgets/home_screen_shimmer.dart';
 import 'package:get_my_properties/features/screens/home/widgets/newly_constructed.dart';
 import 'package:get_my_properties/features/screens/home/widgets/popular_in_location_section.dart';
 import 'package:get_my_properties/features/screens/home/widgets/recomended_section.dart';
@@ -31,6 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
    @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<AuthController>().profileDetailsApi();
+      Get.find<AuthController>().getHomeDataApi();
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -173,14 +178,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-             SliverToBoxAdapter(
-              child: Column(
+            SliverToBoxAdapter(
+              child:
+              Column(
                 children: [
-                  SuitablePropertySection(),
-                  RecomendedSection(),
-                  PopularInLocationSectionSection(),
-                  ServicesSection(),
-                  NewlyConstructedSection(),
+                  const SuitablePropertySection(),
+                  const RecomendedSection(),
+                  const PopularInLocationSectionSection(),
+                  const ServicesSection(),
+                  const NewlyConstructedSection(),
                   BrowseMoreSection(
                     title: 'Buy A House',
                     description:
@@ -210,8 +216,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         );
       })
-
-
     );
   }
 }
