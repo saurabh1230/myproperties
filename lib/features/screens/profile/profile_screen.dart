@@ -18,9 +18,6 @@ import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
-
-
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
@@ -56,11 +53,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           )],
         ),
-        body:
-
-
-
-        GetBuilder<AuthController>(builder: (authControl) {
+        body: GetBuilder<AuthController>(builder: (authControl) {
           return authControl.profileData == null || authControl.profileDetailsLoading ?
               const Center(child: CircularProgressIndicator()) :
            GetBuilder<ProfileController>(builder: (profileControl) {
@@ -268,7 +261,6 @@ class ProfileScreen extends StatelessWidget {
                                      image: profileControl.pickedImage != null && profileControl.pickedImage!.path.isNotEmpty
                                       ? profileControl.pickedImage
                                       : null,);
-                                Get.back();
                             },),
                           sizedBox20(),
                         ],

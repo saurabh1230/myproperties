@@ -149,17 +149,17 @@ class _SaleAndRentDashboardState extends State<SaleAndRentDashboard> {
                     },
                   ),
                 ),
-                SizedBox(width: 5),
-                Expanded(
-                  child: CustomButtonWidget(
-                    height: 35,
-                    radius: Dimensions.radius5,
-                    isBold: false,
-                    buttonText: "Apply Filters",
-                    onPressed: () {},
-                    fontSize: Dimensions.fontSize12,
-                  ),
-                ),
+                const SizedBox(width: 5),
+                Expanded(child: CustomButtonWidget(
+                  height: 35,
+                  radius: Dimensions.radius5,
+                  isBold: false,
+                  buttonText: "X Clear Filter",
+                  onPressed: () {
+                    Get.find<PropertyController>().getPropertyList(page: '1',
+                    );
+                  },
+                  fontSize:  Dimensions.fontSize12,))
               ],
             ),
           ),

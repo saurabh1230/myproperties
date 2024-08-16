@@ -71,7 +71,7 @@ class CustomOutlineButton extends StatelessWidget {
         ),
         padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSize10, vertical: 8), // Padding
       ),
-      child: Row(
+      child: Row(mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(filter! ? Icons.tune: Icons.location_on_sharp , size: Dimensions.fontSizeDefault,),
           Text(

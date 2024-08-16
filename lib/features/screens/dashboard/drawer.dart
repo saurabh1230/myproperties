@@ -5,6 +5,8 @@ import 'package:get_my_properties/controller/profile_controller.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
+import 'package:get_my_properties/features/widgets/custom_confirmation_dialog.dart';
+import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
@@ -172,22 +174,36 @@ class CustomDrawer extends StatelessWidget {
                           }),
                           sizedBoxDefault(),
                           Text("Our Services",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                          buildContainer(context,"Home Inspection", tap: () {  }),
-                          buildContainer(context,"Rent Agreement", tap: () {  }),
-                          buildContainer(context,"Tenant Verification", tap: () {  }),
-                          buildContainer(context,"Property Valuation", tap: () {  }),
+                          buildContainer(context,"Home Inspection", tap: () {
+                            showCustomSnackBar('Currently in the development');
+                          }),
+                          buildContainer(context,"Rent Agreement", tap: () {
+                            showCustomSnackBar('Currently in the development');
+                          }),
+                          buildContainer(context,"Tenant Verification", tap: () {
+                            showCustomSnackBar('Currently in the development');
+                          }),
+                          buildContainer(context,"Property Valuation", tap: () {
+                            showCustomSnackBar('Currently in the development');
+                          }),
                           buildContainer(context,"Recent Searches", tap: () {
                             Get.toNamed(RouteHelper.getSearchRoute());
 
                           }),
-                          buildContainer(context,"Rating & Reviews", tap: () {Get.toNamed(RouteHelper.getRatingsAndReviewRoute());}),
-                          buildContainer(context,"Terms & Conditions", tap: () {  }),
-                          buildContainer(context,"Help Center", tap: () {  }),
+                          // buildContainer(context,"Rating & Reviews", tap: () {Get.toNamed(RouteHelper.getRatingsAndReviewRoute());}),
+                          buildContainer(context,"Terms & Conditions", tap: () {
+                            showCustomSnackBar('Currently in the development');
+                          }),
+                          buildContainer(context,"Help Center", tap: () {
+                            showCustomSnackBar('Currently in the development');
+                          }),
                           sizedBoxDefault(),
                           CustomButtonWidget(
                             isBold: false,
                             buttonText: "LogOut",fontSize: Dimensions.fontSize14,
-                            onPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},),
+                            onPressed: () {
+                              Get.dialog(ConfirmationDialog(icon: Images.icLogout, description: 'Are you Sure to Logout', onYesPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},));
+                            },),
                           sizedBox30()
                         ],
                       ),

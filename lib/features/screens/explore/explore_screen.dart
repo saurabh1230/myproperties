@@ -91,7 +91,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   Expanded(child: CustomOutlineButton(
                     title: 'Filters',
                     filter: true,
-                    filterText: "  (2)",
+                    filterText: "",
                     tap: () {
                       Get.bottomSheet(
                         const FilterBottomSheet(),
@@ -103,7 +103,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     height: 35,
                     radius: Dimensions.radius5,
                     isBold: false,
-                    buttonText: "Save Search",onPressed: () {},
+                    buttonText: "X Clear Filter",
+                    onPressed: () {
+                      Get.find<PropertyController>().getPropertyList(page: '1',
+                         );
+                    },
                     fontSize:  Dimensions.fontSize12,))
 
                 ],

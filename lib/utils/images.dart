@@ -31,4 +31,5 @@ class Images {
   static const String profilePlaceholder = 'assets/images/ic_profile_placeholder.png';
   static const String icRatings = 'assets/icons/ic_rating.png';
   static const String emptyDataImage = 'assets/images/ic_empty_data_image.png';
+  static const String icLogout = 'assets/icons/ic_logout.png';
 }

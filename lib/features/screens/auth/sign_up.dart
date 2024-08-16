@@ -79,35 +79,35 @@ class SignUpScreen extends StatelessWidget {
                             },
                           ),
 
-                          sizedBox20(),
-                          Center(
-                              child: Text(
-                            "Login As",
-                            style: senBold.copyWith(
-                                color:
-                                    Theme.of(context).disabledColor.withOpacity(0.60),
-                                fontSize: Dimensions.fontSize15),
-                          )),
-                          sizedBoxDefault(),
-                          Center(
-                            child: Wrap(
-                              spacing: 8.0, // Space between chips
-                              runSpacing: 8.0, // Space between lines of chips
-                              children: List.generate(
-                                authControl.loginTypeList.length,
-                                // Assuming you have 2 buttons
-                                (index) {
-                                  return CustomSelectedButton(
-                                    tap: () {
-                                      authControl.selectLoginType(index);
-                                    },
-                                    title: authControl.loginTypeList[index],
-                                    isSelected: authControl.loginType == index,
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
+                          // sizedBox20(),
+                          // Center(
+                          //     child: Text(
+                          //   "Login As",
+                          //   style: senBold.copyWith(
+                          //       color:
+                          //           Theme.of(context).disabledColor.withOpacity(0.60),
+                          //       fontSize: Dimensions.fontSize15),
+                          // )),
+                          // sizedBoxDefault(),
+                          // Center(
+                          //   child: Wrap(
+                          //     spacing: 8.0, // Space between chips
+                          //     runSpacing: 8.0, // Space between lines of chips
+                          //     children: List.generate(
+                          //       authControl.loginTypeList.length,
+                          //       // Assuming you have 2 buttons
+                          //       (index) {
+                          //         return CustomSelectedButton(
+                          //           tap: () {
+                          //             authControl.selectLoginType(index);
+                          //           },
+                          //           title: authControl.loginTypeList[index],
+                          //           isSelected: authControl.loginType == index,
+                          //         );
+                          //       },
+                          //     ),
+                          //   ),
+                          // ),
 
                         ],
                       ),

@@ -46,7 +46,7 @@ class DashboardScreenState extends State<DashboardScreen> {
        HomeScreen(),
        const ExploreScreen(),
         SearchScreen(isBackButton: false,),
-       SavedScreen(),
+       const SavedScreen(),
        ProfileScreen(),
     ];
 

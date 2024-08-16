@@ -110,7 +110,6 @@ class ProfileController extends GetxController implements GetxService {
 
     try {
       http.StreamedResponse response = await request.send();
-
       // Print the request details for debugging
       print('Request URL: ${request.url}');
       print('Request Method: ${request.method}');
