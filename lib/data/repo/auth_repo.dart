@@ -20,6 +20,16 @@ class AuthRepo {
   bool isLoggedIn() {
     return sharedPreferences.containsKey(AppConstants.token);
   }
+  Future<void> saveLoginType(int loginType) async {
+    await sharedPreferences.setInt(AppConstants.loginType, loginType);
+  }
+
+  int getLoginType() {
+    return sharedPreferences.getInt(AppConstants.loginType) ?? 0; // Default to 0 if not set
+  }
+
+
+
 
   String getUserToken() {
     return sharedPreferences.getString(AppConstants.token) ?? "";
@@ -27,7 +37,6 @@ class AuthRepo {
 
   Future<bool> clearSharedData() async {
     await sharedPreferences.remove(AppConstants.token);
-    await sharedPreferences.remove(AppConstants.userAddress);
     return true;
   }
 
@@ -45,6 +54,18 @@ class AuthRepo {
 
   Future<Response> getHomeDataRepo() async {
     return await apiClient.getData(AppConstants.userGetHomeData);
+  }
+
+  Future<Response> vendorLoginRepo(String? phoneNo,) async {
+    return await apiClient.postData(AppConstants.vendorLoginUrl, {"phone_number": phoneNo, "user_type" : 'vender'});
+  }
+
+  Future<Response> vendorLoginVerifyOtp(String? phoneNo,String? otp,) async {
+    return await apiClient.postData(AppConstants.vendorOtpUrl, {"phone_number": phoneNo, "otp" : otp});
+  }
+
+  Future<Response> getVendorDashboardDataRepo() async {
+    return await apiClient.getData(AppConstants.vendorDashboardDataUrl,method: 'GET');
   }
 
 

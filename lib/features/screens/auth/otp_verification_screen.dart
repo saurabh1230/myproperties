@@ -188,12 +188,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               right: Dimensions.paddingSizeDefault,
               child: GetBuilder<AuthController>(builder: (authControl) {
                 return authControl.isLoginLoading
-                    ? Center(child: CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator())
                     : CustomButtonWidget(
                   buttonText: "Continue",
                   onPressed: () {
+                    bool isVendor = authControl.loginType == 1;
                     if (_formKey.currentState!.validate()) {
-                      authControl.userOtpApi(widget.phoneNo!, _otpController.text);
+                      authControl.userOtpApi(widget.phoneNo!, _otpController.text,isVendor: isVendor);
                     }
                   },
                 );

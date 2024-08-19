@@ -186,6 +186,7 @@ import 'package:flutter/services.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
+import 'package:get_my_properties/utils/theme/light_theme.dart';
 
 class CustomTextField extends StatefulWidget {
   final String hintText;
@@ -214,6 +215,7 @@ class CustomTextField extends StatefulWidget {
   final bool readOnly;
   final bool editText; // New property to show edit text suffix
   final FormFieldValidator<String>? validation;
+  final Function()? onTap;
 
   const CustomTextField({
     super.key,
@@ -242,7 +244,7 @@ class CustomTextField extends StatefulWidget {
     this.isRequired = false,
     this.readOnly = false,
     this.editText = false,
-    this.validation,
+    this.validation, this.onTap,
   });
 
   @override
@@ -266,6 +268,7 @@ class CustomTextFieldState extends State<CustomTextField> {
         SizedBox(height: widget.showTitle ? 5 : 0),
 
         TextFormField(
+          onTap: widget.onTap,
           validator: widget.validation,
           readOnly: widget.readOnly,
           maxLines: widget.maxLines,
@@ -330,6 +333,7 @@ class CustomTextFieldState extends State<CustomTextField> {
             ),
             isDense: true,
             hintText: widget.hintText,
+            errorStyle: senRegular.copyWith(fontSize: Dimensions.fontSize12,color: redColor),
             fillColor: Theme.of(context).cardColor,
             hintStyle: TextStyle(
               fontSize: 14,

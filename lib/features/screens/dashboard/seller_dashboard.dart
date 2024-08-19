@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/features/screens/dashboard/nav_bar_item.dart';
 import 'package:get_my_properties/features/screens/dashboard/seller_dashboard.dart';
 import 'package:get_my_properties/features/screens/dashboard/seller_home.dart';
@@ -32,6 +33,10 @@ class SellerDashboardScreenState extends State<SellerDashboardScreen> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<AuthController>().getVendorDataApi();
+      Get.find<AuthController>().getHomeDataApi();
+    });
     super.initState();
 
     _pageIndex = widget.pageIndex;
@@ -81,7 +86,6 @@ class SellerDashboardScreenState extends State<SellerDashboardScreen> {
           elevation: 5,
           notchMargin: 5,
           shape: const CircularNotchedRectangle(),
-
           child: Padding(
             padding: const EdgeInsets.all(0/*Dimensions.paddingSize20*/),
             child: Row(children: [

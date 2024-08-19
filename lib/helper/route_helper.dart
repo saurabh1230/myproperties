@@ -14,6 +14,7 @@ import 'package:get_my_properties/features/screens/property/prperties_details_sc
 import 'package:get_my_properties/features/screens/saved/saved_screen.dart';
 import 'package:get_my_properties/features/screens/search/explore_search_screen.dart';
 import 'package:get_my_properties/features/screens/search/search_screen.dart';
+import 'package:get_my_properties/features/screens/seller_screens/property/post_property_screen.dart';
 
 import '../features/screens/property/sale_and_rent_dashboard/sale_and_rent_screen.dart';
 
@@ -34,6 +35,7 @@ class RouteHelper {
   static const String exploreSearch = '/explore-search';
   static const String ratingsAndReviews = '/rating-and-reviews';
   static const String notification = '/notification';
+  static const String postProperty = '/post-property';
 
 
 
@@ -57,6 +59,7 @@ class RouteHelper {
       '$exploreSearch?&title=$title';
   static String getRatingsAndReviewRoute() => ratingsAndReviews;
   static String getNotificationRoute() => notification;
+  static String getPostPropertyRoute() => postProperty;
 
 
 
@@ -80,6 +83,8 @@ class RouteHelper {
     GetPage(name: exploreSearch, page: () => ExploreSearchScreen(title: Get.parameters["title"],),),
     GetPage(name: ratingsAndReviews, page: () => const RatingsAndReviewScreen()),
     GetPage(name: notification, page: () => const NotificationScreen()),
+    GetPage(name: postProperty, page: () =>  PostPropertyScreen()),
+
 
 
   ];

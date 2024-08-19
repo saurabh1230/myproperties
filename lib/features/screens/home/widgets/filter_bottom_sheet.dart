@@ -89,11 +89,11 @@ class FilterBottomSheet extends StatelessWidget {
                                     final val = authControl.homeData!.propertyPurposes![index];
                                     return CustomSelectedButton(
                                       tap: () {
-                                        controller.selectPropertyPurposeId(val.sId.toString());
-                                        print(controller.propertyPurposeID);
+                                        authControl.selectPropertyPurposeId(val.sId.toString());
+                                        print(authControl.propertyPurposeID);
                                       },
                                       title: val.name.toString(),
-                                      isSelected: controller.propertyPurposeID == val.sId.toString(), // Compare String values
+                                      isSelected: authControl.propertyPurposeID == val.sId.toString(), // Compare String values
                                     );
                                   },
                                 ),
@@ -114,11 +114,11 @@ class FilterBottomSheet extends StatelessWidget {
                                     final propertyType = authControl.homeData!.propertyTypes![index];
                                     return CustomSelectedButton(
                                       tap: () {
-                                        controller.selectPropertyTypeId(propertyType.sId.toString());
-                                        print(controller.propertyTypeID);
+                                        authControl.selectPropertyTypeId(propertyType.sId.toString());
+                                        print(authControl.propertyTypeID);
                                       },
                                       title: propertyType.name.toString(),
-                                      isSelected: controller.propertyTypeID == propertyType.sId.toString(), // Compare String values
+                                      isSelected: authControl.propertyTypeID == propertyType.sId.toString(), // Compare String values
                                     );
                                   },
                                 ),
@@ -344,7 +344,7 @@ class FilterBottomSheet extends StatelessWidget {
                                 value: authControl.homeData!.nearbyLocations!.isNotEmpty
                                     ? authControl.homeData!.nearbyLocations!
                                     .firstWhere(
-                                      (religion) => religion.sId == controller.stateId,
+                                      (religion) => religion.sId == controller.nearByLocationId,
                                   orElse: () => authControl.homeData!.nearbyLocations!.first,
                                 )
                                     .name
@@ -375,7 +375,7 @@ class FilterBottomSheet extends StatelessWidget {
                                 value: authControl.homeData!.propertyAmenities!.isNotEmpty
                                     ? authControl.homeData!.propertyAmenities!
                                     .firstWhere(
-                                      (religion) => religion.sId == controller.amenityId,
+                                      (religion) => religion.sId == authControl.amenityId,
                                   orElse: () => authControl.homeData!.propertyAmenities!.first,
                                 )
                                     .name
@@ -390,8 +390,8 @@ class FilterBottomSheet extends StatelessWidget {
                                           (position) => position.name == value,
                                       orElse: () => authControl.homeData!.propertyAmenities!.first,
                                     );
-                                    controller.setAmenityId(selected.sId!);
-                                    print(controller.amenityId);
+                                    authControl.setAmenityId(selected.sId!);
+                                    print(authControl.amenityId);
                                   }
                                 },
                               ),
@@ -450,12 +450,12 @@ class FilterBottomSheet extends StatelessWidget {
                                         print('Selected IDs: ${controller.propertyCategoryIds.join(', ')}');
                                         print('Selected Names: ${controller.propertyCategoryName}');
                                       },
-                                      dialogTitle: 'Select Amenity',
+                                      dialogTitle: 'Select Property Category',
                                     )),
                                   );
                                 },
                                 title: 'Amenity',
-                                data:controller.propertyCategoryName.isEmpty? 'Select Amenity' :  controller.propertyCategoryName.join(', '), // Show selected names
+                                data:controller.propertyCategoryName.isEmpty? 'Select Category' :  controller.propertyCategoryName.join(', '), // Show selected names
                               )),
 
 
@@ -616,14 +616,14 @@ class FilterBottomSheet extends StatelessWidget {
                                         Get.find<PropertyController>().getPropertyList(page: '1',
                                           stateId: controller.stateId,
                                           cityId: controller.nearByLocationId,
-                                          purposeId: controller.propertyPurposeID,
-                                          typeId: controller.propertyTypeID,
+                                          purposeId: authControl.propertyPurposeID,
+                                          typeId: authControl.propertyTypeID,
                                           minPrice: controller.startPriceValue.toString(),
                                           maxPrice: controller.endPriceValue.toString(),
                                           space: controller.spaceTypeID,
                                           bathroom: controller.bathroomID,
                                           categoryId:  '${controller.propertyCategoryIds.join(', ')}',
-                                          amenityId: controller.amenityId,
+                                          amenityId: authControl.amenityId,
                                         );
                                         Get.back();
                                       },

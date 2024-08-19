@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_my_properties/utils/dimensions.dart';
 
 class ExploreController extends GetxController implements GetxService {
   ExploreController();
@@ -20,20 +21,8 @@ class ExploreController extends GetxController implements GetxService {
     update();
   }
 
-  String _propertyTypeID = '';
-  String get propertyTypeID => _propertyTypeID;
 
-  void selectPropertyTypeId(String val) {
-    _propertyTypeID = val;
-    update();
-  }
 
-  String _propertyPurposeID = '';
-  String get propertyPurposeID => _propertyPurposeID;
-  void selectPropertyPurposeId(String val) {
-    _propertyPurposeID = val;
-    update();
-  }
 
   static final List<String> _propertyFor = ['Rent', "Buy"];
   List<String> get propertyFor => _propertyFor;
@@ -50,6 +39,26 @@ class ExploreController extends GetxController implements GetxService {
   }
 
   final List<String> spaceType = ['1', '2', '3', '4', '5', '6', '7', '+8'];
+
+  String _selectedDirection = '';
+  String get selectedDirection => _selectedDirection;
+  void selectDirection(String val) {
+    _selectedDirection = val;
+    update();
+  }
+  final List<String> directionList = [
+    "North",
+    "North East",
+    "East",
+    "South East",
+    "South",
+    "South West",
+    "West",
+    "North-West"
+  ];
+
+// Convert the list of directions to a list of DropdownMenuItem<String>
+
 
   String _spaceTypeID = '';
   String get spaceTypeID => _spaceTypeID;
@@ -150,13 +159,7 @@ class ExploreController extends GetxController implements GetxService {
     update();
   }
 
-  String ? _amenityId;
-  String? get amenityId => _amenityId;
 
-  void setAmenityId(String val) {
-    _amenityId = val;
-    update();
-  }
 
   // String ? _propertyCategoryId;
   // String? get propertyCategoryId => _propertyCategoryId;
@@ -199,6 +202,123 @@ class ExploreController extends GetxController implements GetxService {
       _propertyCategoryIds.add(val);
     }
   }
+
+  var selectedYear = DateTime.now().obs;
+  // void updateSelectedYear(DateTime newYear) {
+  //   selectedYear.value = newYear;
+  // }
+  String get formattedYear => "${selectedYear.value.year}";
+  TextEditingController buildYearController = TextEditingController();
+  TextEditingController expireYearController = TextEditingController();
+
+  void updateSelectedYear(DateTime newYear) {
+    selectedYear.value = newYear;
+    buildYearController.text = "${newYear.year}";
+  }
+
+  void updateSelectedExpireYear(DateTime newYear) {
+    selectedYear.value = newYear;
+    expireYearController.text = "${newYear.year}";
+  }
+
+
+  Dialog yearPicker(String? title,{bool isBuildYear = false}) {
+    DateTime lastDate = isBuildYear
+        ? DateTime.now()
+        : DateTime(2040, 12, 31);
+    return Dialog(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding:  const EdgeInsets.all(Dimensions.paddingSizeDefault),
+              child: Text(title!),
+            ),
+            SizedBox(
+              width: 300,
+              height: 300,
+              child: YearPicker(
+                firstDate: DateTime(DateTime.now().year - 24, 1),
+                lastDate: lastDate,
+                initialDate: DateTime.now(),
+                selectedDate: selectedYear.value,
+                onChanged: (DateTime dateTime) {
+                  if(isBuildYear) {
+                    updateSelectedYear(dateTime);
+
+                  }else {
+                    updateSelectedExpireYear(dateTime);
+
+                  }
+
+                  print('========> Check DateTime  >>>${formattedYear}');
+                  Get.back();
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+
+  String _roomDigit = '';
+  String get roomDigit => _roomDigit;
+  void selectRoomDigit(String val) {
+    _roomDigit = val;
+    update();
+  }
+  String _floorDigit = '';
+  String get floorDigit => _floorDigit;
+  void selectFloorDigit(String val) {
+    _floorDigit = val;
+    update();
+  }
+
+  String _bathroomDigit = '';
+  String get bathroomDigit => _bathroomDigit;
+  void selectBathroomDigit(String val) {
+    _bathroomDigit = val;
+    update();
+  }
+  String _bedroomDigit = '';
+  String get bedroomDigit => _bedroomDigit;
+  void selectBedroomDigit(String val) {
+    _bedroomDigit = val;
+    update();
+  }
+  String _kitchenDigit = '';
+  String get kitchenDigit => _kitchenDigit;
+  void selectKitchenDigit(String val) {
+    _kitchenDigit = val;
+    update();
+  }
+
+  String _spaceDigit = '';
+  String get spaceDigit => _spaceDigit;
+  void selectSpaceDigit(String val) {
+    _spaceDigit = val;
+    update();
+  }
+
+  String _unitDigit = '';
+  String get unitDigit => _unitDigit;
+  void selectUnitDigit(String val) {
+    _unitDigit = val;
+    update();
+  }
+
+  final List<String> roomList = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "+5",
+  ];
+
+
 
 
 }

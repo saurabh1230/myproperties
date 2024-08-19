@@ -30,10 +30,19 @@ class _SplashScreenState extends State<SplashScreen> {
   void _route() {
     final AuthController authController = Get.find<AuthController>();
     Timer(const Duration(seconds: 1), () async {
-      if (Get.find<AuthController>().isLoggedIn()) {
-        Get.offNamed(RouteHelper.getDashboardRoute());
+      // if (Get.find<AuthController>().isLoggedIn()) {
+      //   Get.offNamed(RouteHelper.getDashboardRoute());
+      // } else {
+      //   Get.offNamed(RouteHelper.getSignUpRoute());
+      // }
+      if (authController.isLoggedIn()) {
+        if (authController.isVendorLoggedIn()) {
+          Get.offNamed(RouteHelper.getAdminDashboardRoute()); // Vendor dashboard route
+        } else {
+          Get.offNamed(RouteHelper.getDashboardRoute()); // Customer dashboard route
+        }
       } else {
-        Get.offNamed(RouteHelper.getSignUpRoute());
+        Get.offNamed(RouteHelper.getSignUpRoute()); // Sign up route
       }
 
     });

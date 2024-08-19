@@ -11,7 +11,7 @@ ThemeData light = ThemeData(
   cardColor: Colors.white,
   textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: const Color(0xFF3B9EFB))), colorScheme: const ColorScheme.light(primary: Color(0xFF3B9EFB), secondary: Color(0xFF3B9EFB)).copyWith(error: const Color(0xFF3B9EFB)),
 );
-
+const Color redColor = Colors.redAccent;
 const Color brownColor = Color(0xff977663);
 const Color greenColor = Color(0xff5BC679);
 const Color greyColor = Color(0xff83A2AF);

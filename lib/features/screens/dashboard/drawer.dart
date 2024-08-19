@@ -24,7 +24,7 @@ class CustomDrawer extends StatelessWidget {
     return Scaffold(
       body: GetBuilder<AuthController>(builder: (authControl) {
         return authControl.homeData == null ||
-              authControl.profileData == null
+               authControl.profileData == null
               ? const Center(child: CircularProgressIndicator()) :
          SafeArea(
           child: Container(
@@ -65,30 +65,38 @@ class CustomDrawer extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Get.find<AuthController>().profileData!.userType == 'customer' ?
-                      const SizedBox():
-                      CustomButtonWidget(color: Theme.of(context).cardColor,
-                          isBold: false,
-                          fontSize: Dimensions.fontSize15,
-                          buttonText: "Register",onPressed: () {},
-                          textColor: Theme.of(context).primaryColor)
+                      // Get.find<AuthController>().profileData!.userType == 'customer' ?
+                      authControl.isCustomerLoggedIn() ? const SizedBox() :
+                      Padding(
+                        padding: const EdgeInsets.only(top: Dimensions.paddingSize10),
+                        child: CustomButtonWidget(color: Theme.of(context).cardColor,
+                            isBold: false,
+                            fontSize: Dimensions.fontSize15,
+                            buttonText: "Register",onPressed: () {},
+                            textColor: Theme.of(context).primaryColor),
+                      )
                     ],
                   ),
                 ),
                     sizedBox10(),
 
-                Get.find<AuthController>().loginType == 0 ? const SizedBox() :
-                Padding(
-                  padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Post Property",style: senRegular.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).disabledColor),),
-                      IconButton(onPressed: () {  },
-                        icon: const Icon(Icons.add),
-                        color: Theme.of(context).primaryColor,)
-                    ],
+                authControl.isCustomerLoggedIn() ? const SizedBox() :
+                InkWell(onTap: () {  Get.toNamed(RouteHelper.getPostPropertyRoute());},
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Post Property",style: senRegular.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).disabledColor),),
+                        IconButton(onPressed: () {
+                          Get.toNamed(RouteHelper.getPostPropertyRoute());
+                        },
+                          icon: const Icon(Icons.add),
+                          color: Theme.of(context).primaryColor,)
+                      ],
+                    ),
                   ),
                 ),sizedBoxDefault(),
+                authControl.isCustomerLoggedIn() ?
                 Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
@@ -198,18 +206,22 @@ class CustomDrawer extends StatelessWidget {
                             showCustomSnackBar('Currently in the development');
                           }),
                           sizedBoxDefault(),
-                          CustomButtonWidget(
-                            isBold: false,
-                            buttonText: "LogOut",fontSize: Dimensions.fontSize14,
-                            onPressed: () {
-                              Get.dialog(ConfirmationDialog(icon: Images.icLogout, description: 'Are you Sure to Logout', onYesPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},));
-                            },),
-                          sizedBox30()
+
                         ],
                       ),
                     ),
                   ),
+                ) : const SizedBox(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                  child: CustomButtonWidget(
+                    isBold: false,
+                    buttonText: "Logout",fontSize: Dimensions.fontSize14,
+                    onPressed: () {
+                      Get.dialog(ConfirmationDialog(icon: Images.icLogout, description: 'Are you Sure to Logout', onYesPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},));
+                    },),
                 ),
+                sizedBox30()
 
 
               ],

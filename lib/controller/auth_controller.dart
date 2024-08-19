@@ -1,5 +1,6 @@
 import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get_my_properties/data/models/response/admin_dashboard_model.dart';
 import 'package:get_my_properties/data/models/response/home_data_model.dart';
 import 'package:get_my_properties/data/models/response/profile_data_model.dart';
 import 'package:get_my_properties/data/repo/auth_repo.dart';
@@ -28,25 +29,39 @@ class AuthController extends GetxController implements GetxService {
     return authRepo.isLoggedIn();
   }
 
+  bool isCustomerLoggedIn() {
+    return isLoggedIn() && authRepo.getLoginType() == 0;
+  }
+
+  bool isVendorLoggedIn() {
+    return isLoggedIn() && authRepo.getLoginType() == 1;
+  }
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
 
-  static final List<String> _loginTypeList = ['User',"Dealer"];
+  static final List<String> _loginTypeList = ['customer',"vendor"];
   List<String> get loginTypeList => _loginTypeList;
 
 
   bool _isLoginLoading = false;
   bool get isLoginLoading => _isLoginLoading;
 
-  Future<void> userLoginApi(String phoneNo) async {
+  Future<void> userLoginApi(String phoneNo, {bool isVendor = false}) async {
     _isLoginLoading = true;
     update();
 
     try {
-      Response response = await authRepo.userLoginRepo(phoneNo);
+      Response response;
+      if (isVendor) {
+        print('vendor');
+        response = await authRepo.vendorLoginRepo(phoneNo);
+      } else {
+        print('customer');
+        response = await authRepo.userLoginRepo(phoneNo);
+      }
       var responseData = response.body;
-
       if (responseData["status"] == true) {
         String otp = responseData['data']['otp'].toString();
         Get.toNamed(RouteHelper.getOtpVerificationRoute(phoneNo));
@@ -62,15 +77,50 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
-  Future<void> userOtpApi(String? phoneNo,String? otp,) async {
+
+  // Future<void> userLoginApi(String phoneNo, bool isVendor = false) async {
+  //   _isLoginLoading = true;
+  //   update();
+  //
+  //   try {
+  //     Response response = await authRepo.userLoginRepo(phoneNo);
+  //     var responseData = response.body;
+  //
+  //     if (responseData["status"] == true) {
+  //       String otp = responseData['data']['otp'].toString();
+  //       Get.toNamed(RouteHelper.getOtpVerificationRoute(phoneNo));
+  //       showCustomSnackBar('OTP: $otp');
+  //     } else {
+  //       showCustomSnackBar(responseData['message']);
+  //     }
+  //   } catch (e) {
+  //     showCustomSnackBar('An error occurred, please try again.');
+  //   } finally {
+  //     _isLoginLoading = false;
+  //     update();
+  //   }
+  // }
+
+  Future<void> userOtpApi(String? phoneNo,String? otp,{bool isVendor = false}) async {
     _isLoginLoading = true;
     update();
     try {
-      Response response = await authRepo.userLoginVerifyOtp(phoneNo, otp);
+      Response response;
+      if (isVendor) {
+        response = await authRepo.vendorLoginVerifyOtp(phoneNo, otp);
+      } else {
+        response = await authRepo.userLoginVerifyOtp(phoneNo, otp);
+      }
+
       var responseData = response.body;
       if (responseData["status"] == true) {
         authRepo.saveUserToken(responseData['data']['token']);
-        Get.toNamed(RouteHelper.getDashboardRoute());
+        await authRepo.saveLoginType(isVendor ? 1 : 0);
+        if (isVendor) {
+          Get.toNamed(RouteHelper.getAdminDashboardRoute());
+        } else {
+          Get.toNamed(RouteHelper.getDashboardRoute());
+        }
       } else {
         showCustomSnackBar(responseData['message']);
       }
@@ -105,6 +155,35 @@ class AuthController extends GetxController implements GetxService {
     return _profileData;
   }
 
+  String _propertyTypeID = '';
+  String get propertyTypeID => _propertyTypeID;
+
+  void selectPropertyTypeId(String val) {
+    _propertyTypeID = val;
+    update();
+  }
+
+  String _propertyPurposeID = '';
+  String get propertyPurposeID => _propertyPurposeID;
+  void selectPropertyPurposeId(String val) {
+    _propertyPurposeID = val;
+    update();
+  }
+
+  String _propertyCategoryId = '';
+  String get propertyCategoryId => _propertyCategoryId;
+  void selectPropertyCategoryId(String val) {
+    _propertyCategoryId = val;
+    update();
+  }
+
+  String ? _amenityId;
+  String? get amenityId => _amenityId;
+
+  void setAmenityId(String val) {
+    _amenityId = val;
+    update();
+  }
   TypeDataModel? _homeData;
   TypeDataModel? get homeData => _homeData;
 
@@ -117,6 +196,12 @@ class AuthController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       Map<String, dynamic> responseData = response.body['data'];
       _homeData = TypeDataModel.fromJson(responseData);
+      if (_homeData != null) {
+        _propertyTypeID = homeData!.propertyTypes![0].sId!;
+        _propertyPurposeID = homeData!.propertyPurposes![0].sId!;
+        _propertyCategoryId = homeData!.propertyCategory![0].sId!;
+        _amenityId = homeData!.propertyAmenities![0].sId!;
+      }
     } else {
     }
     _isLoading = false;
@@ -135,6 +220,27 @@ class AuthController extends GetxController implements GetxService {
     }
     update();
   }
+
+
+  VendorDashboardModel? _vendorDashboardData;
+  VendorDashboardModel? get vendorDashboardData => _vendorDashboardData;
+
+
+  Future<VendorDashboardModel?> getVendorDataApi() async {
+    _isLoading = true;
+    _vendorDashboardData = null;
+    update();
+    Response response = await authRepo.getVendorDashboardDataRepo();
+    if (response.statusCode == 200) {
+      Map<String, dynamic> responseData = response.body['data'];
+      _vendorDashboardData = VendorDashboardModel.fromJson(responseData);
+    } else {
+    }
+    _isLoading = false;
+    update();
+    return _vendorDashboardData;
+  }
+
 
 
 
