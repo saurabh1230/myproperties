@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
@@ -46,7 +47,14 @@ class _SavedScreenState extends State<SavedScreen> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<PropertyController>().getPropertyList(page: '1',);
+      if(Get.find<AuthController>().isVendorLoggedIn()) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Get.find<PropertyController>().getVendorPropertyList(page: '1', status: 'active');
+        });
+      } else {
+        Get.find<PropertyController>().getPropertyList(page: '1',);
+      }
+
     });
     return Scaffold(
       drawer: const CustomDrawer(),

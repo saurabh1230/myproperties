@@ -12,6 +12,7 @@ import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
+import 'package:get_my_properties/utils/theme/light_theme.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -96,131 +97,147 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   ),
                 ),sizedBoxDefault(),
-                authControl.isCustomerLoggedIn() ?
+
                 Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
                       padding:  const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Property For Sale",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                          ListView.builder(
-                              itemCount: authControl.homeData!.propertyTypes!.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (_,i) {
-                            return buildContainer(context,authControl.homeData!.propertyTypes![i].name.toString(),tap : () {
-                              Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
-                                  "Sale",
-                                  authControl.homeData!.propertyTypes![i].name.toString(),
-                                  authControl.homeData!.propertyTypes![i].sId.toString(),
-                                  '66b097948e94ad0e435526ee'
-                                // authControl.homeData!.propertyPurposes![i].sId.toString(),
-                              ));
-                            });
-                          }),
-
-                          // buildContainer(context,"Apartment",tap : () {
-                          //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "Apartment",''));
-                          // }),
-                          // buildContainer(context,"House", tap: () {
-                          //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "House",''));
-                          // }),
-                          // buildContainer(context,"Land/ Plot", tap: () {
-                          //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "Land/ Plot",''));
-                          // }),
-                          sizedBoxDefault(),
-                          Text("Property For Rent",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                          ListView.builder(
-                              itemCount: authControl.homeData!.propertyTypes!.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (_,i) {
-                                return
-                                  buildContainer(context,authControl.homeData!.propertyTypes![i].name.toString(),tap : () {
-                                    Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
-                                      "Rent",
+                          authControl.isCustomerLoggedIn() ?
+                          Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Property For Sale",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                              ListView.builder(
+                                  itemCount: authControl.homeData!.propertyTypes!.length,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (_,i) {
+                                return buildContainer(context,authControl.homeData!.propertyTypes![i].name.toString(),tap : () {
+                                  Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
+                                      "Sale",
                                       authControl.homeData!.propertyTypes![i].name.toString(),
                                       authControl.homeData!.propertyTypes![i].sId.toString(),
-                                    '66b097878e94ad0e435526ea'));
-                                  });
+                                      '66b097948e94ad0e435526ee'
+                                    // authControl.homeData!.propertyPurposes![i].sId.toString(),
+                                  ));
+                                });
                               }),
-                          // buildContainer(context,"Apartment", tap: () {
-                          //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Rent", "Apartment",''));
-                          // }),
-                          // buildContainer(context,"House", tap: () {
-                          //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Rent", "House",''));
-                          // }),
-                          // buildContainer(context,"Land/ Plot", tap: () {
-                          //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("rent", "Land/ Plot",''));
-                          // }),
-                          sizedBoxDefault(),
-                          Text("Explore",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                          buildContainer(context,"Near Locality", tap: () {
-                            Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
-                                "Sale",
-                                "Near Locality",
-                                "66b097c68e94ad0e435526fc",
-                                '66b097878e94ad0e435526ea'
-                            ));
-                          }),
-                          buildContainer(context,"Newly Constructed", tap: () {
-                            Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
-                                "Sale",
-                                "Near Locality",
-                                "66b097c68e94ad0e435526fc",
-                                '66b097878e94ad0e435526ea'
-                            ));
-                          }),
-                          buildContainer(context,"Featured Properties", tap: () {
-                            Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
-                                "Sale",
-                                "Near Locality",
-                                "66b097c68e94ad0e435526fc",
-                                '66b097878e94ad0e435526ea'
-                            ));
-                          }),
-                          sizedBoxDefault(),
-                          Text("Our Services",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                          buildContainer(context,"Home Inspection", tap: () {
-                            showCustomSnackBar('Currently in the development');
-                          }),
-                          buildContainer(context,"Rent Agreement", tap: () {
-                            showCustomSnackBar('Currently in the development');
-                          }),
-                          buildContainer(context,"Tenant Verification", tap: () {
-                            showCustomSnackBar('Currently in the development');
-                          }),
-                          buildContainer(context,"Property Valuation", tap: () {
-                            showCustomSnackBar('Currently in the development');
-                          }),
-                          buildContainer(context,"Recent Searches", tap: () {
-                            Get.toNamed(RouteHelper.getSearchRoute());
 
-                          }),
-                          // buildContainer(context,"Rating & Reviews", tap: () {Get.toNamed(RouteHelper.getRatingsAndReviewRoute());}),
-                          buildContainer(context,"Terms & Conditions", tap: () {
-                            showCustomSnackBar('Currently in the development');
-                          }),
-                          buildContainer(context,"Help Center", tap: () {
-                            showCustomSnackBar('Currently in the development');
-                          }),
+                              // buildContainer(context,"Apartment",tap : () {
+                              //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "Apartment",''));
+                              // }),
+                              // buildContainer(context,"House", tap: () {
+                              //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "House",''));
+                              // }),
+                              // buildContainer(context,"Land/ Plot", tap: () {
+                              //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "Land/ Plot",''));
+                              // }),
+                              sizedBoxDefault(),
+                              Text("Property For Rent",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                              ListView.builder(
+                                  itemCount: authControl.homeData!.propertyTypes!.length,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (_,i) {
+                                    return
+                                      buildContainer(context,authControl.homeData!.propertyTypes![i].name.toString(),tap : () {
+                                        Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
+                                          "Rent",
+                                          authControl.homeData!.propertyTypes![i].name.toString(),
+                                          authControl.homeData!.propertyTypes![i].sId.toString(),
+                                        '66b097878e94ad0e435526ea'));
+                                      });
+                                  }),
+                              // buildContainer(context,"Apartment", tap: () {
+                              //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Rent", "Apartment",''));
+                              // }),
+                              // buildContainer(context,"House", tap: () {
+                              //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Rent", "House",''));
+                              // }),
+                              // buildContainer(context,"Land/ Plot", tap: () {
+                              //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("rent", "Land/ Plot",''));
+                              // }),
+                              sizedBoxDefault(),
+                              Text("Explore",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                              buildContainer(context,"Near Locality", tap: () {
+                                Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
+                                    "Sale",
+                                    "Near Locality",
+                                    "66b097c68e94ad0e435526fc",
+                                    '66b097878e94ad0e435526ea'
+                                ));
+                              }),
+                              buildContainer(context,"Newly Constructed", tap: () {
+                                Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
+                                    "Sale",
+                                    "Near Locality",
+                                    "66b097c68e94ad0e435526fc",
+                                    '66b097878e94ad0e435526ea'
+                                ));
+                              }),
+                              buildContainer(context,"Featured Properties", tap: () {
+                                Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
+                                    "Sale",
+                                    "Near Locality",
+                                    "66b097c68e94ad0e435526fc",
+                                    '66b097878e94ad0e435526ea'
+                                ));
+                              }),
+                              sizedBoxDefault(),
+                              Text("Our Services",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                              buildContainer(context,"Home Inspection", tap: () {
+                                showCustomSnackBar('Currently in the development');
+                              }),
+                              buildContainer(context,"Rent Agreement", tap: () {
+                                showCustomSnackBar('Currently in the development');
+                              }),
+                              buildContainer(context,"Tenant Verification", tap: () {
+                                showCustomSnackBar('Currently in the development');
+                              }),
+                              buildContainer(context,"Property Valuation", tap: () {
+                                showCustomSnackBar('Currently in the development');
+                              }),
+                              buildContainer(context,"Recent Searches", tap: () {
+                                Get.toNamed(RouteHelper.getSearchRoute());
+
+                              }),
+                              // buildContainer(context,"Rating & Reviews", tap: () {Get.toNamed(RouteHelper.getRatingsAndReviewRoute());}),
+                              buildContainer(context,"Terms & Conditions", tap: () {
+                                showCustomSnackBar('Currently in the development');
+                              }),
+                              buildContainer(context,"Help Center", tap: () {
+                                showCustomSnackBar('Currently in the development');
+                              }),
+                            ],
+                          ): const SizedBox(),
+                          Row(
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                Get.dialog(ConfirmationDialog(icon: Images.icLogout, description: 'Are you Sure to Logout', onYesPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},));
+
+                              }, child: Text('Logout',
+                              style: senSemiBold.copyWith(fontSize: Dimensions.fontSize18,
+                              color: redColor),)),
+                            ],
+                          ),
                           sizedBoxDefault(),
 
                         ],
                       ),
                     ),
                   ),
-                ) : const SizedBox(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                  child: CustomButtonWidget(
-                    isBold: false,
-                    buttonText: "Logout",fontSize: Dimensions.fontSize14,
-                    onPressed: () {
-                      Get.dialog(ConfirmationDialog(icon: Images.icLogout, description: 'Are you Sure to Logout', onYesPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},));
-                    },),
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                //   child: CustomButtonWidget(
+                //     isBold: false,
+                //     buttonText: "Logout",fontSize: Dimensions.fontSize14,
+                //     onPressed: () {
+                //       Get.dialog(ConfirmationDialog(icon: Images.icLogout, description: 'Are you Sure to Logout', onYesPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},));
+                //     },),
+                // ),
                 sizedBox30()
 
 

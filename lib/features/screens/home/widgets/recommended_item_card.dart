@@ -18,7 +18,9 @@ class RecommendedItemCard extends StatelessWidget {
   final String propertyId;
   final bool? vertical;
   final String? ratingText;
+  final bool? isLikeButton;
   final Function()? likeTap;
+  final bool? isVendor;
 
   const RecommendedItemCard({
     super.key,
@@ -30,6 +32,7 @@ class RecommendedItemCard extends StatelessWidget {
     required this.propertyId,
     this.ratingText,
     this.likeTap,
+    this.isLikeButton = true, this.isVendor = false,
   });
 
   @override
@@ -38,12 +41,18 @@ class RecommendedItemCard extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            Get.toNamed(
-              RouteHelper.getPropertiesDetailsScreen(
-                title,
-                propertyId,
-              ),
-            );
+            if(isVendor!) {
+              print('isVendor');
+            } else {
+              Get.toNamed(
+                RouteHelper.getPropertiesDetailsScreen(
+                  title,
+                  propertyId,
+                ),
+              );
+
+            }
+
           },
           child: Container(
             width: vertical! ? Get.size.width : 220,
@@ -90,6 +99,8 @@ class RecommendedItemCard extends StatelessWidget {
                         ),
                       ),
                     ),
+                    isVendor! ?
+                        const SizedBox() :
                     CheckoutArrowButton(
                       tap: () {
                         Get.toNamed(
@@ -106,7 +117,7 @@ class RecommendedItemCard extends StatelessWidget {
             ),
           ),
         ),
-        if (vertical == true && ratingText != null)  // Check for null and vertical
+        if (vertical == true)
           Align(
             alignment: Alignment.topCenter,
             child: Padding(
@@ -114,25 +125,26 @@ class RecommendedItemCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomDecoratedContainer(
-                    child: Row(
-                      children: [
-                        Text(
-                          ratingText!,
-                          style: senRegular.copyWith(
-                            fontSize: Dimensions.fontSize12,
-                            color: Theme.of(context).hintColor,
+                  if (ratingText != null) // Check if ratingText is not null
+                    CustomDecoratedContainer(
+                      child: Row(
+                        children: [
+                          Text(
+                            ratingText!,
+                            style: senRegular.copyWith(
+                              fontSize: Dimensions.fontSize12,
+                              color: Theme.of(context).hintColor,
+                            ),
                           ),
-                        ),
-                        Icon(
-                          Icons.star,
-                          color: Theme.of(context).hintColor,
-                          size: Dimensions.fontSize15,
-                        ),
-                      ],
+                          Icon(
+                            Icons.star,
+                            color: Theme.of(context).hintColor,
+                            size: Dimensions.fontSize15,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  if (likeTap != null)  // Check if likeTap is not null
+                  if (isLikeButton == true && likeTap != null) // Check if isLikeButton is true and likeTap is not null
                     CustomNotificationButton(
                       color: Theme.of(context).disabledColor.withOpacity(0.15),
                       tap: likeTap!,

@@ -45,7 +45,7 @@ class DashboardScreenState extends State<DashboardScreen> {
     _pageController = PageController(initialPage: widget.pageIndex);
 
     _screens = [
-       HomeScreen(),
+       const HomeScreen(),
        const ExploreScreen(),
         SearchScreen(isBackButton: false,),
        const SavedScreen(),

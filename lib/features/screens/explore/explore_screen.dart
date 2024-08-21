@@ -86,7 +86,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 children: [
                   Expanded(child: CustomOutlineButton(title: 'Location',
                     tap: () {
-                    Get.to(SearchLocationScreen());
+                    Get.to(const SearchLocationScreen());
                     },)),
                   sizedBoxW5(),
                   Expanded(child: CustomOutlineButton(

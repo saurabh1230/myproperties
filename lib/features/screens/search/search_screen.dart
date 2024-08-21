@@ -108,12 +108,15 @@ class SearchScreen extends StatelessWidget {
               );
             }).toList(),),
           isListEmpty && !isLoading
-              ? Center(
-              child: EmptyDataWidget(
-                image: Images.emptyDataImage,
-                fontColor: Theme.of(context).disabledColor,
-                text: 'No Properties yet',
-              )) :
+              ? Padding(
+                padding: const EdgeInsets.only(top: Dimensions.paddingSize40),
+                child: Center(
+                child: EmptyDataWidget(
+                  image: Images.icSearchPlaceHolder,
+                  fontColor: Theme.of(context).disabledColor,
+                  text: '',
+                )),
+              ) :
           Expanded(
             child: isLoading ||isListEmpty ? const ExploreScreenShimmer() :
             ListView.separated(

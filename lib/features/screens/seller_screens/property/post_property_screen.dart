@@ -55,7 +55,11 @@ class PostPropertyScreen extends StatelessWidget {
           child: GetBuilder<PropertyController>(builder: (propertyController) {
             return  GetBuilder<ExploreController>(builder: (controller) {
               return   GetBuilder<LocationController>(builder: (locationControl) {
-               return
+                final data = locationControl.stateList;
+                final list = data == null  || authControl.homeData!.propertyTypes == null ||
+                    authControl.homeData!.propertyTypes!.isEmpty;
+                return list ?
+                const Center(child: CircularProgressIndicator()) :
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault,horizontal: Dimensions.paddingSizeDefault),
                   child: Form(

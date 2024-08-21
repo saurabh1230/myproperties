@@ -55,16 +55,20 @@ class CustomDecoratedContainer extends StatelessWidget {
   final Color? color;
   final double? vertical;
   final double? horizontal;
-  const CustomDecoratedContainer({super.key,  this.radius, required this.child, this.color, this.vertical, this.horizontal,});
+  final Function()? onTap;
+  const CustomDecoratedContainer({super.key,  this.radius, required this.child, this.color, this.vertical, this.horizontal, this.onTap,});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding:  EdgeInsets.symmetric(vertical:vertical?? Dimensions.paddingSize5,horizontal:horizontal?? Dimensions.paddingSize10),
-      decoration: BoxDecoration(
-          color:color ?? Theme.of(context).disabledColor.withOpacity(0.15),
-          borderRadius: BorderRadius.circular(radius ?? Dimensions.radius10)
+    return GestureDetector(
+       onTap: onTap,
+      child: Container(
+        padding:  EdgeInsets.symmetric(vertical:vertical?? Dimensions.paddingSize5,horizontal:horizontal?? Dimensions.paddingSize10),
+        decoration: BoxDecoration(
+            color:color ?? Theme.of(context).disabledColor.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(radius ?? Dimensions.radius10)
+        ),
+        child: child,
       ),
-      child: child,
     );
   }
 }

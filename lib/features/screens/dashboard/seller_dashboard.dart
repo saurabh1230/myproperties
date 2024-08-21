@@ -1,16 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/features/screens/dashboard/nav_bar_item.dart';
-import 'package:get_my_properties/features/screens/dashboard/seller_dashboard.dart';
-import 'package:get_my_properties/features/screens/dashboard/seller_home.dart';
-import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
-import 'package:get_my_properties/features/screens/home/home_screen.dart';
 import 'package:get_my_properties/features/screens/profile/profile_screen.dart';
 import 'package:get_my_properties/features/screens/saved/saved_screen.dart';
+import 'package:get_my_properties/features/screens/seller_screens/home/seller_home.dart';
 import 'package:get_my_properties/features/screens/seller_screens/property/post_property_screen.dart';
 import 'package:get_my_properties/features/screens/seller_screens/seller_properties_screen.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
@@ -28,8 +23,7 @@ class SellerDashboardScreenState extends State<SellerDashboardScreen> {
   PageController? _pageController;
   int _pageIndex = 0;
   late List<Widget> _screens;
-  // Timer _timer;
-  // int _orderCount;
+
 
   @override
   void initState() {
@@ -47,15 +41,13 @@ class SellerDashboardScreenState extends State<SellerDashboardScreen> {
        SellerHome(),
        SellerPropertiesScreen(),
       PostPropertyScreen(),
-      SavedScreen(),
+      const SavedScreen(),
       ProfileScreen(),
     ];
 
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {});
     });
-
-
   }
 
 

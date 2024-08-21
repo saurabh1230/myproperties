@@ -32,6 +32,7 @@ class AppConstants {
   static const String cityListUrl = 'location/city';
   static const String localityIdUrl = 'location/locality';
   static const String vendorDetailsUrl = 'vender/profile_details';
+  static const String vendorAllEnquiryUrl = 'vender/inquiry';
 
 
 

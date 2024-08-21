@@ -10,6 +10,7 @@ import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/features/widgets/custom_shimmer_holders.dart';
 import 'package:get_my_properties/features/widgets/empty_data_widget.dart';
 import 'package:get_my_properties/features/widgets/sign_up_details_dialog.dart';
+import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/utils/images.dart';
@@ -166,7 +167,7 @@ class _SellerHomeState extends State<SellerHome> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Latest Inquiry Requests",
+                            "Latest Enquiry Requests",
                             style: senRegular.copyWith(
                               fontSize: Dimensions.fontSize14,
                               color: Theme.of(context).disabledColor,
@@ -294,7 +295,9 @@ class _SellerHomeState extends State<SellerHome> {
                 sizedBox10(),
                 InquiryRequestSection(
                   inquiries: data.latestInquiries,
-                  onSeeAll: () {},
+                  onSeeAll: () {
+                    Get.toNamed(RouteHelper.getEnquiryRoute());
+                  },
                 ),
                 sizedBox40(),
               ],

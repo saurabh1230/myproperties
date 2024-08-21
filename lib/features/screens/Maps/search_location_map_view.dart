@@ -45,7 +45,7 @@ class SearchLocationScreen extends StatelessWidget {
                   right: 10,
                   child: LocationSearchBar(
                     onSearch: (query) {
-                      locationControl.searchLocation(query);
+                      // locationControl.searchLocation(query);
                     },
                   ),
                 ),
@@ -96,6 +96,8 @@ class LocationSearchBar extends StatelessWidget {
       child: TextField(
         controller: searchController,
         decoration: InputDecoration(
+          fillColor: Theme.of(context).cardColor,
+          filled: true,
           hintText: 'Search location...',
           suffixIcon: IconButton(
             icon: const Icon(Icons.search),

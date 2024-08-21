@@ -32,4 +32,5 @@ class Images {
   static const String icRatings = 'assets/icons/ic_rating.png';
   static const String emptyDataImage = 'assets/images/ic_empty_data_image.png';
   static const String icLogout = 'assets/icons/ic_logout.png';
+  static const String icSearchPlaceHolder = 'assets/icons/ic_search_placeholder.png';
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/data/models/response/admin_dashboard_model.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
+import 'package:get_my_properties/features/screens/seller_screens/enquiry/components/enquiry_section_component.dart';
 import 'package:get_my_properties/features/widgets/custom_shimmer_holders.dart';
 import 'package:get_my_properties/utils/date_converter.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
@@ -53,59 +54,11 @@ class InquiryRequestSection extends StatelessWidget {
               final inquiry = inquiries[i];
               final DateTime createdAtDate = DateConverter.parseDateString(inquiry.createdAt);
               final formattedDate = DateConverter.estimatedOnlyDate(createdAtDate);
-              return CustomDecoratedContainer(
-                vertical: Dimensions.paddingSize10,
-                color: Theme.of(context).primaryColor.withOpacity(0.07),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Column(  crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                inquiry.name,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: senRegular.copyWith(
-                                  fontSize: Dimensions.fontSizeDefault,
-                                  color: Theme.of(context).disabledColor,
-                                ),
-                              ),
-                              Text(
-                                "$formattedDate",
-                                style: senRegular.copyWith(
-                                  fontSize: Dimensions.fontSize12,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-
-                        Flexible(
-                          child: Icon(
-                            Icons.arrow_forward,
-                            color: Theme.of(context).primaryColor,
-                            size: Dimensions.fontSize18,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      "${inquiry.email} | ${inquiry.phoneNumber}",
-                      style: senRegular.copyWith(
-                        fontSize: Dimensions.fontSize12,
-                        color: Theme.of(context).disabledColor.withOpacity(0.40),
-                      ),
-                    ),
-                  ],
-                ),
-              );
+              return EnquirySectionComponent(
+                name: inquiry.name,
+                formattedDate: formattedDate,
+                email: inquiry.email,
+                phone: inquiry.phoneNumber.toString(),);
             },
             separatorBuilder: (BuildContext context, int index) => sizedBoxDefault(),
           ),

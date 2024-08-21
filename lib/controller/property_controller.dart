@@ -269,23 +269,8 @@ class PropertyController extends GetxController implements GetxService {
 ///
   Future<void> getVendorPropertyList({
     String? page,
-    // String? stateId,
-    // String? cityId,
-    // String? localityId,
-    // String? purposeId,
-    // String? categoryId,
-    // String? amenityId,
-    // String? typeId,
-    // String? limit,
-    // String? userId,
-    // String? minPrice,
-    // String? maxPrice,
-    // String? sortBy,
-    // String? lat,
-    // String? long,
-    // String? direction,
-    // String? bathroom,
-    // String? space,
+    String? status,
+
   }) async {
     _isPropertyLoading = true;
     try {
@@ -299,25 +284,8 @@ class PropertyController extends GetxController implements GetxService {
       if (!_pageList.contains(page)) {
         _pageList.add(page!);
 
-        Response response = await propertyRepo.getVendorProperty(
-          // stateId: stateId,
-          // cityId: cityId,
-          // localityId: localityId,
-          // purposeId: purposeId,
-          // categoryId: categoryId,
-          // amenityId: amenityId,
-          // typeId: typeId,
-          // page: page,
-          // limit: limit,
-          // userId: userId,
-          // minPrice: minPrice,
-          // maxPrice: maxPrice,
-          // sortBy: sortBy,
-          // lat: lat,
-          // long: long,
-          // direction: direction,
-          // bathroom: bathroom,
-          // space: space,
+        Response response = await propertyRepo.getVendorProperty(status
+
         );
 
         if (response.statusCode == 200) {
