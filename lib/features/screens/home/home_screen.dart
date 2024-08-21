@@ -18,7 +18,7 @@ import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<AuthController>().profileDetailsApi();
       Get.find<AuthController>().getHomeDataApi();
+      Get.find<PropertyController>().getPropertyList(page: '1',);
     });
   }
   @override
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
               automaticallyImplyLeading: false,
               pinned: true,
               backgroundColor: Theme.of(context).primaryColor,
-              expandedHeight: 150.0,
+              expandedHeight: 200.0,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   decoration: const BoxDecoration(
@@ -113,13 +114,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             // )
                           ],
                         ),
+                        sizedBox10(),
+                        Row(children: [
+                           Icon(Icons.location_on_sharp,color : Theme.of(context).cardColor),
+                           Expanded(child: Text(authControl.getSaveAddress().toString(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: senRegular.copyWith(fontSize: Dimensions.fontSize14,
+                                color: Theme.of(context).cardColor),)),
+                        ],),
+                        // sizedBox12(),
                       ],
                     ),
                   ),
                 ),
               ),
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(30.0),
+                preferredSize: const Size.fromHeight(40.0),
                 child: Padding(
                   padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                   child: Column(children: [
@@ -135,10 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius:
                           BorderRadius.circular(Dimensions.paddingSize5),
                           boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                spreadRadius: 1,
-                                blurRadius: 5)
+                            BoxShadow(color: Colors.black.withOpacity(0.1), spreadRadius: 1, blurRadius: 5)
                           ],
                         ),
                         child: Row(

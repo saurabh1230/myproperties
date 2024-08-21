@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
+import 'package:get_my_properties/features/screens/Maps/location_view.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/features/widgets/custom_textfield.dart';
+import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
@@ -79,6 +81,7 @@ class SignUpScreen extends StatelessWidget {
                             },
                           ),
 
+
                           sizedBox20(),
                           Center(
                               child: Text(
@@ -108,6 +111,10 @@ class SignUpScreen extends StatelessWidget {
                               ),
                             ),
                           ),
+
+                          // TextButton(onPressed: () {
+                          //   Get.toNamed(RouteHelper.getLocationPickerRoute());
+                          // }, child: Text('child'))
 
                         ],
                       ),

@@ -136,4 +136,88 @@ class ProfileController extends GetxController implements GetxService {
       update();
     }
   }
+
+  Future<dynamic> updateVendorProfile({
+    required String name,
+    required String email,
+    required String address,
+    required String username,
+    required String websiteUrl,
+    required XFile? image,
+  }) async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = sharedPreferences.getString(AppConstants.token);
+
+    _isLoading = true;
+    update();
+
+    if (token == null || token.isEmpty) {
+      print('Token is null or empty');
+      _isLoading = false;
+      update();
+      return false;
+    }
+
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    };
+
+    var request = http.MultipartRequest(
+      'PATCH', // Ensure PATCH method is what your API requires
+      Uri.parse('${AppConstants.baseUrl}${AppConstants.vendorLoginUrl}'),
+    );
+
+    request.fields.addAll({
+      'name': name,
+      // 'phone_number': '123451',
+      'email': email,
+      'address': address,
+      // 'state_id': '66ac5dac221233088b06639b',
+      // 'city_id': '66ac5dae221233088b067cf1',
+      // 'pincode': '120202',
+      'username': username,
+      'website_url': websiteUrl,
+    });
+
+    if (image != null && image.path.isNotEmpty) {
+      var mimeType = image.path.split('.').last; // e.g., jpg, png
+      request.files.add(await http.MultipartFile.fromPath(
+        'profile_image',
+        image.path,
+        contentType: MediaType('image', mimeType), // Set the correct MIME type
+      ));
+    }
+
+    request.headers.addAll(headers);
+
+    try {
+      http.StreamedResponse response = await request.send();
+      // Print the request details for debugging
+      print('Request URL: ${request.url}');
+      print('Request Method: ${request.method}');
+      print('Request Headers: ${request.headers}');
+      print('Request Fields: ${request.fields}');
+      print('Request Files: ${request.files}');
+
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        print('Response Body: $responseBody');
+        Get.find<AuthController>().getVendorDataApi();
+        return jsonDecode(responseBody);
+      } else {
+        var responseBody = await response.stream.bytesToString();
+        print('Error: ${response.reasonPhrase}');
+        print('Response Body: $responseBody');
+        return false;
+      }
+    } catch (e) {
+      print('Exception: $e');
+      return false;
+    } finally {
+      // Get.find<AuthController>().profileDetailsApi();
+      _isLoading = false;
+      update();
+    }
+  }
 }

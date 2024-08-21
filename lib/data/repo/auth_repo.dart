@@ -28,6 +28,10 @@ class AuthRepo {
     return sharedPreferences.getInt(AppConstants.loginType) ?? 0; // Default to 0 if not set
   }
 
+  // Future<void> saveLatitude(String latitude) async {
+  //   await sharedPreferences.setString(AppConstants.latitude, latitude);
+  // }
+  //
 
 
 
@@ -50,6 +54,10 @@ class AuthRepo {
 
   Future<Response> getUserData() async {
     return await apiClient.getData(AppConstants.userDetailsUrl,method: 'GET');
+  }
+
+  Future<Response> getVendorData() async {
+    return await apiClient.getData(AppConstants.vendorDetailsUrl,method: 'GET');
   }
 
   Future<Response> getHomeDataRepo() async {

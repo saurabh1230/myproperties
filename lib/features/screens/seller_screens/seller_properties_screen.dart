@@ -29,6 +29,7 @@ class SellerPropertiesScreen extends StatelessWidget {
         final isListEmpty = list == null || list.isEmpty;
         final isLoading = propertyControl.isPropertyLoading;
         return
+          isLoading ||isListEmpty ? const ExploreScreenShimmer() :
 
 
           Column(
@@ -54,7 +55,7 @@ class SellerPropertiesScreen extends StatelessWidget {
                   )) :
               Expanded(
                 child: SingleChildScrollView(
-                  child: isLoading ||isListEmpty ? const ExploreScreenShimmer() :
+                  child:
                   ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                     physics: const NeverScrollableScrollPhysics(),

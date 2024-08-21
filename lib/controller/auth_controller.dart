@@ -1,11 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_my_properties/data/models/response/admin_dashboard_model.dart';
 import 'package:get_my_properties/data/models/response/home_data_model.dart';
 import 'package:get_my_properties/data/models/response/profile_data_model.dart';
 import 'package:get_my_properties/data/repo/auth_repo.dart';
+import 'package:get_my_properties/features/screens/Maps/location_view.dart';
 import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
+import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -36,6 +40,32 @@ class AuthController extends GetxController implements GetxService {
   bool isVendorLoggedIn() {
     return isLoggedIn() && authRepo.getLoginType() == 1;
   }
+
+  Future<void> saveLatitude(double latitude) async {
+    await sharedPreferences.setDouble(AppConstants.latitude, latitude);
+  }
+
+  double? getLatitude() {
+    return sharedPreferences.getDouble(AppConstants.latitude);
+  }
+
+  Future<void> saveLongitude(double latitude) async {
+    await sharedPreferences.setDouble(AppConstants.longitude, latitude);
+  }
+
+  double? getLongitude() {
+    return sharedPreferences.getDouble(AppConstants.longitude);
+  }
+
+  Future<void> saveAddress(String address) async {
+    await sharedPreferences.setString(AppConstants.address, address);
+  }
+
+  String? getSaveAddress() {
+    return sharedPreferences.getString(AppConstants.address);
+  }
+
+
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -119,7 +149,8 @@ class AuthController extends GetxController implements GetxService {
         if (isVendor) {
           Get.toNamed(RouteHelper.getAdminDashboardRoute());
         } else {
-          Get.toNamed(RouteHelper.getDashboardRoute());
+          Get.toNamed(RouteHelper.getLocationPickerRoute());
+          // Get.toNamed(RouteHelper.getDashboardRoute());
         }
       } else {
         showCustomSnackBar(responseData['message']);
@@ -140,11 +171,19 @@ class AuthController extends GetxController implements GetxService {
   ProfileDataModel? get profileData => _profileData;
 
 
-  Future<ProfileDataModel?> profileDetailsApi() async {
+  Future<ProfileDataModel?> profileDetailsApi({bool isVendor = false}) async {
     _profileDetailsLoading = true;
     _profileData = null;
     update();
-    Response response = await authRepo.getUserData();
+    // Response response = await authRepo.getUserData();
+    Response response;
+    if (isVendor) {
+      print('vendor');
+      response = await authRepo.getVendorData();
+    } else {
+      print('customer');
+      response =  await authRepo.getUserData();
+    }
     if (response.statusCode == 200) {
       Map<String, dynamic> responseData = response.body['data']; // Change List<dynamic> to Map<String, dynamic>
       _profileData = ProfileDataModel.fromJson(responseData);
@@ -240,6 +279,31 @@ class AuthController extends GetxController implements GetxService {
     update();
     return _vendorDashboardData;
   }
+
+  DateTime? lastBackPressTime;
+
+  Future<bool> handleOnWillPop() async {
+    final now = DateTime.now();
+
+    if (lastBackPressTime == null || now.difference(lastBackPressTime!) > const Duration(seconds: 2)) {
+      updateLastBackPressTime(now);
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        const SnackBar(
+          content: Text('Press back again to exit'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      SystemNavigator.pop();
+      return Future.value(false);
+    }
+    return Future.value(true);
+  }
+
+  void updateLastBackPressTime(DateTime time) {
+    lastBackPressTime = time;
+    update();
+  }
+
 
 
 

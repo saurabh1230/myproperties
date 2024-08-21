@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
+import 'package:get_my_properties/features/screens/Maps/location_view.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
@@ -27,26 +28,48 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
   }
+
   void _route() {
     final AuthController authController = Get.find<AuthController>();
     Timer(const Duration(seconds: 1), () async {
-      // if (Get.find<AuthController>().isLoggedIn()) {
-      //   Get.offNamed(RouteHelper.getDashboardRoute());
-      // } else {
-      //   Get.offNamed(RouteHelper.getSignUpRoute());
-      // }
       if (authController.isLoggedIn()) {
         if (authController.isVendorLoggedIn()) {
-          Get.offNamed(RouteHelper.getAdminDashboardRoute()); // Vendor dashboard route
-        } else {
-          Get.offNamed(RouteHelper.getDashboardRoute()); // Customer dashboard route
+          Get.offNamed(RouteHelper.getAdminDashboardRoute());
+        } else if (authController.isCustomerLoggedIn()) {
+          final String? savedAddress =  authController.getSaveAddress();
+          if (savedAddress != null && savedAddress.isNotEmpty) {
+            Get.offNamed(RouteHelper.getDashboardRoute());
+          } else {
+            Get.toNamed(RouteHelper.getLocationPickerRoute());
+          }
         }
       } else {
-        Get.offNamed(RouteHelper.getSignUpRoute()); // Sign up route
+        Get.offNamed(RouteHelper.getSignUpRoute());
       }
-
     });
   }
+
+  // void _route() {
+  //   final AuthController authController = Get.find<AuthController>();
+  //   Timer(const Duration(seconds: 1), () async {
+  //     // if (Get.find<AuthController>().isLoggedIn()) {
+  //     //   Get.offNamed(RouteHelper.getDashboardRoute());
+  //     // } else {
+  //     //   Get.offNamed(RouteHelper.getSignUpRoute());
+  //     // }
+  //     if (authController.isLoggedIn()) {
+  //       if (authController.isVendorLoggedIn()) {
+  //         Get.offNamed(RouteHelper.getAdminDashboardRoute()); // Vendor dashboard route
+  //       } else {
+  //         Get.toNamed(RouteHelper.getLocationPickerRoute());
+  //         // Get.offNamed(RouteHelper.getDashboardRoute()); // Customer dashboard route
+  //       }
+  //     } else {
+  //       Get.offNamed(RouteHelper.getSignUpRoute()); // Sign up route
+  //     }
+  //
+  //   });
+  // }
 
 
 

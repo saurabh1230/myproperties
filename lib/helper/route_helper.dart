@@ -1,5 +1,6 @@
 
 import 'package:get/get.dart';
+import 'package:get_my_properties/features/screens/Maps/location_view.dart';
 import 'package:get_my_properties/features/screens/auth/otp_verification_screen.dart';
 import 'package:get_my_properties/features/screens/auth/sign_up.dart';
 import 'package:get_my_properties/features/screens/dashboard/dashboard.dart';
@@ -36,6 +37,7 @@ class RouteHelper {
   static const String ratingsAndReviews = '/rating-and-reviews';
   static const String notification = '/notification';
   static const String postProperty = '/post-property';
+  static const String locationPicker = '/location-View';
 
 
 
@@ -60,6 +62,7 @@ class RouteHelper {
   static String getRatingsAndReviewRoute() => ratingsAndReviews;
   static String getNotificationRoute() => notification;
   static String getPostPropertyRoute() => postProperty;
+  static String getLocationPickerRoute() => locationPicker;
 
 
 
@@ -73,17 +76,18 @@ class RouteHelper {
     GetPage(name: otpVerification, page: () =>  OtpVerificationScreen(phoneNo :Get.parameters['phoneNo'])),
     GetPage(name: dashboard, page: () =>  const DashboardScreen(pageIndex: 0)),
     GetPage(name: adminDashboard, page: () =>  const SellerDashboardScreen(pageIndex: 0)),
-    GetPage(name: home, page: () =>  HomeScreen()),
+    GetPage(name: home, page: () =>  const HomeScreen()),
     GetPage(name: search, page: () =>   SearchScreen()),
     GetPage(name: propertiesDetails, page: () =>  PropertiesDetailsScreen(title: Get.parameters['title'],propertyId: Get.parameters['propertyId'],)),
     GetPage(name: saved, page: () => SavedScreen(isHistory: Get.parameters['isHistory'] == 'true')),
     GetPage(name: explore, page: () => ExploreScreen(
       isBrowser: Get.parameters['isBrowser'] == 'true',title: Get.parameters["title"],propertyTypeId: Get.parameters["propertyTypeId"],purposeId: Get.parameters["purposeId"] ,),),
     GetPage(name: sellRentDashboard, page: () => SaleAndRentDashboard(pageIndex:Get.parameters['page'] == 'Sale' ? 0 : 1, type: Get.parameters['type'],typeId: Get.parameters['typeId'],purposeId: Get.parameters['purposeId'],),),
-    GetPage(name: exploreSearch, page: () => ExploreSearchScreen(title: Get.parameters["title"],),),
-    GetPage(name: ratingsAndReviews, page: () => const RatingsAndReviewScreen()),
+    // GetPage(name: exploreSearch, page: () => ExploreSearchScreen(title: Get.parameters["title"],),),
+    GetPage(name: ratingsAndReviews, page: () =>  RatingsAndReviewScreen()),
     GetPage(name: notification, page: () => const NotificationScreen()),
     GetPage(name: postProperty, page: () =>  PostPropertyScreen()),
+    GetPage(name: locationPicker, page: () =>  const LocationPickerScreen()),
 
 
 

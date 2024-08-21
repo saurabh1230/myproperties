@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_my_properties/features/screens/test_widget.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:get_my_properties/utils/theme/light_theme.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
       initialRoute: RouteHelper.getInitialRoute(),
       getPages: RouteHelper.routes,
       defaultTransition: Transition.topLevel,
+      // home: UserCurrentLocation(),
       transitionDuration: const Duration(milliseconds: 500),
       builder: (BuildContext context, widget) {
         return MediaQuery(data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0), child: widget!);
@@ -43,3 +45,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

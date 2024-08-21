@@ -6,6 +6,7 @@ class ProfileDataModel {
   int? phoneNumber;
   String? address;
   String? userType;
+  String? username;
 
   ProfileDataModel(
       {this.sId,
@@ -14,7 +15,9 @@ class ProfileDataModel {
         this.profileImage,
         this.phoneNumber,
         this.address,
-        this.userType});
+        this.userType,
+        this.username,
+      });
 
   ProfileDataModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -24,6 +27,7 @@ class ProfileDataModel {
     phoneNumber = json['phone_number'];
     address = json['address'];
     userType = json['user_type'];
+    username = json['username'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +39,7 @@ class ProfileDataModel {
     data['phone_number'] = this.phoneNumber;
     data['address'] = this.address;
     data['user_type'] = this.userType;
+    data['username'] = this.username;
     return data;
   }
 }

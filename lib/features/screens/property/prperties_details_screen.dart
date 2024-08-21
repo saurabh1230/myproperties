@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/properties_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
+import 'package:get_my_properties/features/screens/Maps/property_location_map_component.dart';
 
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/property/widgets/browse_other_constructions.dart';
@@ -14,6 +15,7 @@ import 'package:get_my_properties/features/screens/property/widgets/rating_and_r
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
+import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
@@ -61,7 +63,9 @@ class PropertiesDetailsScreen extends StatelessWidget {
                   children: [
                     Expanded(
                         child: PrefixIconButton(
-                      tap: () {},
+                      tap: () {
+                        showCustomSnackBar('Currently in the development');
+                      },
                       title: 'Contact Agent',
                     )),
                     sizedBoxW10(),
@@ -69,7 +73,9 @@ class PropertiesDetailsScreen extends StatelessWidget {
                         child: PrefixIconButton(
                       backgroundColor: Theme.of(context).primaryColor,
                       textColor: Theme.of(context).cardColor,
-                      tap: () {},
+                      tap: () {
+                        showCustomSnackBar('Currently in the development');
+                      },
                       title: 'Inquire Now',
                     )),
                   ],
@@ -102,7 +108,8 @@ class PropertiesDetailsScreen extends StatelessWidget {
                         bedRoom: list.bedroom.toString(),
                         bathRoom:  list.bathroom.toString(),),
                       // const FloorPlansPricingSection(),
-                      const LocationAdvantageSection(),
+                      PropertyLocationMapComponent(longitude: list.longitude!, latitude: list.latitude!,),
+                      // const LocationAdvantageSection(),
                       EmiCalculator(),
                       // const RatingAndReviewSection(),
                       const BrowseOtherConstructionsSection()

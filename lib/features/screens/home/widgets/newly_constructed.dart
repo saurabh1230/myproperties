@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
-import 'package:get_my_properties/features/screens/home/widgets/recomended_section.dart';
 import 'package:get_my_properties/features/widgets/custom_image_widget.dart';
 import 'package:get_my_properties/features/widgets/custom_shimmer_holders.dart';
 import 'package:get_my_properties/features/widgets/empty_data_widget.dart';
@@ -28,7 +27,7 @@ class NewlyConstructedSection extends StatelessWidget {
 
       GetBuilder<PropertyController>(builder: (propertyControl) {
         final list = propertyControl.propertyList;
-        final isListEmpty = list == null || list.isEmpty;
+        final isListEmpty = list == null || list.isEmpty ;
         final isLoading = propertyControl.isPropertyLoading;
         return  isListEmpty && !isLoading
             ? Center(
@@ -62,38 +61,33 @@ class NewlyConstructedSection extends StatelessWidget {
                               Column(
                                 children: [
                                   SizedBox(
-                                    height: 222,width: 307,
-                                    child: CustomNetworkImageWidget(
-                                        radius: Dimensions.radius5,
-                                        image: '${AppConstants.imgBaseUrl}${list[i].displayImage!.image.toString()}'),
-                                  ),
-                                  Container(
-                                    height: 40,
+                                    width: 307,
+                                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        CustomNetworkImageWidget(
+                                            height: 222,
+                                            radius: Dimensions.radius5,
+                                            image: '${AppConstants.imgBaseUrl}${list[i].displayImage!.image}'),
+                                        sizedBox10(),
+                                        Text(list[i].title.toString(),
+                                          style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,),
+                                        Text(list[i].description.toString(),
+                                          style: senRegular.copyWith(
+                                            fontSize: Dimensions.fontSize14,
+                                            color: Theme.of(context).disabledColor.withOpacity(0.70),
+                                          ),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,),
+                                        sizedBox5(),
+                                        Text(" ₹ ${list[i].price.toString()} | ${list[i].bedroom.toString()} BHK Apartment",
+                                          style: senRegular.copyWith(fontSize: Dimensions.fontSize14,color: Theme.of(context).primaryColor),),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                              Positioned(bottom: 0,left: 0,
-                                  child: Stack(
-                                    children: [
-                                      Image.asset(Images.ribbonHolder,width: 286,),
-                                      Positioned(left: Dimensions.paddingSizeDefault,bottom:Dimensions.paddingSizeDefault,
-                                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(list[i].title.toString(),
-                                              style: senRegular.copyWith(fontSize: Dimensions.fontSize14),),
-                                            Row(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Icon(Icons.location_on_sharp,size: Dimensions.fontSizeDefault,color: Theme.of(context).disabledColor.withOpacity(0.40),),
-                                                Text(list[i].description.toString(),
-                                                  style: senRegular.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.40)),),
-                                              ],),
-                                            Text(" ₹ ${list[i].price.toString()} | ${list[i].bedroom.toString()} BHK Apartment",
-                                              style: senRegular.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.40)),),
-                                          ],),
-                                      )
-                                    ],
-                                  ))
-
                             ],
                           ),
 
@@ -105,14 +99,11 @@ class NewlyConstructedSection extends StatelessWidget {
             )
           ],);
       }),
-
-
     );
   }
 }
 
 class NewlyConstructedSectionShimmer extends StatelessWidget {
-
   const NewlyConstructedSectionShimmer({super.key, });
 
   @override
@@ -142,31 +133,22 @@ class NewlyConstructedSectionShimmer extends StatelessWidget {
                               onTap: () {},
                               child: const SizedBox(),
                             ),
-                            Container(
-                              height: Dimensions.paddingSize40,
-                            ),
+                            sizedBox10(),
+                            Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const CustomShimmerTextHolder(width: 140,horizontalPadding: 0,),
+                                sizedBox10(),
+                                const CustomShimmerTextHolder(width: 80,horizontalPadding: 0,),
+                                sizedBox10(),
+                                const CustomShimmerTextHolder(width: 80,horizontalPadding: 0,),
+                              ],),
+                            // Container(
+                            //   height: Dimensions.paddingSize40,
+                            // ),
                           ],
                         ),
-                        Positioned(bottom: 0,left: 0,
-                            child: Stack(
-                              children: [
-                                Image.asset(Images.ribbonHolder,width: 286,),
-                                Positioned(left: 0,bottom:Dimensions.paddingSize20,
-                                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const CustomShimmerTextHolder(width: 140,horizontalPadding: Dimensions.paddingSize20,),
-                                      sizedBox10(),
-                                      const CustomShimmerTextHolder(width: 80,horizontalPadding: Dimensions.paddingSize20,),
-                                      sizedBox10(),
-                                      const CustomShimmerTextHolder(width: 80,horizontalPadding: Dimensions.paddingSize20,),
-                                    ],),
-                                )
-                              ],
-                            ))
-
                       ],
                     ),
-
                   ],
                 ),
               );

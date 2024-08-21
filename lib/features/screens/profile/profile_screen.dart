@@ -20,6 +20,7 @@ class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _nameController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _addressController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -27,7 +28,10 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<AuthController>().profileDetailsApi();
+      Get.find<AuthController>().isCustomerLoggedIn() ?
+      Get.find<AuthController>().profileDetailsApi() :
+      Get.find<AuthController>().profileDetailsApi(isVendor : true);
+
       Get.find<ProfileController>().pickImage(isRemove: true);
     });
     return Scaffold(
@@ -62,6 +66,15 @@ class ProfileScreen extends StatelessWidget {
             _emailController.text = authControl.profileData?.email?.toString() ?? '';
             _phoneController.text = authControl.profileData?.phoneNumber?.toString() ?? '';
             _registerTypeController.text = authControl.profileData?.userType?.toString() ?? '';
+
+            if(authControl.profileData!.userType == "vender") {
+              _usernameController.text = authControl.profileData?.username?.toString() ?? '';
+
+            } else {
+
+            }
+
+
             return  Column(
               children: [
                 Stack(
@@ -163,6 +176,12 @@ class ProfileScreen extends StatelessWidget {
                           Column(
                             children: [
                               sizedBoxDefault(),
+                              CustomTextField(
+                                controller: _usernameController,
+                                showTitle: true,
+                                hintText: "Username",
+                                editText: true,),
+                              sizedBoxDefault(),
                               const CustomTextField(
                                 showTitle: true,
                                 hintText: "State",
@@ -179,6 +198,7 @@ class ProfileScreen extends StatelessWidget {
                                   sizedBoxW10(),
                                   const Expanded(
                                     child: CustomTextField(
+                                      inputType: TextInputType.number,
                                       showTitle: true,
                                       hintText: "Zip-Code",
                                       editText: false,),
@@ -254,13 +274,29 @@ class ProfileScreen extends StatelessWidget {
                           CustomButtonWidget(
                             buttonText: 'Save',
                             onPressed: () {
+                              if(authControl.profileData!.userType == "customer") {
                                 profileControl.updateProfile(
-                                    name: _nameController.text,
-                                    email: _emailController.text,
-                                    address: _addressController.text,
-                                     image: profileControl.pickedImage != null && profileControl.pickedImage!.path.isNotEmpty
+                                  name: _nameController.text,
+                                  email: _emailController.text,
+                                  address: _addressController.text,
+                                  image: profileControl.pickedImage != null && profileControl.pickedImage!.path.isNotEmpty
                                       ? profileControl.pickedImage
                                       : null,);
+
+                              } else {
+                                profileControl.updateVendorProfile(
+                                  name: _nameController.text,
+                                  email: _emailController.text,
+                                  address: _addressController.text,
+                                  image: profileControl.pickedImage != null && profileControl.pickedImage!.path.isNotEmpty
+                                      ? profileControl.pickedImage
+                                      : null,
+                                  username: _usernameController.text,
+                                  websiteUrl: '',);
+
+
+                              }
+
                             },),
                           sizedBox20(),
                         ],

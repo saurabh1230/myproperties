@@ -44,7 +44,7 @@ class PropertyDetailModel {
   double? longitude;
   String? status;
   bool? isDeleted;
-  Location? location;
+  LocationMdl? location;
   String? createdAt;
 
   PropertyDetailModel(
@@ -164,7 +164,7 @@ class PropertyDetailModel {
     status = json['status'];
     isDeleted = json['is_deleted'];
     location = json['location'] != null
-        ? new Location.fromJson(json['location'])
+        ? new LocationMdl.fromJson(json['location'])
         : null;
     createdAt = json['created_at'];
   }
@@ -300,13 +300,13 @@ class DisplayImageId {
   }
 }
 
-class Location {
+class LocationMdl {
   String? type;
   List<double>? coordinates;
 
-  Location({this.type, this.coordinates});
+  LocationMdl({this.type, this.coordinates});
 
-  Location.fromJson(Map<String, dynamic> json) {
+  LocationMdl.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     coordinates = json['coordinates'].cast<double>();
   }

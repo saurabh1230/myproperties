@@ -33,7 +33,9 @@ class DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<AuthController>().profileDetailsApi();
+      Get.find<AuthController>().isCustomerLoggedIn() ?
+      Get.find<AuthController>().profileDetailsApi() :
+      Get.find<AuthController>().profileDetailsApi(isVendor : true);
       Get.find<AuthController>().getHomeDataApi();
     });
     super.initState();
@@ -69,43 +71,46 @@ class DashboardScreenState extends State<DashboardScreen> {
           return true;
         }
       },
-      child: Scaffold(
-        floatingActionButton: !GetPlatform.isMobile ? null : FloatingActionButton(
-          elevation: 5,
-          backgroundColor: _pageIndex == 2 ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
-          onPressed: () => _setPage(2),
-          child: Icon(
-            CupertinoIcons.search, size: Dimensions.paddingSize34,
-            color: _pageIndex == 2 ? Theme.of(context).cardColor : Theme.of(context).disabledColor.withOpacity(0.30),
+      child: WillPopScope(
+        onWillPop: Get.find<AuthController>().handleOnWillPop,
+        child: Scaffold(
+          floatingActionButton: !GetPlatform.isMobile ? null : FloatingActionButton(
+            elevation: 5,
+            backgroundColor: _pageIndex == 2 ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
+            onPressed: () => _setPage(2),
+            child: Icon(
+              CupertinoIcons.search, size: Dimensions.paddingSize34,
+              color: _pageIndex == 2 ? Theme.of(context).cardColor : Theme.of(context).disabledColor.withOpacity(0.30),
+            ),
           ),
-        ),
-        floatingActionButtonLocation: !GetPlatform.isMobile ? null : FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation: !GetPlatform.isMobile ? null : FloatingActionButtonLocation.centerDocked,
 
-        bottomNavigationBar: !GetPlatform.isMobile ? const SizedBox() : BottomAppBar(
-          elevation: 5,
-          notchMargin: 5,
-          shape: const CircularNotchedRectangle(),
+          bottomNavigationBar: !GetPlatform.isMobile ? const SizedBox() : BottomAppBar(
+            elevation: 5,
+            notchMargin: 5,
+            shape: const CircularNotchedRectangle(),
 
-          child: Padding(
-            padding: const EdgeInsets.all(0/*Dimensions.paddingSize20*/),
-            child: Row(children: [
-              BottomNavItem(img: Images.navBarHome, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home',),
-              BottomNavItem(img: Images.navBarExplore, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Explore',),
-              const Expanded(child: SizedBox()),
-              BottomNavItem(img: Images.navBarSave, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Saved',),
-              BottomNavItem(img:Images.navBarProfile, isSelected: _pageIndex == 4, tap: () {
-                _setPage(4);
-              }, title: 'Profile',),
-            ]),
+            child: Padding(
+              padding: const EdgeInsets.all(0/*Dimensions.paddingSize20*/),
+              child: Row(children: [
+                BottomNavItem(img: Images.navBarHome, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home',),
+                BottomNavItem(img: Images.navBarExplore, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Explore',),
+                const Expanded(child: SizedBox()),
+                BottomNavItem(img: Images.navBarSave, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Saved',),
+                BottomNavItem(img:Images.navBarProfile, isSelected: _pageIndex == 4, tap: () {
+                  _setPage(4);
+                }, title: 'Profile',),
+              ]),
+            ),
           ),
-        ),
-        body: PageView.builder(
-          controller: _pageController,
-          itemCount: _screens.length,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return _screens[index];
-          },
+          body: PageView.builder(
+            controller: _pageController,
+            itemCount: _screens.length,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return _screens[index];
+            },
+          ),
         ),
       ),
     );

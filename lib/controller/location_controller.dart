@@ -7,11 +7,10 @@ import 'package:get_my_properties/data/models/response/property_detail_model.dar
 import 'package:get_my_properties/data/models/response/property_model.dart';
 import 'package:get_my_properties/data/repo/location_repo.dart';
 import 'package:get_my_properties/data/repo/property_repo.dart';
-import 'package:get_my_properties/utils/app_constants.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:http_parser/http_parser.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationController extends GetxController implements GetxService {
   final LocationRepo locationRepo;
@@ -131,7 +130,7 @@ class LocationController extends GetxController implements GetxService {
           _cityId = cityList![0].id;
         }
       } else {
-        print("Errror in Country Load");
+        print("Error in Country Load");
       }
     } catch (error) {
       print("Error while fetching Country  list: $error");
@@ -139,7 +138,192 @@ class LocationController extends GetxController implements GetxService {
     _isLoading = false;
     update();
   }
+
+
+  /// Google maps ///
+
+
+
+  // GoogleMapController? mapController;
+  // double? latitude;
+  // double? longitude;
+  // String? address;
+  //
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   getUserLocation();
+  // }
+  //
+  // Future<void> getUserLocation() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
+  //
+  //   // Check if location services are enabled
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     return;  // Handle if location services are not enabled
+  //   }
+  //
+  //   // Check for location permissions
+  //   permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.deniedForever) {
+  //     return;  // Handle if permission is permanently denied
+  //   }
+  //
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission != LocationPermission.whileInUse &&
+  //         permission != LocationPermission.always) {
+  //       return;  // Handle if permission is denied
+  //     }
+  //   }
+  //
+  //   // Get current position
+  //   Position currentPosition = await Geolocator.getCurrentPosition();
+  //
+  //   latitude = currentPosition.latitude;
+  //   longitude = currentPosition.longitude;
+  //   print(latitude);
+  //   print(longitude);
+  //
+  //   // Convert coordinates to address
+  //   await updateAddress();
+  //
+  //   // Notify listeners to rebuild the UI
+  //   update();
+  // }
+  //
+  // Future<void> updateAddress() async {
+  //   if (latitude != null && longitude != null) {
+  //     try {
+  //       List<Placemark> placemarks = await placemarkFromCoordinates(latitude!, longitude!);
+  //       if (placemarks.isNotEmpty) {
+  //         Placemark placemark = placemarks.first;
+  //         address = '${placemark.street}, ${placemark.locality}, ${placemark.administrativeArea}, ${placemark.postalCode}, ${placemark.country}';
+  //         print(address);
+  //       }
+  //     } catch (e) {
+  //       print("Error occurred while converting coordinates to address: $e");
+  //     }
+  //   }
+  // }
+  //
+  // Future<void> searchLocation(String query) async {
+  //   try {
+  //     List<Location> locations = await locationFromAddress(query);
+  //     if (locations.isNotEmpty) {
+  //       latitude = locations.first.latitude;
+  //       longitude = locations.first.longitude;
+  //       await updateAddress();
+  //       if (mapController != null) {
+  //         mapController!.animateCamera(
+  //           CameraUpdate.newLatLng(
+  //             LatLng(latitude!, longitude!),
+  //           ),
+  //         );
+  //       }
+  //       update();  // Notify listeners to update UI
+  //     }
+  //   } catch (e) {
+  //     print("Error occurred while searching for location: $e");
+  //   }
+  // }
+  //
+  // void onMapCreated(GoogleMapController controller) {
+  //   mapController = controller;
+  //   update();
+  //   if (latitude != null && longitude != null) {
+  //     mapController?.animateCamera(
+  //       CameraUpdate.newLatLng(
+  //         LatLng(latitude!, longitude!),
+  //       ),
+  //     );
+  //   }
+  // }
+  GoogleMapController? mapController;
+  double? latitude;
+  double? longitude;
+  String? address;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getUserLocation();
+  }
+
+  Future<void> getUserLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return;  // Handle if location services are not enabled
+    }
+
+    // Check for location permissions
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.deniedForever) {
+      return;  // Handle if permission is permanently denied
+    }
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+        return;  // Handle if permission is denied
+      }
+    }
+
+    // Get current position
+    Position currentPosition = await Geolocator.getCurrentPosition();
+
+    latitude = currentPosition.latitude;
+    longitude = currentPosition.longitude;
+    print(latitude);
+    print(longitude);
+
+    // Convert coordinates to address
+    await updateAddress();
+
+    // Notify listeners to rebuild the UI
+    update();
+  }
+
+  Future<void> updateAddress() async {
+    if (latitude != null && longitude != null) {
+      try {
+        List<Placemark> placemarks = await placemarkFromCoordinates(latitude!, longitude!);
+        if (placemarks.isNotEmpty) {
+          Placemark placemark = placemarks.first;
+          address = '${placemark.street}, ${placemark.locality}, ${placemark.administrativeArea}, ${placemark.postalCode}, ${placemark.country}';
+          print(address);
+        }
+      } catch (e) {
+        print("Error occurred while converting coordinates to address: $e");
+      }
+    }
+  }
+
+
+  void onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    update();
+    if (latitude != null && longitude != null) {
+      mapController?.animateCamera(
+        CameraUpdate.newLatLng(
+          LatLng(latitude!, longitude!),
+        ),
+      );
+    }
+  }
+
+
+
 }
+
+
 
 
 

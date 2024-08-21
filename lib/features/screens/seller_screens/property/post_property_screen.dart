@@ -1,21 +1,16 @@
-import 'dart:io';
 
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/explore_controller.dart';
 import 'package:get_my_properties/controller/location_controller.dart';
-import 'package:get_my_properties/controller/profile_controller.dart';
-import 'package:get_my_properties/controller/properties_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
-import 'package:get_my_properties/data/models/response/property_detail_model.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
-import 'package:get_my_properties/features/screens/seller_screens/property/widgets/add_images_widget.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_dropdown_button.dart';
 import 'package:get_my_properties/features/widgets/custom_textfield.dart';
-import 'package:get_my_properties/features/widgets/edit_textfield.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
@@ -51,17 +46,16 @@ class PostPropertyScreen extends StatelessWidget {
       drawer: const CustomDrawer(),
       appBar: const CustomAppBar(title: "Post Property"),
       body: GetBuilder<AuthController>(builder: (authControl) {
-        return
+        final data = authControl.homeData;
+        final list = data == null  || authControl.homeData!.propertyTypes == null ||
+            authControl.homeData!.propertyTypes!.isEmpty;
+        return list ?
+        const Center(child: CircularProgressIndicator()) :
           SingleChildScrollView(
           child: GetBuilder<PropertyController>(builder: (propertyController) {
             return  GetBuilder<ExploreController>(builder: (controller) {
               return   GetBuilder<LocationController>(builder: (locationControl) {
-                final data = authControl.homeData;
-                // final list = data!.propertyAmenities. && data.propertyCategory;
-                // final isListEmpty = list!1.isEmpty
-                final isLoading = authControl.isLoading;
-                return data ==  null ?
-                const Center(child: CircularProgressIndicator()) :
+               return
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault,horizontal: Dimensions.paddingSizeDefault),
                   child: Form(
@@ -403,7 +397,6 @@ class PostPropertyScreen extends StatelessWidget {
                           },
                         ),
                         sizedBoxDefault(),
-
                         CustomTextField(
                           onTap: () {
                             Get.dialog(controller.yearPicker("Pick Build Year of Property"));
@@ -972,7 +965,7 @@ class YearPickerWidget extends StatelessWidget {
             ),
           ),
           CupertinoButton(
-            child: Text('Confirm'),
+            child: const Text('Confirm'),
             onPressed: () {
               Get.back();
             },

@@ -10,8 +10,9 @@ import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
 class RatingsAndReviewScreen extends StatelessWidget {
-  const RatingsAndReviewScreen({super.key});
+   RatingsAndReviewScreen({super.key});
 
+  final _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +27,7 @@ class RatingsAndReviewScreen extends StatelessWidget {
               Align(alignment: Alignment.centerRight,
                   child: IconButton(onPressed: () {
                     Get.bottomSheet(
-                      const LocationBottomSheet(),
+                       LocationBottomSheet(),
                       backgroundColor: Colors.transparent, isScrollControlled: true,
                     );
                   },
@@ -40,7 +41,7 @@ class RatingsAndReviewScreen extends StatelessWidget {
               color: Theme.of(context).disabledColor.withOpacity(0.40)),
                 textAlign: TextAlign.center,),
               sizedBox40(),
-              const SearchField(),
+
               sizedBoxDefault(),
               Expanded(
                 child: ListView.separated(

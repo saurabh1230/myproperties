@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
+import 'package:get_my_properties/features/screens/Maps/search_location_map_view.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/explore/widgets/explore_card_widget.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
@@ -55,8 +56,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      print('=====================> Category Id  ${widget.propertyTypeId}');
-      print('=====================> Category Id  ${widget.purposeId}');
       Get.find<PropertyController>().getPropertyList(page: '1',
           purposeId: widget.purposeId,
           typeId:widget.propertyTypeId);
@@ -86,7 +85,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
               child: Row(
                 children: [
                   Expanded(child: CustomOutlineButton(title: 'Location',
-                    tap: () {  },)),
+                    tap: () {
+                    Get.to(SearchLocationScreen());
+                    },)),
                   sizedBoxW5(),
                   Expanded(child: CustomOutlineButton(
                     title: 'Filters',

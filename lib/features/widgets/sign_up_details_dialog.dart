@@ -6,6 +6,7 @@ import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/profile_controller.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_image_widget.dart';
+import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
 import 'package:get_my_properties/features/widgets/custom_textfield.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
@@ -18,9 +19,10 @@ class SignUpDetailsDialog extends StatelessWidget {
 
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+   final _addressController = TextEditingController();
+   final _usernameController = TextEditingController();
+   final _websiteController = TextEditingController();
    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class SignUpDetailsDialog extends StatelessWidget {
                 children: [
                   Text('Welcome!',style: senBold.copyWith(fontSize: Dimensions.fontSize20,color: Theme.of(context).primaryColor),),
                   sizedBox10(),
-                  Text('Fill Details to Start Finding Right Place With GetMyProperties',
+                  Text('Fill Details to Start Posting Properties on GetMyProperties',
                     style: senRegular.copyWith(fontSize: Dimensions.fontSize13,color: Theme.of(context).disabledColor.withOpacity(0.70)),),
                   sizedBox20(),
                   Center(
@@ -111,6 +113,20 @@ class SignUpDetailsDialog extends StatelessWidget {
                      },
                     editText: false,),
                   sizedBox12(),
+                  CustomTextField(
+                    controller: _usernameController,
+                    inputType: TextInputType.name,
+                    // capitalization: TextCapitalization.words,
+                    showTitle: true,
+                    hintText: "Username",
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your username';
+                      }
+                      return null;
+                    },
+                    editText: false,),
+                  sizedBox12(),
                    CustomTextField(
                     controller: _emailController,
                     showTitle: true,
@@ -124,23 +140,59 @@ class SignUpDetailsDialog extends StatelessWidget {
                        return null;
                      },
                     editText: false,),
+                  sizedBox12(),
+                  CustomTextField(
+                    controller: _addressController,
+                    showTitle: true,
+                    hintText: "Address",
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your Address';
+                      }
+                      return null;
+                    },
+                    editText: false,),
+                  // sizedBox12(),
+                  // CustomTextField(
+                  //   controller: _websiteController,
+                  //   showTitle: true,
+                  //   hintText: "Website Url (optional)",
+                  //   editText: false,),
                   sizedBox40(),
                   profileControl.isLoading ?
                       const Center(child: CircularProgressIndicator()) :
                   CustomButtonWidget(
                     buttonText: 'Continue',
-                    onPressed: () {
+                    onPressed: () async {
                       if(_formKey.currentState!.validate()) {
-                        profileControl.updateProfile(
-                            name: _nameController.text,
-                            email: _emailController.text, address: '', image: profileControl.pickedImage!);
-                        Get.back();
+                        if(profileControl.pickedImage != null) {
+                          if (Get.find<AuthController>().isCustomerLoggedIn()) {
+                            await profileControl.updateProfile(
+                              name: _nameController.text,
+                              email: _emailController.text,
+                              address: '',
+                              image: profileControl.pickedImage!,
+                            );
+                          } else {
+                            await profileControl.updateVendorProfile(
+                              name: _nameController.text,
+                              email: _emailController.text,
+                              address: _addressController.text,
+                              image: profileControl.pickedImage!,
+                              username: _usernameController.text,
+                              websiteUrl: _websiteController.text,
+                            );
+                          }
+                          Get.back();
+                        }
+                        else {
+                          showCustomSnackBar("Please Add your Profile Picture");
+                        }
+
+
                       }
 
-
-
                   },)
-
                 ],
               ),
             ),

@@ -40,145 +40,154 @@ class _SaleAndRentDashboardState extends State<SaleAndRentDashboard> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      appBar: AppBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(20.0),
-            bottomRight: Radius.circular(20.0),
+    return WillPopScope(
+      onWillPop: () async {
+        Get.find<PropertyController>().getPropertyList(page: '1');
+        return true; // Allow the pop action to proceed
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20.0),
+              bottomRight: Radius.circular(20.0),
+            ),
           ),
-        ),
-        toolbarHeight: 80,
-        backgroundColor: Theme.of(context).primaryColor,
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          height: 50,
-          padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize8, horizontal: Dimensions.paddingSize8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Dimensions.radius10),
-            color: Theme.of(context).cardColor,
-          ),
-          margin: const EdgeInsets.only(top: Dimensions.paddingSize40, left: Dimensions.paddingSize40, right: Dimensions.paddingSize40),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                  onTap: () {Get.back();},
-                  child: Container(
-                      padding: const EdgeInsets.all(Dimensions.paddingSize4),
-                      decoration: BoxDecoration(shape: BoxShape.circle,
-                        color: Theme.of(context).primaryColor,),
-                      child: Icon(Icons.arrow_back,color: Theme.of(context).cardColor,))),
-              sizedBoxW10(),
-              sizedBoxW5(),
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    _setPage(0);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: _pageIndex == 0 ? Theme.of(context).primaryColor : Colors.transparent,
-                      borderRadius: BorderRadius.circular(Dimensions.radius10),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSize20),
-                    child: Center(
-                      child: Text(
-                        "Buy",
-                        style: TextStyle(
-                          color: _pageIndex == 0 ? Theme.of(context).cardColor : Theme.of(context).disabledColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    _setPage(1);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: _pageIndex == 1 ? Theme.of(context).primaryColor : Colors.transparent,
-                      borderRadius: BorderRadius.circular(Dimensions.radius10),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSize20),
-                    child: Center(
-                      child: Text(
-                        "Rent",
-                        style: TextStyle(
-                          color: _pageIndex == 1 ? Theme.of(context).cardColor : Theme.of(context).disabledColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      body:
-      Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+          toolbarHeight: 80,
+          backgroundColor: Theme.of(context).primaryColor,
+          automaticallyImplyLeading: false,
+          flexibleSpace: Container(
+            height: 50,
+            padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize8, horizontal: Dimensions.paddingSize8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(Dimensions.radius10),
+              color: Theme.of(context).cardColor,
+            ),
+            margin: const EdgeInsets.only(top: Dimensions.paddingSize40, left: Dimensions.paddingSize40, right: Dimensions.paddingSize40),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                GestureDetector(
+                    onTap: () {
+                      Get.back();
+                      Get.find<PropertyController>().getPropertyList(page: '1',);
+                      },
+                    child: Container(
+                        padding: const EdgeInsets.all(Dimensions.paddingSize4),
+                        decoration: BoxDecoration(shape: BoxShape.circle,
+                          color: Theme.of(context).primaryColor,),
+                        child: Icon(Icons.arrow_back,color: Theme.of(context).cardColor,))),
+                sizedBoxW10(),
+                sizedBoxW5(),
                 Expanded(
-                  child: CustomOutlineButton(
-                    title: 'Location',
-                    tap: () {},
-                  ),
-                ),
-                SizedBox(width: 5),
-                Expanded(
-                  child: CustomOutlineButton(
-                    title: 'Filters',
-                    filter: true,
-                    filterText: "  (2)",
-                    tap: () {
-                      Get.bottomSheet(
-                        const FilterBottomSheet(),
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                      );
+                  child: InkWell(
+                    onTap: () {
+                      _setPage(0);
                     },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _pageIndex == 0 ? Theme.of(context).primaryColor : Colors.transparent,
+                        borderRadius: BorderRadius.circular(Dimensions.radius10),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSize20),
+                      child: Center(
+                        child: Text(
+                          "Buy",
+                          style: TextStyle(
+                            color: _pageIndex == 0 ? Theme.of(context).cardColor : Theme.of(context).disabledColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(width: 5),
-                Expanded(child: CustomButtonWidget(
-                  height: 35,
-                  radius: Dimensions.radius5,
-                  isBold: false,
-                  buttonText: "X Clear Filter",
-                  onPressed: () {
-                    Get.find<PropertyController>().getPropertyList(page: '1',
-                    );
-                  },
-                  fontSize:  Dimensions.fontSize12,))
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      _setPage(1);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _pageIndex == 1 ? Theme.of(context).primaryColor : Colors.transparent,
+                        borderRadius: BorderRadius.circular(Dimensions.radius10),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSize20),
+                      child: Center(
+                        child: Text(
+                          "Rent",
+                          style: TextStyle(
+                            color: _pageIndex == 1 ? Theme.of(context).cardColor : Theme.of(context).disabledColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-          Expanded(
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: _screens.length,
-              physics: AlwaysScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return _screens[index];
-              },
-              onPageChanged: (index) {
-                setState(() {
-                  _pageIndex = index;
-                });
-              },
+        ),
+        body:
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomOutlineButton(
+                      title: 'Location',
+                      tap: () {},
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  Expanded(
+                    child: CustomOutlineButton(
+                      title: 'Filters',
+                      filter: true,
+                      filterText: "  (2)",
+                      tap: () {
+                        Get.bottomSheet(
+                          const FilterBottomSheet(),
+                          backgroundColor: Colors.transparent,
+                          isScrollControlled: true,
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  Expanded(child: CustomButtonWidget(
+                    height: 35,
+                    radius: Dimensions.radius5,
+                    isBold: false,
+                    buttonText: "X Clear Filter",
+                    onPressed: () {
+                      Get.find<PropertyController>().getPropertyList(page: '1',
+                      );
+                    },
+                    fontSize:  Dimensions.fontSize12,))
+                ],
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: _screens.length,
+                physics: AlwaysScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return _screens[index];
+                },
+                onPageChanged: (index) {
+                  setState(() {
+                    _pageIndex = index;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
 

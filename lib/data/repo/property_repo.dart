@@ -7,9 +7,8 @@ import 'package:get/get.dart';
 
 class PropertyRepo {
   final ApiClient apiClient;
+
   PropertyRepo({required this.apiClient,});
-
-
 
   Future<Response> getUserProperty({
     String? stateId,
@@ -63,33 +62,32 @@ class PropertyRepo {
 
   Future<Response> getPropertyDetails(String? propertyId) {
     print('${AppConstants.userPropertyDetails}$propertyId');
-    return apiClient.getData('${AppConstants.userPropertyDetails}$propertyId',method: 'GET');
+    return apiClient.getData(
+        '${AppConstants.userPropertyDetails}$propertyId', method: 'GET');
   }
 
-///###### VENDOR PROPERTY
-  Future<Response> getVendorProperty(
-  //     {
-  //   // String? stateId,
-  //   // String? cityId,
-  //   // String? localityId,
-  //   // String? purposeId,
-  //   // String? categoryId,
-  //   // String? amenityId,
-  //   // String? typeId,
-  //   // String? page,
-  //   // String? limit,
-  //   // String? userId,
-  //   // String? minPrice,
-  //   // String? maxPrice,
-  //   // String? sortBy,
-  //   // String? lat,
-  //   // String? long,
-  //   // String? direction,
-  //   // String? bathroom,
-  //   // String? space,
-  // }
-  ) async {
-
+  ///###### VENDOR PROPERTY
+  Future<Response> getVendorProperty(//     {
+      //   // String? stateId,
+      //   // String? cityId,
+      //   // String? localityId,
+      //   // String? purposeId,
+      //   // String? categoryId,
+      //   // String? amenityId,
+      //   // String? typeId,
+      //   // String? page,
+      //   // String? limit,
+      //   // String? userId,
+      //   // String? minPrice,
+      //   // String? maxPrice,
+      //   // String? sortBy,
+      //   // String? lat,
+      //   // String? long,
+      //   // String? direction,
+      //   // String? bathroom,
+      //   // String? space,
+      // }
+      ) async {
     // Map<String, String> fields = {};
 
     // Add fields conditionally based on their presence
@@ -114,14 +112,14 @@ class PropertyRepo {
 
     // Make the API request
     return apiClient.getData(
-      AppConstants.vendorPropertyUrl,method: 'GET'
+        AppConstants.vendorPropertyUrl, method: 'GET'
       // fields,
     );
   }
 
 
-
-  Future<Response> postPropertyRepo(XFile? displayImage, XFile? galleryImages,) async {
+  Future<Response> postPropertyRepo(XFile? displayImage,
+      XFile? galleryImages,) async {
     Map<String, String> fields = {};
     fields.addAll(<String, String>{
       '_method': 'put',
@@ -158,16 +156,25 @@ class PropertyRepo {
       "longitude": "73.8567"
     });
     return apiClient.postMultipartData(
-      AppConstants.vendorPropertyUrl, fields, [MultipartBody('property_display_image', displayImage),
-      MultipartBody('gallery_images', galleryImages)], [],
+      AppConstants.vendorPropertyUrl, fields,
+      [MultipartBody('property_display_image', displayImage),
+        MultipartBody('gallery_images', galleryImages)], [],
     );
   }
 
+  Future<Response> userSearchPropertyRepo(String? page, String? limit,
+      String? latitude, String? longitude, String? query,) async {
+    return await apiClient.postData(AppConstants.userSearchPropertyUrl, {
+      "page": page,
+      "limit": limit,
+      "lat": latitude,
+      "long": latitude,
+      "query": query,
+    });
+  }
 
-
-
-
-
-
+  Future<Response> userRecentSearchRepo() async {
+    return await apiClient.getData(AppConstants.userSearchPropertyUrl,method: 'GET');
+  }
 
 }

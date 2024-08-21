@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/home_controller.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/widgets/custom_shimmer_holders.dart';
+import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
@@ -25,19 +26,22 @@ class ServicesSection extends StatelessWidget {
             Text("Services",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
             sizedBoxDefault(),
             SizedBox(height: Get.size.height * 0.24,
-              child: Container(
-                child: GridView.builder(
-                  padding: EdgeInsets.zero,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Number of columns
-                    crossAxisSpacing: Dimensions.paddingSizeDefault, // Horizontal spacing between columns
-                    mainAxisSpacing: Dimensions.paddingSizeDefault, // Vertical spacing between rows
-                    childAspectRatio: 1.8, // Aspect ratio of each item
-                  ),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: controller.servicesNames.length,
-                  itemBuilder: (_, i) {
-                    return Container(
+              child: GridView.builder(
+                padding: EdgeInsets.zero,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // Number of columns
+                  crossAxisSpacing: Dimensions.paddingSizeDefault, // Horizontal spacing between columns
+                  mainAxisSpacing: Dimensions.paddingSizeDefault, // Vertical spacing between rows
+                  childAspectRatio: 1.8, // Aspect ratio of each item
+                ),
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: controller.servicesNames.length,
+                itemBuilder: (_, i) {
+                  return GestureDetector(
+                    onTap: () {
+                      showCustomSnackBar('Currently in the development');
+                    },
+                    child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor.withOpacity(0.08),
                         borderRadius: BorderRadius.circular(Dimensions.radius10)
@@ -57,9 +61,9 @@ class ServicesSection extends StatelessWidget {
                           ),
                         ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
 

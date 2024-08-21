@@ -11,8 +11,9 @@ import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
 
 class LocationBottomSheet extends StatelessWidget {
-  const LocationBottomSheet({super.key});
+   LocationBottomSheet({super.key});
 
+  final _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -57,7 +58,16 @@ class LocationBottomSheet extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SearchField(),
+                        // SearchField(
+                        //   tap: () {
+                        //
+                        //
+                        //   },
+                        //   onChanged: (value) {
+                        //   },
+                        //   onSubmitted: (value) {
+                        //   }, controller: _searchController,
+                        // ),
                         sizedBoxDefault(),
                         ListView.separated(
                           itemCount: 10,

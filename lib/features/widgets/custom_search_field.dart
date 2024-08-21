@@ -3,7 +3,14 @@ import 'package:flutter/material.dart';
 class SearchField extends StatelessWidget {
   final Function()? tap;
   final bool? readOnly;
-  const SearchField({super.key,  this.tap, this.readOnly = false});
+  final Widget child;
+
+  const SearchField({
+    super.key,
+    this.tap,
+    this.readOnly = false,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +32,8 @@ class SearchField extends StatelessWidget {
         children: [
           Expanded(
             child: TextField(
-              onTap:tap,readOnly: readOnly!,
+              onTap: tap,
+              readOnly: readOnly!,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'City | Locality | Landmark',
@@ -39,9 +47,12 @@ class SearchField extends StatelessWidget {
               ),
             ),
           ),
-          Icon(
-            Icons.search,
-            color: Theme.of(context).hintColor,
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.search,
+              color: Theme.of(context).hintColor,
+            ),
           ),
         ],
       ),
