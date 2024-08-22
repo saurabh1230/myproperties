@@ -18,6 +18,7 @@ class AppConstants {
   static const String userGetHomeData = 'user/homepage';
   static const String userPropertyDetails = 'user/property/';
   static const String userSearchPropertyUrl = 'user/property/search';
+  static const String userBookmarkPropertyUrl = 'user/property/bookmark';
 
 
 

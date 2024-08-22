@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SuitablePropertySection(),
                   const RecomendedSection(),
                   const PopularInLocationSectionSection(),
-                  const ServicesSection(),
+                  // const ServicesSection(),
                   const NewlyConstructedSection(),
                   BrowseMoreSection(
                     title: 'Buy A House',

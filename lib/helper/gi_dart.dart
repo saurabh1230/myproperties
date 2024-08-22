@@ -1,6 +1,7 @@
 
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
+import 'package:get_my_properties/controller/bookmark_controller.dart';
 import 'package:get_my_properties/controller/explore_controller.dart';
 import 'package:get_my_properties/controller/home_controller.dart';
 import 'package:get_my_properties/controller/location_controller.dart';
@@ -38,12 +39,13 @@ Future<void>   init() async {
 
   Get.lazyPut(() => HomeController());
   Get.lazyPut(() => ExploreController());
-  Get.lazyPut(() => PropertiesController());
+  // Get.lazyPut(() => PropertiesController());
   Get.lazyPut(() => ProfileController(profileRepo: Get.find(), apiClient: Get.find()));
   Get.lazyPut(() => AuthController(authRepo:  Get.find(),sharedPreferences: Get.find()));
   Get.lazyPut(() => PropertyController(propertyRepo:  Get.find()));
   Get.lazyPut(() => LocationController(locationRepo:  Get.find()));
   Get.lazyPut(() => VendorController(vendorRepo:  Get.find()));
+  Get.lazyPut(() => BookmarkController(propertyRepo:  Get.find()));
 
 
 }

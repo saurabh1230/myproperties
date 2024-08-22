@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/properties_controller.dart';
+import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
@@ -22,8 +23,8 @@ class HighlightFactsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault,horizontal:  Dimensions.paddingSizeDefault),
-      child: GetBuilder<PropertiesController>(builder: (controller) {
+      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault,),
+      child: GetBuilder<PropertyController>(builder: (controller) {
         return Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Text("Highlights & Facts",style:  senBold.copyWith(fontSize: Dimensions.fontSizeDefault,),),
@@ -71,25 +72,32 @@ class HighlightFactsSection extends StatelessWidget {
             sizedBox20(),
             Container(
                 width: Get.size.width,
-                padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize4),
+                padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize4,horizontal:  Dimensions.paddingSizeDefault),
                 color: Theme.of(context).primaryColor.withOpacity(0.10),
                 child: Text("Property Detail",style: senRegular.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).primaryColor),)),
             sizedBox20(),
             // Text("Property Detail",style: senRegular.copyWith(fontSize: Dimensions.fontSize14,color: Theme.of(context).disabledColor),),
             // sizedBox8(),
-            buildRow(context,"Total Bedroom",bedRoom),
-            const Divider(),
-            buildRow(context,"Total Bathroom",bathRoom),
-            const Divider(),
-            buildRow(context,"Total Rooms",room),
-            const Divider(),
-            buildRow(context,"Total Space",space),
-            const Divider(),
-            buildRow(context,"Total Floor",floor),
-            const Divider(),
-            buildRow(context,"Total Kitchen",kitchen),
-            const Divider(),
-            sizedBox20(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal:  Dimensions.paddingSizeDefault),
+              child: Column(
+                children: [
+                  buildRow(context,"Total Bedroom",bedRoom),
+                  const Divider(),
+                  buildRow(context,"Total Bathroom",bathRoom),
+                  const Divider(),
+                  buildRow(context,"Total Rooms",room),
+                  const Divider(),
+                  buildRow(context,"Total Space",space),
+                  const Divider(),
+                  buildRow(context,"Total Floor",floor),
+                  const Divider(),
+                  buildRow(context,"Total Kitchen",kitchen),
+                  const Divider(),
+                  sizedBox20(),
+                ],
+              ),
+            ),
             // Text("Lot",style: senRegular.copyWith(fontSize: Dimensions.fontSize14,color: Theme.of(context).disabledColor),),
             // sizedBox8(),
             // buildRow(context,"Lot size","4,791 sqft"),
@@ -148,11 +156,6 @@ class HighlightFactsSection extends StatelessWidget {
             //     );
             //   }),
             // )
-
-
-
-
-
 
           ],
         );

@@ -17,8 +17,8 @@ class CustomNotificationButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(Dimensions.fontSize5),
         decoration:  BoxDecoration(shape: BoxShape.circle,
-        color:color ?? Theme.of(context).cardColor.withOpacity(0.40)),
-        child:  Icon( icon ?? Icons.notifications_outlined,size: Dimensions.fontSize24,color: Theme.of(context).cardColor,),
+        color:Theme.of(context).cardColor.withOpacity(0.40)),
+        child:  Icon( icon ?? Icons.notifications_outlined,size: Dimensions.fontSize24,color:color?? Theme.of(context).cardColor.withOpacity(0.60),),
       ),
     );
   }

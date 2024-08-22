@@ -137,4 +137,10 @@ class PropertyRepo {
     return await apiClient.getData(AppConstants.userSearchPropertyUrl,method: 'GET');
   }
 
+
+
+  Future<Response> userBookmarkPropertyRepo(String? propertyId,) async {
+    return await apiClient.postData(AppConstants.userBookmarkPropertyUrl, {"property_id": propertyId, });
+  }
+
 }

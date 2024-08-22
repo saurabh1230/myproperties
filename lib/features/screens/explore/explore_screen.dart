@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/controller/bookmark_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/Maps/search_location_map_view.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
@@ -76,8 +77,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
         final isListEmpty = list == null || list.isEmpty;
         final isLoading = propertyControl.isPropertyLoading;
         return
-
-
           Column(
           children: [
             Padding(
@@ -123,37 +122,35 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   text: 'No Properties yet',
                 )) :
             Expanded(
-              child: SingleChildScrollView(
-                child: isLoading ||isListEmpty ? const ExploreScreenShimmer() :
-                ListView.separated(
+              child: isLoading ||isListEmpty ? const ExploreScreenShimmer() :
+              SingleChildScrollView(
+                child: ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: list.length,
                   itemBuilder: (_, i) {
-                    return
-                      RecommendedItemCard(
-                      vertical: true,
-                      image: list[i].displayImage!.image.toString(),
-                      title:  list[i].title.toString(),
-                      description:  list[i].description.toString(),
-                      price: '₹ ${list[i].price.toString()}',
-                      propertyId: list[i].sId.toString(),
-                      ratingText: '4.5',likeTap:() {},
-                    );
-                    // return ExploreCardWidget(
-                    //     itemCount: 10,
-                    //     image:  list[i].displayImage!.image.toString(),
-                    //     ratingText: "4.2",
-                    //     imagesLength:  list[i].galleryImages!.length.toString(),
-                    //     likeTap: () {},
-                    //     detailsTap: () => Get.toNamed(RouteHelper.getPropertiesDetailsScreen("La Convent",'')),
-                    //     propertyCategory:  list[i].category!.name.toString(),
-                    //     title:  list[i].title.toString(),
-                    //     description: list[i].description.toString(),
-                    //     price: '₹ ${list[i].price.toString()}',
-                    //     // pageController: _pageController
-                    // );
+                    return GetBuilder<BookmarkController>(builder: (bookmarkControl) {
+                      bool isBookmarked = bookmarkControl.bookmarkIdList.contains(list[i].sId!);
+                      return RecommendedItemCard(
+                        vertical: true,
+                        image: list[i].displayImage!.image.toString(),
+                        title:  list[i].title.toString(),
+                        description:  list[i].description.toString(),
+                        price: '₹ ${list[i].price.toString()}',
+                        propertyId: list[i].sId.toString(),
+                        ratingText: '4.5',
+                        likeTap:() {
+                          isBookmarked
+                              ? bookmarkControl.removeFromBookMarkList(list[i].sId!)
+                              : bookmarkControl.addToBookmarkList(list[i]);
+                        },
+                        bookmarkIconColor: isBookmarked
+                            ? Theme.of(context).primaryColor
+                            : Theme.of(context).cardColor.withOpacity(0.60),
+                      );
+                
+                    });
                   },
                   separatorBuilder: (BuildContext context, int index) => const SizedBox(height: Dimensions.paddingSizeDefault),
                 ),
@@ -162,9 +159,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
           ],
         );
       }),
-
-
-
 
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 import 'package:get_my_properties/controller/properties_controller.dart';
+import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/data/models/response/property_model.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
@@ -19,7 +20,7 @@ class PropertiesImageSection extends StatelessWidget {
         .map((image) => '${AppConstants.imgBaseUrl}${image.image}')
         .toList();
 
-    return GetBuilder<PropertiesController>(builder: (controller) {
+    return GetBuilder<PropertyController>(builder: (controller) {
       return
         FanCarouselImageSlider.sliderType2(
         indicatorActiveColor: Theme.of(context).primaryColor,

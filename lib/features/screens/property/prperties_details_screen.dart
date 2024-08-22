@@ -50,35 +50,34 @@ class PropertiesDetailsScreen extends StatelessWidget {
         return isListEmpty && isLoading
             ? const Center(
                 child: Center(child: CircularProgressIndicator())) :
-
-          Padding(
-          padding: const EdgeInsets.symmetric(
-              // horizontal: Dimensions.paddingSizeDefault,
-              vertical: Dimensions.paddingSizeDefault),
-          child: Column(
+          Column(
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal:  Dimensions.paddingSizeDefault),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: PrefixIconButton(
-                      tap: () {
-                        showCustomSnackBar('Currently in the development');
-                      },
-                      title: 'Contact Agent',
-                    )),
-                    sizedBoxW10(),
-                    Expanded(
-                        child: PrefixIconButton(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      textColor: Theme.of(context).cardColor,
-                      tap: () {
-                        showCustomSnackBar('Currently in the development');
-                      },
-                      title: 'Inquire Now',
-                    )),
-                  ],
+                child: Container(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: PrefixIconButton(
+                        tap: () {
+                          showCustomSnackBar('Currently in the development');
+                        },
+                        title: 'Contact Agent',
+                      )),
+                      sizedBoxW10(),
+                      Expanded(
+                          child: PrefixIconButton(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        textColor: Theme.of(context).cardColor,
+                        tap: () {
+                          showCustomSnackBar('Currently in the development');
+                        },
+                        title: 'Inquire Now',
+                      )),
+                    ],
+                  ),
                 ),
               ),
               Expanded(
@@ -119,8 +118,7 @@ class PropertiesDetailsScreen extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-        );
+          );
       }),
     );
   }

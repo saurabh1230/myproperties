@@ -21,6 +21,7 @@ class RecommendedItemCard extends StatelessWidget {
   final bool? isLikeButton;
   final Function()? likeTap;
   final bool? isVendor;
+  final Color? bookmarkIconColor;
 
   const RecommendedItemCard({
     super.key,
@@ -32,7 +33,7 @@ class RecommendedItemCard extends StatelessWidget {
     required this.propertyId,
     this.ratingText,
     this.likeTap,
-    this.isLikeButton = true, this.isVendor = false,
+    this.isLikeButton = true, this.isVendor = false, this.bookmarkIconColor,
   });
 
   @override
@@ -146,9 +147,10 @@ class RecommendedItemCard extends StatelessWidget {
                     ),
                   if (isLikeButton == true && likeTap != null) // Check if isLikeButton is true and likeTap is not null
                     CustomNotificationButton(
-                      color: Theme.of(context).disabledColor.withOpacity(0.15),
+                      color: bookmarkIconColor,
+                      // color: Theme.of(context).disabledColor.withOpacity(0.15),
                       tap: likeTap!,
-                      icon: CupertinoIcons.heart,
+                      icon: CupertinoIcons.heart_fill,
                     ),
                 ],
               ),

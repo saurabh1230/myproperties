@@ -223,7 +223,6 @@ class CustomDrawer extends StatelessWidget {
                             ],
                           ),
                           sizedBoxDefault(),
-
                         ],
                       ),
                     ),
@@ -239,14 +238,11 @@ class CustomDrawer extends StatelessWidget {
                 //     },),
                 // ),
                 sizedBox30()
-
-
               ],
             ),
           ),
         );
       })
-
     );
   }
 
