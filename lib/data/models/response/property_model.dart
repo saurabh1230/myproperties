@@ -12,7 +12,7 @@ class PropertyModel {
   final String address;
   final int views;
   final int unit;
-  final List<GalleryImage> galleryImages;
+  // final List<GalleryImage> galleryImages;
   final String videoLink;
   final int room;
   final int space;
@@ -27,17 +27,17 @@ class PropertyModel {
   final int marketPrice;
   final bool isFeatured;
   final bool topProperty;
-  final DateTime? expiryDate;
+  // final DateTime? expiryDate;
   final String status;
-  final DateTime createdAt;
-  final PropertyType type;
-  final PropertyPurpose purpose;
-  final PropertyCategory category;
-  final List<Amenity> amenities;
+  // final DateTime createdAt;
+  // final PropertyType type;
+  // final PropertyPurpose purpose;
+  // final PropertyCategory category;
+  // final List<Amenity> amenities;
   final List<DisplayImage> displayImages;
   final State state;
   final City city;
-  final List<dynamic> locality;
+  // final List<dynamic> locality;
   final List<AllImage> allImages;
 
   PropertyModel({
@@ -52,7 +52,7 @@ class PropertyModel {
     required this.address,
     required this.views,
     required this.unit,
-    required this.galleryImages,
+    // required this.galleryImages,
     required this.videoLink,
     required this.room,
     required this.space,
@@ -67,17 +67,17 @@ class PropertyModel {
     required this.marketPrice,
     required this.isFeatured,
     required this.topProperty,
-    this.expiryDate,
+    // this.expiryDate,
     required this.status,
-    required this.createdAt,
-    required this.type,
-    required this.purpose,
-    required this.category,
-    required this.amenities,
+    // required this.createdAt,
+    // required this.type,
+    // required this.purpose,
+    // required this.category,
+    // required this.amenities,
     required this.displayImages,
     required this.state,
     required this.city,
-    required this.locality,
+    // required this.locality,
     required this.allImages,
   });
 
@@ -93,7 +93,7 @@ class PropertyModel {
     address: json['address'],
     views: json['views'],
     unit: json['unit'],
-    galleryImages: List<GalleryImage>.from(json['gallery_images'].map((x) => GalleryImage.fromJson(x))),
+    // galleryImages: List<GalleryImage>.from(json['gallery_images'].map((x) => GalleryImage.fromJson(x))),
     videoLink: json['video_link'],
     room: json['room'],
     space: json['space'],
@@ -108,17 +108,17 @@ class PropertyModel {
     marketPrice: json['market_price'],
     isFeatured: json['is_featured'],
     topProperty: json['top_property'],
-    expiryDate: json['expiry_date'] != null ? DateTime.parse(json['expiry_date']) : null,
+    // expiryDate: json['expiry_date'] != null ? DateTime.parse(json['expiry_date']) : null,
     status: json['status'],
-    createdAt: DateTime.parse(json['created_at']),
-    type: PropertyType.fromJson(json['type']),
-    purpose: PropertyPurpose.fromJson(json['purpose']),
-    category: PropertyCategory.fromJson(json['category']),
-    amenities: List<Amenity>.from(json['amenity'].map((x) => Amenity.fromJson(x))),
+    // createdAt: DateTime.parse(json['created_at']),
+    // type: PropertyType.fromJson(json['type']),
+    // purpose: PropertyPurpose.fromJson(json['purpose']),
+    // category: PropertyCategory.fromJson(json['category']),
+    // amenities: List<Amenity>.from(json['amenity'].map((x) => Amenity.fromJson(x))),
     displayImages: List<DisplayImage>.from(json['display_image'].map((x) => DisplayImage.fromJson(x))),
     state: State.fromJson(json['state']),
     city: City.fromJson(json['city']),
-    locality: List<dynamic>.from(json['locality']),
+    // locality: List<dynamic>.from(json['locality']),
     allImages: List<AllImage>.from(json['all_images'].map((x) => AllImage.fromJson(x))),
   );
 
@@ -134,7 +134,7 @@ class PropertyModel {
     'address': address,
     'views': views,
     'unit': unit,
-    'gallery_images': List<dynamic>.from(galleryImages.map((x) => x.toJson())),
+    // 'gallery_images': List<dynamic>.from(galleryImages.map((x) => x.toJson())),
     'video_link': videoLink,
     'room': room,
     'space': space,
@@ -149,17 +149,17 @@ class PropertyModel {
     'market_price': marketPrice,
     'is_featured': isFeatured,
     'top_property': topProperty,
-    'expiry_date': expiryDate?.toIso8601String(),
+    // 'expiry_date': expiryDate?.toIso8601String(),
     'status': status,
-    'created_at': createdAt.toIso8601String(),
-    'type': type.toJson(),
-    'purpose': purpose.toJson(),
-    'category': category.toJson(),
-    'amenity': List<dynamic>.from(amenities.map((x) => x.toJson())),
+    // 'created_at': createdAt.toIso8601String(),
+    // 'type': type.toJson(),
+    // 'purpose': purpose.toJson(),
+    // 'category': category.toJson(),
+    // 'amenity': List<dynamic>.from(amenities.map((x) => x.toJson())),
     'display_image': List<dynamic>.from(displayImages.map((x) => x.toJson())),
     'state': state.toJson(),
     'city': city.toJson(),
-    'locality': List<dynamic>.from(locality),
+    // 'locality': List<dynamic>.from(locality),
     'all_images': List<dynamic>.from(allImages.map((x) => x.toJson())),
   };
 }
