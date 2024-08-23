@@ -131,6 +131,44 @@ class CustomSelectedButton extends StatelessWidget {
 }
 
 
+// class CustomMultipleSelectedButton extends StatelessWidget {
+//   final VoidCallback tap;
+//   final String title;
+//   final bool isSelected;
+//
+//   CustomMultipleSelectedButton({
+//     required this.tap,
+//     required this.title,
+//     required this.isSelected,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return InkWell(
+//       onTap: tap,
+//       child: Container(
+//         height: 40,
+//         width: 80, // Adjust width to fit text
+//         decoration: BoxDecoration(
+//           color: isSelected ? Theme.of(context).cardColor : Colors.transparent,
+//           shape: BoxShape.rectangle,
+//           borderRadius: BorderRadius.circular(8.0),
+//           border: isSelected ? null : Border.all(color: Colors.grey), // Optional: Add border if not selected
+//         ),
+//         child: Center(
+//           child: Text(
+//             title,
+//             style: TextStyle(
+//               color: isSelected ? Theme.of(context).primaryColor : Colors.black.withOpacity(0.80),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
 
 class CustomChipButton extends StatelessWidget {
   final String label;

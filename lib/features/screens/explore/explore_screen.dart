@@ -2,12 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/bookmark_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
-import 'package:get_my_properties/features/screens/Maps/search_location_map_view.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
-import 'package:get_my_properties/features/screens/explore/widgets/explore_card_widget.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/home/widgets/filter_bottom_sheet.dart';
-import 'package:get_my_properties/features/screens/home/widgets/recomended_section.dart';
 import 'package:get_my_properties/features/screens/home/widgets/recommended_item_card.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
@@ -21,51 +18,31 @@ import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 
-
 class ExploreScreen extends StatefulWidget {
   final bool? isBrowser;
   final String? title;
   final String? propertyTypeId;
   final String? purposeId;
 
-  const ExploreScreen({super.key, this.isBrowser= false, this.title, this.propertyTypeId, this.purposeId});
+  const ExploreScreen(
+      {super.key,
+      this.isBrowser = false,
+      this.title,
+      this.propertyTypeId,
+      this.purposeId});
 
   @override
   _ExploreScreenState createState() => _ExploreScreenState();
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
-  int _currentPage = 0;
-  final PageController _pageController = PageController(viewportFraction: 1);
-
-  @override
-  void initState() {
-    _pageController.addListener(() {
-      setState(() {
-        _currentPage = _pageController.page!.round();
-      });
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<PropertyController>().getPropertyList(page: '1',
-          purposeId: widget.purposeId,
-          typeId:widget.propertyTypeId);
-    });
     return Scaffold(
       drawer: const CustomDrawer(),
       appBar: CustomAppBar(
         isBackButtonExist: widget.isBrowser! ? true : false,
-        title:widget.isBrowser! ? '${widget.title}' : "Explore",
+        title: widget.isBrowser! ? '${widget.title}' : "Explore",
         menuWidget: CustomNotificationButton(
           tap: () {
             Get.toNamed(RouteHelper.getNotificationRoute());
@@ -76,90 +53,112 @@ class _ExploreScreenState extends State<ExploreScreen> {
         final list = propertyControl.propertyList;
         final isListEmpty = list == null || list.isEmpty;
         final isLoading = propertyControl.isPropertyLoading;
-        return
-          Column(
+        return Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-              child: Row(
-                children: [
-                  Expanded(child: CustomOutlineButton(title: 'Location',
-                    tap: () {
-                    Get.to(const SearchLocationScreen());
-                    },)),
-                  sizedBoxW5(),
-                  Expanded(child: CustomOutlineButton(
-                    title: 'Filters',
-                    filter: true,
-                    filterText: "",
-                    tap: () {
-                      Get.bottomSheet(
-                        const FilterBottomSheet(),
-                        backgroundColor: Colors.transparent, isScrollControlled: true,
-                      );
-                    },)),
-                  sizedBoxW5(),
-                  Expanded(child: CustomButtonWidget(
-                    height: 35,
-                    radius: Dimensions.radius5,
-                    isBold: false,
-                    buttonText: "X Clear Filter",
-                    onPressed: () {
-                      Get.find<PropertyController>().getPropertyList(page: '1',
-                         );
-                    },
-                    fontSize:  Dimensions.fontSize12,))
-
-                ],
-              ),
-            ),
             sizedBox8(),
             isListEmpty && !isLoading
                 ? Center(
-                child: EmptyDataWidget(
-                  image: Images.emptyDataImage,
-                  fontColor: Theme.of(context).disabledColor,
-                  text: 'No Properties yet',
-                )) :
-            Expanded(
-              child: isLoading ||isListEmpty ? const ExploreScreenShimmer() :
-              SingleChildScrollView(
-                child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: list.length,
-                  itemBuilder: (_, i) {
-                    return GetBuilder<BookmarkController>(builder: (bookmarkControl) {
-                      bool isBookmarked = bookmarkControl.bookmarkIdList.contains(list[i].sId!);
-                      return RecommendedItemCard(
-                        vertical: true,
-                        image: list[i].displayImage!.image.toString(),
-                        title:  list[i].title.toString(),
-                        description:  list[i].description.toString(),
-                        price: '₹ ${list[i].price.toString()}',
-                        propertyId: list[i].sId.toString(),
-                        ratingText: '4.5',
-                        likeTap:() {
-                          isBookmarked
-                              ? bookmarkControl.removeFromBookMarkList(list[i].sId!)
-                              : bookmarkControl.addToBookmarkList(list[i]);
-                        },
-                        bookmarkIconColor: isBookmarked
-                            ? Theme.of(context).primaryColor
-                            : Theme.of(context).cardColor.withOpacity(0.60),
-                      );
-                
-                    });
-                  },
-                  separatorBuilder: (BuildContext context, int index) => const SizedBox(height: Dimensions.paddingSizeDefault),
-                ),
-              ),
-            ),
+                    child: EmptyDataWidget(
+                      image: Images.emptyDataImage,
+                      fontColor: Theme.of(context).disabledColor,
+                      text: 'No Properties yet',
+                    ),
+                  )
+                : Expanded(
+                    child: isLoading || isListEmpty
+                        ? const ExploreScreenShimmer()
+                        : Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                              child: Row(
+                                children: [
+                                  Expanded(child: CustomOutlineButton(title: 'Location',
+                                    tap: () {  },)),
+                                  sizedBoxW5(),
+                                  Expanded(child: CustomOutlineButton(
+                                    title: 'Filters',
+                                    filter: true,
+                                    filterText: "",
+                                    tap: () {
+                                      Get.bottomSheet(
+                                        const FilterBottomSheet(),
+                                        backgroundColor: Colors.transparent, isScrollControlled: true,
+                                      );
+                                    },)),
+                                  sizedBoxW5(),
+                                  Expanded(child: CustomButtonWidget(
+                                    height: 35,
+                                    radius: Dimensions.radius5,
+                                    isBold: false,
+                                    buttonText: "X Clear Filter",
+                                    onPressed: () {
+                                      Get.find<PropertyController>().getPropertyList(page: '1',
+                                      );
+                                    },
+                                    fontSize:  Dimensions.fontSize12,))
+
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                  child: ListView.separated(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: Dimensions.paddingSizeDefault),
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: list.length,
+                                    itemBuilder: (_, i) {
+                                      print('price ${list[i].price.toString()}');
+                                      return GetBuilder<BookmarkController>(
+                                        builder: (bookmarkControl) {
+                                          bool isBookmarked = bookmarkControl
+                                              .bookmarkIdList
+                                              .contains(list[i].id);
+                                          return RecommendedItemCard(
+                                            vertical: true,
+                                            image: list[i]
+                                                .displayImages[0].image
+                                                .toString(),
+                                            title: list[i].title.toString(),
+                                            description:
+                                                list[i].description.toString(),
+                                            price: ' ${list[i].price.toString()}',
+                                            propertyId: list[i].id.toString(),
+                                            ratingText: '4.5',
+                                            likeTap: () {
+                                              isBookmarked
+                                                  ? bookmarkControl
+                                                      .removeFromBookMarkList(
+                                                          list[i].id)
+                                                  : bookmarkControl
+                                                      .addToBookmarkList(list[i]);
+                                            },
+                                            bookmarkIconColor: isBookmarked
+                                                ? Theme.of(context).primaryColor
+                                                : Theme.of(context)
+                                                    .cardColor
+                                                    .withOpacity(0.60),
+                                            propertyModel: list[i],
+                                            markerPrice: list[i].marketPrice.toString(),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    separatorBuilder: (BuildContext context,
+                                            int index) =>
+                                        const SizedBox(
+                                            height: Dimensions.paddingSizeDefault),
+                                  ),
+                                ),
+                            ),
+                          ],
+                        ),
+                  ),
           ],
         );
       }),
-
     );
   }
 }
@@ -170,19 +169,22 @@ class ExploreScreenShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault,vertical:  Dimensions.paddingSizeDefault),
+      padding: const EdgeInsets.symmetric(
+          horizontal: Dimensions.paddingSizeDefault,
+          vertical: Dimensions.paddingSizeDefault),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: 10,
       itemBuilder: (_, i) {
-        return  SizedBox(
-          width: Get.size.width , // Ensure the container is wide enough to test alignment
+        return SizedBox(
+          width: Get.size.width,
+          // Ensure the container is wide enough to test alignment
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               PrimaryCardContainer(
                 color: Colors.black.withOpacity(0.1),
-                width:  Get.size.width ,
+                width: Get.size.width,
                 height: 126,
                 onTap: () {},
                 child: const SizedBox(),
@@ -198,7 +200,9 @@ class ExploreScreenShimmer extends StatelessWidget {
                 horizontalPadding: 0,
               ),
               sizedBox8(),
-              Row(mainAxisAlignment: MainAxisAlignment.end, // Aligns the container to the right
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                // Aligns the container to the right
                 children: [
                   Container(
                     decoration: BoxDecoration(
@@ -206,11 +210,13 @@ class ExploreScreenShimmer extends StatelessWidget {
                         width: 1,
                         color: Colors.black.withOpacity(0.1),
                       ),
-                      borderRadius: BorderRadius.circular(Dimensions.paddingSize10),
+                      borderRadius:
+                          BorderRadius.circular(Dimensions.paddingSize10),
                     ),
                     padding: const EdgeInsets.all(Dimensions.paddingSize5),
                     child: Row(
-                      mainAxisSize: MainAxisSize.min, // Ensures the Row is only as wide as its content
+                      mainAxisSize: MainAxisSize.min,
+                      // Ensures the Row is only as wide as its content
                       children: [
                         Text(
                           "Check Out",
@@ -232,10 +238,9 @@ class ExploreScreenShimmer extends StatelessWidget {
             ],
           ),
         );
-
-
       },
-      separatorBuilder: (BuildContext context, int index) => const SizedBox(height: Dimensions.paddingSizeDefault),
+      separatorBuilder: (BuildContext context, int index) =>
+          const SizedBox(height: Dimensions.paddingSizeDefault),
     );
   }
 }

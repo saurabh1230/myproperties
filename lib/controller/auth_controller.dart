@@ -202,6 +202,30 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+  List<String> _propertyTypeIDs = [];
+  List<String> get propertyTypeIDs => _propertyTypeIDs;
+
+  void selectPropertyTypeIds(String val) {
+    if (_propertyTypeIDs.contains(val)) {
+      _propertyTypeIDs.remove(val); // Deselect the item
+    } else {
+      _propertyTypeIDs.add(val); // Select the item
+    }
+    update();
+  }
+
+  // List<String> _propertyIDs = [];
+  // List<String> get propertyTypeIDs => _propertyTypeIDs;
+  //
+  // void selectPropertyTypeIds(String val) {
+  //   if (_propertyTypeIDs.contains(val)) {
+  //     _propertyTypeIDs.remove(val); // Deselect the item
+  //   } else {
+  //     _propertyTypeIDs.add(val); // Select the item
+  //   }
+  //   update();
+  // }
+
   String _propertyPurposeID = '';
   String get propertyPurposeID => _propertyPurposeID;
   void selectPropertyPurposeId(String val) {
@@ -223,6 +247,20 @@ class AuthController extends GetxController implements GetxService {
     _amenityId = val;
     update();
   }
+
+  List<String> _amenityIds = [];
+  List<String> get amenityIds => _amenityIds;
+
+  void setAmenityIds(String val) {
+    if (_amenityIds.contains(val)) {
+      _amenityIds.remove(val); // Deselect the item
+    } else {
+      _amenityIds.add(val); // Select the item
+    }
+    update();
+  }
+
+
   TypeDataModel? _homeData;
   TypeDataModel? get homeData => _homeData;
 
@@ -238,8 +276,8 @@ class AuthController extends GetxController implements GetxService {
       if (_homeData != null) {
         _propertyTypeID = homeData!.propertyTypes![0].sId!;
         _propertyPurposeID = homeData!.propertyPurposes![0].sId!;
-        _propertyCategoryId = homeData!.propertyCategory![0].sId!;
-        _amenityId = homeData!.propertyAmenities![0].sId!;
+        // _propertyCategoryId = homeData!.propertyCategory![0].sId!;
+        // _amenityId = homeData!.propertyAmenities![0].sId!;
       }
     } else {
     }

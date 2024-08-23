@@ -1,20 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/data/models/response/property_model.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
+import 'package:get_my_properties/features/screens/property/prperties_details_screen.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/features/widgets/custom_image_widget.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
+import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
+import 'package:get_my_properties/utils/theme/price_converter.dart';
 
 class RecommendedItemCard extends StatelessWidget {
   final String image;
   final String title;
   final String description;
   final String price;
+  final String markerPrice;
   final String propertyId;
   final bool? vertical;
   final String? ratingText;
@@ -22,6 +27,7 @@ class RecommendedItemCard extends StatelessWidget {
   final Function()? likeTap;
   final bool? isVendor;
   final Color? bookmarkIconColor;
+  final PropertyModel? propertyModel;
 
   const RecommendedItemCard({
     super.key,
@@ -33,7 +39,7 @@ class RecommendedItemCard extends StatelessWidget {
     required this.propertyId,
     this.ratingText,
     this.likeTap,
-    this.isLikeButton = true, this.isVendor = false, this.bookmarkIconColor,
+    this.isLikeButton = true, this.isVendor = false, this.bookmarkIconColor, this.propertyModel, required this.markerPrice,
   });
 
   @override
@@ -56,7 +62,7 @@ class RecommendedItemCard extends StatelessWidget {
 
           },
           child: Container(
-            width: vertical! ? Get.size.width : 220,
+            width: vertical! ? Get.size.width : 240,
             padding: EdgeInsets.only(
               right: vertical! ? 0 : Dimensions.paddingSizeDefault,
             ),
@@ -69,6 +75,7 @@ class RecommendedItemCard extends StatelessWidget {
                   child: CustomNetworkImageWidget(
                     radius: Dimensions.radius5,
                     image: '${AppConstants.imgBaseUrl}$image',
+                      // placeholder:Images.emptyDataImage
                   ),
                 ),
                 sizedBox8(),
@@ -92,8 +99,9 @@ class RecommendedItemCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text(
-                        price,
+                       child: Text(
+                       '₹ ${IndianPriceFormatter.formatIndianPrice(double.parse(price))} - ${IndianPriceFormatter.formatIndianPrice(double.parse(markerPrice))}',
+                        // price,
                         style: senBold.copyWith(
                           fontSize: Dimensions.fontSizeDefault,
                           color: Theme.of(context).hintColor,
@@ -104,6 +112,7 @@ class RecommendedItemCard extends StatelessWidget {
                         const SizedBox() :
                     CheckoutArrowButton(
                       tap: () {
+
                         Get.toNamed(
                           RouteHelper.getPropertiesDetailsScreen(
                             title,

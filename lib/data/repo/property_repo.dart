@@ -123,13 +123,14 @@ class PropertyRepo {
   }
 
   Future<Response> userSearchPropertyRepo(String? page, String? limit,
-      String? latitude, String? longitude, String? query,) async {
+      String? latitude, String? longitude, String? query,String? purposeId,) async {
     return await apiClient.postData(AppConstants.userSearchPropertyUrl, {
       "page": page,
       "limit": limit,
       "lat": latitude,
       "long": latitude,
       "query": query,
+      "purpose_id": purposeId
     });
   }
 
@@ -141,6 +142,10 @@ class PropertyRepo {
 
   Future<Response> userBookmarkPropertyRepo(String? propertyId,) async {
     return await apiClient.postData(AppConstants.userBookmarkPropertyUrl, {"property_id": propertyId, });
+  }
+
+  Future<Response> userBookmarkPropertyListRepo() async {
+    return await apiClient.getData(AppConstants.userBookmarkPropertyUrl,method: 'GET');
   }
 
 }

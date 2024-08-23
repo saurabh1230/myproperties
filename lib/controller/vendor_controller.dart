@@ -77,72 +77,52 @@ class VendorController extends GetxController implements GetxService {
 
   List<AllEnquiryMode>? _enquiryList;
   List<AllEnquiryMode>? get enquiryList => _enquiryList;
-
-
   Future<void> getAllEnquiryList({
     String? page,
+
   }) async {
     _isLoading = true;
     try {
-      // Reset page list and enquiry list for the first page
       if (page == '1') {
-        _pageList = [];
+        _pageList = []; // Reset page list for new search
         _offset = 1;
-        _enquiryList = [];
+        _enquiryList = []; // Reset product list for the first page
         update();
       }
+      if (!_pageList.contains(page)) {
+        _pageList.add(page!);
 
-      // Proceed only if the page has not been loaded before
-      if (page != null && !_pageList.contains(page)) {
-        _pageList.add(page);
-
-        // Fetch the enquiry data from the repository
         Response response = await vendorRepo.getEnquiryRepo();
 
         if (response.statusCode == 200) {
-          // Print the response body for debugging purposes
-          print('Response Body: ${response.body}');
+          List<dynamic> dataList = response.body['data'];
+          List<AllEnquiryMode> newDataList = dataList.map((json) => AllEnquiryMode.fromJson(json)).toList();
 
-          List<dynamic>? dataList = response.body['data'];
-
-          // Ensure dataList is not null before processing it
-          if (dataList != null && dataList.isNotEmpty) {
-            List<AllEnquiryMode> newDataList = dataList.map((json) {
-              try {
-                return AllEnquiryMode.fromJson(json);
-              } catch (e) {
-                print('Error parsing item: $json');
-                return null; // Handle parsing error for individual items
-              }
-            }).whereType<AllEnquiryMode>().toList(); // Filter out null values
-
-            // Add the new data to the list
-            if (page == '1') {
-              _enquiryList = newDataList;
-            } else {
-              _enquiryList?.addAll(newDataList);
-            }
+          if (page == '1') {
+            _enquiryList = newDataList;
           } else {
-            print('Data list is null or empty');
+            _enquiryList!.addAll(newDataList);
           }
 
           _isLoading = false;
           update();
         } else {
-          print('Error response status: ${response.statusCode}');
+          // Handle the error appropriately
+        }
+      } else {
+        if (_isLoading) {
           _isLoading = false;
           update();
         }
-      } else {
-        _isLoading = false;
-        update();
       }
     } catch (e) {
-      print('Error fetching enquiry list: $e');
+      print('Error fetching property list: $e');
       _isLoading = false;
       update();
     }
   }
+
+
 
   String _vendorPropertyStatusID = 'active';
   String get vendorPropertyStatusID => _vendorPropertyStatusID;

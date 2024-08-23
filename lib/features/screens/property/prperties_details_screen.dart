@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/controller/bookmark_controller.dart';
 import 'package:get_my_properties/controller/properties_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
+import 'package:get_my_properties/data/models/response/property_model.dart';
 import 'package:get_my_properties/features/screens/Maps/property_location_map_component.dart';
 
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
+import 'package:get_my_properties/features/screens/inquiry/contact_agent_screen.dart';
+import 'package:get_my_properties/features/screens/inquiry/widgets/add_inquiry_dialog.dart';
 import 'package:get_my_properties/features/screens/property/widgets/browse_other_constructions.dart';
 import 'package:get_my_properties/features/screens/property/widgets/calculate_emi_section.dart';
 import 'package:get_my_properties/features/screens/property/widgets/floor_plans_pricing_section.dart';
@@ -21,12 +25,15 @@ import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/utils/styles.dart';
+import 'package:get_my_properties/utils/theme/price_converter.dart';
 
 class PropertiesDetailsScreen extends StatelessWidget {
   final String? title;
   final String? propertyId;
 
-  const PropertiesDetailsScreen({super.key, required this.title, this.propertyId});
+
+
+  const PropertiesDetailsScreen({super.key, required this.title, this.propertyId,});
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +42,10 @@ class PropertiesDetailsScreen extends StatelessWidget {
 
     });
 
+
     return Scaffold(
       appBar: CustomAppBar(
-        title: title,
+        title: 'Property Details',
         isBackButtonExist: true,
         menuWidget: CustomNotificationButton(
           tap: () {},
@@ -62,7 +70,7 @@ class PropertiesDetailsScreen extends StatelessWidget {
                       Expanded(
                           child: PrefixIconButton(
                         tap: () {
-                          showCustomSnackBar('Currently in the development');
+                          Get.to( ContactAgentScreen());
                         },
                         title: 'Contact Agent',
                       )),
@@ -72,7 +80,7 @@ class PropertiesDetailsScreen extends StatelessWidget {
                         backgroundColor: Theme.of(context).primaryColor,
                         textColor: Theme.of(context).cardColor,
                         tap: () {
-                          showCustomSnackBar('Currently in the development');
+                          Get.dialog( AddInquiryDialog(propertyId: list!.id.toString(),));
                         },
                         title: 'Inquire Now',
                       )),
@@ -84,20 +92,36 @@ class PropertiesDetailsScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       PropertiesImageSection(
-                         galleryImages: list!.galleryImages!,),
+                      GetBuilder<BookmarkController>(builder: (bookmarkControl) {
+                        bool isBookmarked = bookmarkControl.bookmarkIdList.contains(list!.id);
+                        return PropertiesImageSection(
+                          galleryImages: list.allImages,
+                          onTap: () {
+                            if (isBookmarked) {
+                              bookmarkControl.removeFromBookmarkById(list.id.toString());
+                            } else {
+                              bookmarkControl.addToBookmarkById(list.id.toString());
+                            }
+                          },
+                          color: isBookmarked
+                            ? Theme.of(context).primaryColor
+                            : Theme.of(context).cardColor.withOpacity(0.60),
+                        );
+                      }),
+
                       sizedBoxDefault(),
                        PropertyDetailsSection(
                         propertyTitle: title!,
-                          address: list.address.toString(),
-                          price:  list.price.toString(),
-                          propertyType:  list.typeId!.name.toString(),
+                          address: list!.address.toString(),
+                          price:  '₹ ${IndianPriceFormatter.formatIndianPrice(double.parse(list.price.toString(),))} - ${IndianPriceFormatter.formatIndianPrice(double.parse(list.marketPrice.toString(),))}',
+                          propertyType:
+                          list.type.name ?? '',
                           beds: list.bedroom.toString(),
                           bath: list.bathroom.toString(),
                           sqFt: list.area.toString(),
                          floors:  list.floor.toString(),
                          HOA: '89/mo',
-                         city:  list.cityId!.name.toString(),
+                         city:  list.city.name.toString(),
                          propertyDesc:  list.description.toString(),),
                        HighlightFactsSection(
                         room: list.room.toString(),
@@ -107,7 +131,7 @@ class PropertiesDetailsScreen extends StatelessWidget {
                         bedRoom: list.bedroom.toString(),
                         bathRoom:  list.bathroom.toString(),),
                       // const FloorPlansPricingSection(),
-                      PropertyLocationMapComponent(longitude: list.longitude!, latitude: list.latitude!,),
+                      // PropertyLocationMapComponent(longitude: list.longitude!, latitude: list.latitude!,),
                       // const LocationAdvantageSection(),
                       EmiCalculator(),
                       // const RatingAndReviewSection(),

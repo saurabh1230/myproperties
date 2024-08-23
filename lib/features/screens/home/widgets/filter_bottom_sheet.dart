@@ -11,6 +11,7 @@ import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
+import 'package:get_my_properties/utils/theme/price_converter.dart';
 
 class FilterBottomSheet extends StatelessWidget {
   const FilterBottomSheet({super.key});
@@ -26,7 +27,14 @@ class FilterBottomSheet extends StatelessWidget {
 
     return Container(
       height: Get.size.height * 0.80,
-      color: Theme.of(context).cardColor,
+      decoration:  BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(Dimensions.radius10),
+        topRight: Radius.circular(Dimensions.radius10),
+
+      )),
+
       child: StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return  Column(
@@ -89,15 +97,19 @@ class FilterBottomSheet extends StatelessWidget {
                                     final val = authControl.homeData!.propertyPurposes![index];
                                     return CustomSelectedButton(
                                       tap: () {
-                                        authControl.selectPropertyPurposeId(val.sId.toString());
+                                        // Set the selected ID or clear it if the same button is clicked
+                                        final newValue = authControl.propertyPurposeID == val.sId.toString() ? '' : val.sId.toString();
+                                        authControl.selectPropertyPurposeId(newValue);
                                         print(authControl.propertyPurposeID);
                                       },
                                       title: val.name.toString(),
-                                      isSelected: authControl.propertyPurposeID == val.sId.toString(), // Compare String values
+                                      isSelected: authControl.propertyPurposeID == val.sId.toString(), // Highlight if selected
                                     );
                                   },
                                 ),
                               ),
+
+
                               sizedBox20(),
                               Text(
                                 "Property Type",
@@ -112,17 +124,19 @@ class FilterBottomSheet extends StatelessWidget {
                                   authControl.homeData!.propertyTypes!.length,
                                       (index) {
                                     final propertyType = authControl.homeData!.propertyTypes![index];
+                                    final isSelected = authControl.propertyTypeIDs.contains(propertyType.sId.toString());
                                     return CustomSelectedButton(
                                       tap: () {
-                                        authControl.selectPropertyTypeId(propertyType.sId.toString());
-                                        print(authControl.propertyTypeID);
+                                        authControl.selectPropertyTypeIds(propertyType.sId.toString());
+                                        print(authControl.propertyTypeIDs.join(','));
                                       },
                                       title: propertyType.name.toString(),
-                                      isSelected: authControl.propertyTypeID == propertyType.sId.toString(), // Compare String values
+                                      isSelected: isSelected,
                                     );
                                   },
                                 ),
                               ),
+
                               sizedBox20(),
 
                               Text(
@@ -131,60 +145,42 @@ class FilterBottomSheet extends StatelessWidget {
                                     fontSize: Dimensions.fontSize15),
                               ),
                               sizedBox10(),
-                              Row(crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        "Any",
-                                        style: senRegular.copyWith(
-                                            color: Theme.of(context)
-                                                .primaryColor),
-                                      )),
-                                  Expanded(
-                                    child: Wrap(
-                                      spacing: 8.0, // Space between chips
-                                      runSpacing: 8.0, // Space between lines of chips
-                                      children: List.generate(
-                                        controller.spaceType.length,
-                                            (index) {
-                                          final spaceType = controller.spaceType[index];
-                                          return InkWell(
-                                            onTap: () {
-                                              controller.selectSpaceTypeID(spaceType);
-                                              print(controller.spaceTypeID);
-                                            },
-                                            child: Container(
-                                              height: 40,
-                                              width: 40,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context).primaryColor.withOpacity(0.10),
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  width: 0.5,
-                                                  color: controller.spaceTypeID == spaceType
-                                                      ? Theme.of(context).primaryColor
-                                                      : Theme.of(context).primaryColor.withOpacity(0.10),
-                                                ),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  spaceType,
-                                                  style: senRegular.copyWith(
-                                                    color: controller.spaceTypeID == spaceType
-                                                        ? Theme.of(context).primaryColor
-                                                        : Theme.of(context).disabledColor.withOpacity(0.40),
-                                                  ),
-                                                ),
-                                              ),
+                              Wrap(
+                                spacing: 8.0, // Space between chips
+                                runSpacing: 8.0, // Space between lines of chips
+                                children: List.generate(
+                                  controller.spaceType.length,
+                                      (index) {
+                                    final spaceType = controller.spaceType[index];
+                                    final isSelected = controller.spaceTypeIDs.contains(spaceType);
+                                    return InkWell(
+                                      onTap: () {
+                                        controller.selectSpaceTypeIDs(spaceType);
+                                        print(controller.spaceTypeIDs.join(','));
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        width: 90,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(Dimensions.radius10),
+                                          color: isSelected ? Theme.of(context).primaryColor.withOpacity(0.10) : Colors.transparent,
+                                          border: Border.all(
+                                            width: 0.5,
+                                            color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacity(0.10),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            '${spaceType} bhk',
+                                            style: senRegular.copyWith(
+                                              color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withOpacity(0.40),
                                             ),
-                                          );
-                                        },
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  )
-
-                                ],
+                                    );
+                                  },
+                                ),
                               ),
 
                               sizedBox20(),
@@ -194,61 +190,44 @@ class FilterBottomSheet extends StatelessWidget {
                                     fontSize: Dimensions.fontSize15),
                               ),
                               sizedBox10(),
-                              Row(crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        "Any",
-                                        style: senRegular.copyWith(
-                                            color: Theme.of(context)
-                                                .primaryColor),
-                                      )),
-                                  Expanded(
-                                    child: Wrap(
-                                      spacing: 8.0, // Space between chips
-                                      runSpacing: 8.0, // Space between lines of chips
-                                      children: List.generate(
-                                        controller.bathroomType.length,
-                                            (index) {
-                                          final spaceType = controller.bathroomType[index];
-                                          return InkWell(
-                                            onTap: () {
-                                              controller.selectBathroomTypeID(spaceType);
-                                              print(controller.bathroomID);
-                                            },
-                                            child: Container(
-                                              height: 40,
-                                              width: 40,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context).primaryColor.withOpacity(0.10),
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  width: 0.5,
-                                                  color: controller.bathroomID == spaceType
-                                                      ? Theme.of(context).primaryColor
-                                                      : Theme.of(context).primaryColor.withOpacity(0.10),
-                                                ),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  spaceType,
-                                                  style: senRegular.copyWith(
-                                                    color: controller.bathroomID == spaceType
-                                                        ? Theme.of(context).primaryColor
-                                                        : Theme.of(context).disabledColor.withOpacity(0.40),
-                                                  ),
-                                                ),
-                                              ),
+                              Wrap(
+                                spacing: 8.0, // Space between chips
+                                runSpacing: 8.0, // Space between lines of chips
+                                children: List.generate(
+                                  controller.bathroomType.length,
+                                      (index) {
+                                    final val = controller.bathroomType[index];
+                                    final isSelected = controller.bathroomIDs.contains(val);
+                                    return InkWell(
+                                      onTap: () {
+                                        controller.selectBathroomTypeIDs(val);
+                                        print(controller.bathroomIDs.join(','));
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                          color: isSelected ? Theme.of(context).primaryColor.withOpacity(0.10) : Colors.transparent,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            width: 0.5,
+                                            color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacity(0.10),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            val,
+                                            style: senRegular.copyWith(
+                                              color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withOpacity(0.40),
                                             ),
-                                          );
-                                        },
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  )
-
-                                ],
+                                    );
+                                  },
+                                ),
                               ),
+
                               sizedBox20(),
                               Text(
                                 "Other Options",
@@ -273,7 +252,7 @@ class FilterBottomSheet extends StatelessWidget {
                                   Column(
                                     children: [
                                       Text(
-                                        'Max Value: ₹ ${controller.endPriceValue.value.round().toString()}',
+                                        'Max Value: ₹ ${IndianPriceFormatter.formatIndianPrice(double.parse(controller.endPriceValue.value.round().toString()))}',
                                         style: senRegular.copyWith(
                                           fontSize: Dimensions.fontSizeDefault,
                                           color: Theme.of(context).primaryColor,
@@ -303,160 +282,178 @@ class FilterBottomSheet extends StatelessWidget {
                                   },
                                 )),
                               ),
-                              Text(
-                                "State",
-                                style: senRegular.copyWith(
-                                    fontSize: Dimensions.fontSize15),
-                              ),
-                              sizedBox10(),
-                              CustomDropdownButtonFormField<String>(
-                                value: authControl.homeData!.nearbyState!.isNotEmpty
-                                    ? authControl.homeData!.nearbyState!
-                                    .firstWhere(
-                                      (religion) => religion.sId == controller.stateId,
-                                  orElse: () => authControl.homeData!.nearbyState!.first,
-                                )
-                                    .name
-                                    : null, // Handle empty list scenario
-                                items: authControl.homeData!.nearbyState!
-                                    .map((position) => position.name!)
-                                    .toList(),
-                                hintText: "Select State",
-                                onChanged: (String? value) {
-                                  if (value != null) {
-                                    var selected = authControl.homeData!.nearbyState!.firstWhere(
-                                          (position) => position.name == value,
-                                      orElse: () => authControl.homeData!.nearbyState!.first,
-                                    );
-                                    controller.setStateId(selected.sId!);
-                                    print(controller.stateId);
-                                  }
-                                },
-                              ),
-                              sizedBox20(),
-                              Text(
-                                "Near By Location",
-                                style: senRegular.copyWith(
-                                    fontSize: Dimensions.fontSize15),
-                              ),
-                              sizedBox10(),
-                              CustomDropdownButtonFormField<String>(
-                                value: authControl.homeData!.nearbyLocations!.isNotEmpty
-                                    ? authControl.homeData!.nearbyLocations!
-                                    .firstWhere(
-                                      (religion) => religion.sId == controller.nearByLocationId,
-                                  orElse: () => authControl.homeData!.nearbyLocations!.first,
-                                )
-                                    .name
-                                    : null, // Handle empty list scenario
-                                items: authControl.homeData!.nearbyLocations!
-                                    .map((position) => position.name!)
-                                    .toList(),
-                                hintText: "Select Location",
-                                onChanged: (String? value) {
-                                  if (value != null) {
-                                    var selected = authControl.homeData!.nearbyLocations!.firstWhere(
-                                          (position) => position.name == value,
-                                      orElse: () => authControl.homeData!.nearbyLocations!.first,
-                                    );
-                                    controller.setNearByLocationId(selected.sId!);
-                                    print(controller.nearByLocationId);
-                                  }
-                                },
-                              ),
-                              sizedBox20(),
+                              // Text(
+                              //   "State",
+                              //   style: senRegular.copyWith(
+                              //       fontSize: Dimensions.fontSize15),
+                              // ),
+                              // sizedBox10(),
+                              // CustomDropdownButtonFormField<String>(
+                              //   value: authControl.homeData!.nearbyState!.isNotEmpty
+                              //       ? authControl.homeData!.nearbyState!
+                              //       .firstWhere(
+                              //         (religion) => religion.sId == controller.stateId,
+                              //     orElse: () => authControl.homeData!.nearbyState!.first,
+                              //   )
+                              //       .name
+                              //       : null, // Handle empty list scenario
+                              //   items: authControl.homeData!.nearbyState!
+                              //       .map((position) => position.name!)
+                              //       .toList(),
+                              //   hintText: "Select State",
+                              //   onChanged: (String? value) {
+                              //     if (value != null) {
+                              //       var selected = authControl.homeData!.nearbyState!.firstWhere(
+                              //             (position) => position.name == value,
+                              //         orElse: () => authControl.homeData!.nearbyState!.first,
+                              //       );
+                              //       controller.setStateId(selected.sId!);
+                              //       print(controller.stateId);
+                              //     }
+                              //   },
+                              // ),
+                              // sizedBox20(),
+                              // Text(
+                              //   "Near By Location",
+                              //   style: senRegular.copyWith(
+                              //       fontSize: Dimensions.fontSize15),
+                              // ),
+                              // sizedBox10(),
+                              // CustomDropdownButtonFormField<String>(
+                              //   value: authControl.homeData!.nearbyLocations!.isNotEmpty
+                              //       ? authControl.homeData!.nearbyLocations!
+                              //       .firstWhere(
+                              //         (religion) => religion.sId == controller.nearByLocationId,
+                              //     orElse: () => authControl.homeData!.nearbyLocations!.first,
+                              //   )
+                              //       .name
+                              //       : null, // Handle empty list scenario
+                              //   items: authControl.homeData!.nearbyLocations!
+                              //       .map((position) => position.name!)
+                              //       .toList(),
+                              //   hintText: "Select Location",
+                              //   onChanged: (String? value) {
+                              //     if (value != null) {
+                              //       var selected = authControl.homeData!.nearbyLocations!.firstWhere(
+                              //             (position) => position.name == value,
+                              //         orElse: () => authControl.homeData!.nearbyLocations!.first,
+                              //       );
+                              //       controller.setNearByLocationId(selected.sId!);
+                              //       print(controller.nearByLocationId);
+                              //     }
+                              //   },
+                              // ),
+                              // sizedBox20(),
                               Text(
                                 "Properties Amenities",
                                 style: senRegular.copyWith(
                                     fontSize: Dimensions.fontSize15),
                               ),
                               sizedBox10(),
-                              CustomDropdownButtonFormField<String>(
-                                value: authControl.homeData!.propertyAmenities!.isNotEmpty
-                                    ? authControl.homeData!.propertyAmenities!
-                                    .firstWhere(
-                                      (religion) => religion.sId == authControl.amenityId,
-                                  orElse: () => authControl.homeData!.propertyAmenities!.first,
-                                )
-                                    .name
-                                    : null, // Handle empty list scenario
-                                items: authControl.homeData!.propertyAmenities!
-                                    .map((position) => position.name!)
-                                    .toList(),
-                                hintText: "Select Properties Amenities",
-                                onChanged: (String? value) {
-                                  if (value != null) {
-                                    var selected = authControl.homeData!.propertyAmenities!.firstWhere(
-                                          (position) => position.name == value,
-                                      orElse: () => authControl.homeData!.propertyAmenities!.first,
+                              Wrap(
+                                spacing: 8.0, // Space between chips
+                                runSpacing: 8.0, // Space between lines of chips
+                                children: List.generate(
+                                  authControl.homeData!.propertyAmenities!.length,
+                                      (index) {
+                                    final val = authControl.homeData!.propertyAmenities![index];
+                                    final isSelected = authControl.amenityIds.contains(val.sId.toString());
+                                    return CustomSelectedButton(
+                                      tap: () {
+                                        authControl.setAmenityIds(val.sId.toString());
+                                        print(authControl.amenityIds.join(','));
+                                      },
+                                      title: val.name.toString(),
+                                      isSelected: isSelected,
                                     );
-                                    authControl.setAmenityId(selected.sId!);
-                                    print(authControl.amenityId);
-                                  }
-                                },
+                                  },
+                                ),
                               ),
-                              sizedBox20(),
-                              // Text(
-                              //   "Property Category",
-                              //   style: senRegular.copyWith(
-                              //       fontSize: Dimensions.fontSize15),
-                              // ),
-                              // sizedBox10(),
+
+
                               // CustomDropdownButtonFormField<String>(
-                              //   value: authControl.homeData!.propertyCategory!.isNotEmpty
-                              //       ? authControl.homeData!.propertyCategory!
+                              //   value: authControl.homeData!.propertyAmenities!.isNotEmpty
+                              //       ? authControl.homeData!.propertyAmenities!
                               //       .firstWhere(
-                              //         (religion) => religion.sId == controller.propertyCategoryId,
-                              //     orElse: () => authControl.homeData!.propertyCategory!.first,
+                              //         (religion) => religion.sId == authControl.amenityId,
+                              //     orElse: () => authControl.homeData!.propertyAmenities!.first,
                               //   )
                               //       .name
                               //       : null, // Handle empty list scenario
-                              //   items: authControl.homeData!.propertyCategory!
+                              //   items: authControl.homeData!.propertyAmenities!
                               //       .map((position) => position.name!)
                               //       .toList(),
                               //   hintText: "Select Properties Amenities",
                               //   onChanged: (String? value) {
                               //     if (value != null) {
-                              //       var selected = authControl.homeData!.propertyCategory!.firstWhere(
+                              //       var selected = authControl.homeData!.propertyAmenities!.firstWhere(
                               //             (position) => position.name == value,
-                              //         orElse: () => authControl.homeData!.propertyCategory!.first,
+                              //         orElse: () => authControl.homeData!.propertyAmenities!.first,
                               //       );
-                              //       controller.setPropertyCategoryId(selected.sId!);
-                              //       print(controller.propertyCategoryId);
+                              //       authControl.setAmenityId(selected.sId!);
+                              //       print(authControl.amenityId);
                               //     }
                               //   },
                               // ),
-                              Obx(() => FilterScreenField(
-                                tap: () {
-                                  Get.dialog(
-                                    Obx(() => CustomDialogCheckBox(
-                                      itemList: authControl.homeData!.propertyCategory!
-                                          .map((community) => community.name!)
-                                          .toList(),
-                                      selectedItems: controller.propertyCategoryName.toList(),
-                                      onItemSelected: (String selectedItem) {
-                                        final category = authControl.homeData!.propertyCategory!
-                                            .firstWhere((community) => community.name == selectedItem);
-                                        final categoryId = category.sId!;
-
-                                        if (controller.propertyCategoryName.contains(selectedItem)) {
-                                          controller.setPropertyCategoryIds(categoryId);
-                                          controller.setPropertyCategoryName(selectedItem);
-
-                                        } else {
-                                          controller.setPropertyCategoryIds(categoryId);
-                                          controller.setPropertyCategoryName(selectedItem);
-                                        }
-                                        print('Selected IDs: ${controller.propertyCategoryIds.join(', ')}');
-                                        print('Selected Names: ${controller.propertyCategoryName}');
+                              sizedBox20(),
+                              Text(
+                                "Property Category",
+                                style: senRegular.copyWith(
+                                    fontSize: Dimensions.fontSize15),
+                              ),
+                              sizedBox10(),
+                              Wrap(
+                                spacing: 8.0, // Space between chips
+                                runSpacing: 8.0, // Space between lines of chips
+                                children: List.generate(
+                                  authControl.homeData!.propertyCategory!.length,
+                                      (index) {
+                                    final val = authControl.homeData!.propertyCategory![index];
+                                    final isSelected = authControl.propertyCategoryId == val.sId.toString();
+                                    return CustomSelectedButton(
+                                      tap: () {
+                                        authControl.selectPropertyCategoryId(val.sId.toString());
+                                        print(authControl.propertyCategoryId);
                                       },
-                                      dialogTitle: 'Select Property Category',
-                                    )),
-                                  );
-                                },
-                                title: 'Amenity',
-                                data:controller.propertyCategoryName.isEmpty? 'Select Category' :  controller.propertyCategoryName.join(', '), // Show selected names
-                              )),
+                                      title: val.name.toString(),
+                                      isSelected: isSelected,
+                                    );
+                                  },
+                                ),
+                              ),
+                              sizedBox20(),
+
+                              // Obx(() => FilterScreenField(
+                              //   tap: () {
+                              //     Get.dialog(
+                              //       Obx(() => CustomDialogCheckBox(
+                              //         itemList: authControl.homeData!.propertyCategory!
+                              //             .map((community) => community.name!)
+                              //             .toList(),
+                              //         selectedItems: controller.propertyCategoryName.toList(),
+                              //         onItemSelected: (String selectedItem) {
+                              //           final category = authControl.homeData!.propertyCategory!
+                              //               .firstWhere((community) => community.name == selectedItem);
+                              //           final categoryId = category.sId!;
+                              //
+                              //           if (controller.propertyCategoryName.contains(selectedItem)) {
+                              //             controller.setPropertyCategoryIds(categoryId);
+                              //             controller.setPropertyCategoryName(selectedItem);
+                              //
+                              //           } else {
+                              //             controller.setPropertyCategoryIds(categoryId);
+                              //             controller.setPropertyCategoryName(selectedItem);
+                              //           }
+                              //           print('Selected IDs: ${controller.propertyCategoryIds.join(', ')}');
+                              //           print('Selected Names: ${controller.propertyCategoryName}');
+                              //         },
+                              //         dialogTitle: 'Select Property Category',
+                              //       )),
+                              //     );
+                              //   },
+                              //   title: 'Amenity',
+                              //   data:controller.propertyCategoryName.isEmpty? 'Select Category' :  controller.propertyCategoryName.join(', '), // Show selected names
+                              // )),
 
 
 
@@ -613,17 +610,26 @@ class FilterBottomSheet extends StatelessWidget {
                                     child: CustomButtonWidget(
                                       buttonText: "Apply",
                                       onPressed: () {
+                                        print('propertyPurposeID: ${authControl.propertyPurposeID}');
+                                        print('propertyTypeID: ${authControl.propertyTypeIDs.join(',')}');
+                                        print('startPriceValue: ${controller.startPriceValue.toString()}');
+                                        print('endPriceValue: ${controller.endPriceValue.toString()}');
+                                        print('spaceTypeID: ${controller.spaceTypeIDs.join(',')}');
+                                        print('stateId: ${controller.stateId}');
+                                        print('bathroomID: ${controller.bathroomIDs.join(',')}');
+                                        print('propertyCategoryIds: ${controller.propertyCategoryIds.join(', ')}');
+                                        print('amenityId: ${authControl.amenityIds.join(',')}');
                                         Get.find<PropertyController>().getPropertyList(page: '1',
                                           stateId: controller.stateId,
                                           cityId: controller.nearByLocationId,
                                           purposeId: authControl.propertyPurposeID,
-                                          typeId: authControl.propertyTypeID,
+                                          typeId: authControl.propertyTypeIDs.join(','),
                                           minPrice: controller.startPriceValue.toString(),
                                           maxPrice: controller.endPriceValue.toString(),
-                                          space: controller.spaceTypeID,
-                                          bathroom: controller.bathroomID,
-                                          categoryId:  '${controller.propertyCategoryIds.join(', ')}',
-                                          amenityId: authControl.amenityId,
+                                          space: controller.spaceTypeIDs.join(','),
+                                          bathroom: controller.bathroomIDs.join(','),
+                                          categoryId:  controller.propertyCategoryIds.join(', '),
+                                          amenityId: authControl.amenityIds.join(','),
                                         );
                                         Get.back();
                                       },

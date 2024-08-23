@@ -478,6 +478,7 @@ class PropertyController extends GetxController implements GetxService {
     String? latitude,
     String? longitude,
     String? query,
+    String? purposeId,
 
   }) async {
     _isPropertyLoading = true;
@@ -492,7 +493,7 @@ class PropertyController extends GetxController implements GetxService {
         _pageList.add(page!);
 
         Response response = await propertyRepo.userSearchPropertyRepo(
-            page, limit, latitude, longitude, query);
+            page, limit, latitude, longitude, query,purposeId);
 
         if (response.statusCode == 200) {
           List<dynamic> dataList = response.body['data'];

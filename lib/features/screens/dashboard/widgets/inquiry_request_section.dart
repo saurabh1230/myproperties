@@ -114,46 +114,48 @@ class InquiryRequestShimmer extends StatelessWidget {
               ),
             ],
           ),
-          ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 4,
-            shrinkWrap: true,
-            itemBuilder: (_, i) {
-              return CustomDecoratedContainer(
-                vertical: Dimensions.paddingSize20,
-                color: Colors.black.withOpacity(0.1),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                         Flexible(
-                          child: Column( crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomShimmerTextHolder(horizontalPadding: 0,),
-                              sizedBox10(),
-                              CustomShimmerTextHolder(horizontalPadding: 0,),
-                            ],
+          Expanded(
+            child: ListView.separated(
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 10,
+              shrinkWrap: true,
+              itemBuilder: (_, i) {
+                return CustomDecoratedContainer(
+                  vertical: Dimensions.paddingSize20,
+                  color: Colors.black.withOpacity(0.1),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                           Flexible(
+                            child: Column( crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomShimmerTextHolder(horizontalPadding: 0,),
+                                sizedBox10(),
+                                CustomShimmerTextHolder(horizontalPadding: 0,),
+                              ],
+                            ),
                           ),
-                        ),
-
-
-                        Flexible(
-                          child: Icon(
-                            Icons.arrow_forward,
-                            color: Colors.black.withOpacity(0.1),
-                            size: Dimensions.fontSize18,
+            
+            
+                          Flexible(
+                            child: Icon(
+                              Icons.arrow_forward,
+                              color: Colors.black.withOpacity(0.1),
+                              size: Dimensions.fontSize18,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-
-
-                  ],
-                ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) => sizedBoxDefault(),
+                        ],
+                      ),
+            
+            
+                    ],
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) => sizedBoxDefault(),
+            ),
           ),
         ],
       ),

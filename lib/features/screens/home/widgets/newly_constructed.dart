@@ -11,6 +11,7 @@ import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
+import 'package:get_my_properties/utils/theme/price_converter.dart';
 
 class NewlyConstructedSection extends StatelessWidget {
   const NewlyConstructedSection({super.key});
@@ -51,7 +52,7 @@ class NewlyConstructedSection extends StatelessWidget {
                     onTap: () => Get.toNamed(
                         RouteHelper.getPropertiesDetailsScreen(
                             list[i].title.toString(),
-                            list[i].sId.toString())),
+                            list[i].id)),
                     child: SizedBox(
                       width: 307,
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +68,7 @@ class NewlyConstructedSection extends StatelessWidget {
                                         CustomNetworkImageWidget(
                                             height: 222,
                                             radius: Dimensions.radius5,
-                                            image: '${AppConstants.imgBaseUrl}${list[i].displayImage!.image}'),
+                                            image: '${AppConstants.imgBaseUrl}${list[i].displayImages[0].image}'),
                                         sizedBox10(),
                                         Text(list[i].title.toString(),
                                           style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),
@@ -81,7 +82,7 @@ class NewlyConstructedSection extends StatelessWidget {
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,),
                                         sizedBox5(),
-                                        Text(" ₹ ${list[i].price.toString()} | ${list[i].bedroom.toString()} BHK Apartment",
+                                        Text("₹ ${IndianPriceFormatter.formatIndianPrice(double.parse(list[i].price.toString()))} - ${IndianPriceFormatter.formatIndianPrice(double.parse(list[i].marketPrice.toString()))} | ${list[i].bedroom.toString()} BHK Apartment",
                                           style: senRegular.copyWith(fontSize: Dimensions.fontSize14,color: Theme.of(context).primaryColor),),
                                       ],
                                     ),

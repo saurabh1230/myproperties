@@ -67,6 +67,19 @@ class ExploreController extends GetxController implements GetxService {
     update();
   }
 
+
+  List<String> _spaceTypeIDs = [];
+  List<String> get spaceTypeIDs => _spaceTypeIDs;
+
+  void selectSpaceTypeIDs(String val) {
+    if (_spaceTypeIDs.contains(val)) {
+      _spaceTypeIDs.remove(val); // Deselect the item
+    } else {
+      _spaceTypeIDs.add(val); // Select the item
+    }
+    update();
+  }
+
   final List<String> bathroomType = ['1', '2', '3', '+4'];
   String _bathroomID = '';
   String get bathroomID => _bathroomID;
@@ -74,6 +87,19 @@ class ExploreController extends GetxController implements GetxService {
     _bathroomID = val;
     update();
   }
+
+  List<String> _bathroomIDs = [];
+  List<String> get bathroomIDs => _bathroomIDs;
+
+  void selectBathroomTypeIDs(String val) {
+    if (_bathroomIDs.contains(val)) {
+      _bathroomIDs.remove(val); // Deselect the item
+    } else {
+      _bathroomIDs.add(val); // Select the item
+    }
+    update();
+  }
+
 
   int _budgetTypeMin = 0;
   int get budgetTypeMin => _budgetTypeMin;
@@ -191,6 +217,9 @@ class ExploreController extends GetxController implements GetxService {
       _propertyCategoryName.add(val);
     }
   }
+
+
+
 
   final RxList<String> _propertyCategoryIds = <String>[].obs;
   List<String> get propertyCategoryIds => _propertyCategoryIds.toList();

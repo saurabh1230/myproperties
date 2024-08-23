@@ -34,7 +34,7 @@ class SaleAndRentPropertySection extends StatelessWidget {
               child: EmptyDataWidget(
                 image: Images.emptyDataImage,
                 fontColor: Theme.of(context).disabledColor,
-                text: 'No ${type} Properties yet',
+                text: 'No $type Properties yet',
               )) :
         isLoading ? const ExploreScreenShimmer() :
         Padding(
@@ -51,11 +51,12 @@ class SaleAndRentPropertySection extends StatelessWidget {
                 itemBuilder: (_,i) {
                   return RecommendedItemCard(
                     vertical: true,
-                    image: list[i].displayImage!.image.toString(),
+                    image: list[i].displayImages[0].image,
                     title:  list[i].title.toString(),
                     description:  list[i].description.toString(),
-                    price: '₹ ${list[i].price}',
-                    propertyId: list[i].sId.toString(),
+                    price: '${list[i].price}',
+                    propertyId: list[i].id.toString(),
+                    markerPrice:  list[i].marketPrice.toString(),
                     );
                 }, separatorBuilder: (BuildContext context, int index) => const SizedBox(height: Dimensions.paddingSizeDefault,),),
             )

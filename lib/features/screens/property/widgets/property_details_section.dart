@@ -58,7 +58,7 @@ class PropertyDetailsSection extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: Text(
-                    "₹ ${price}",
+                    "${price}",
                     style: senRegular.copyWith(fontSize: Dimensions.fontSize24),
                   ),
                 ),

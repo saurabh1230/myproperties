@@ -7,6 +7,7 @@ import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/features/widgets/empty_data_widget.dart';
 import 'package:get_my_properties/utils/date_converter.dart';
+import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 
@@ -20,11 +21,13 @@ class AllEnquiryScreens extends StatefulWidget {
 }
 
 class _AllEnquiryScreensState extends State<AllEnquiryScreens> {
+
+
   @override
   Widget build(BuildContext context) {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   Get.find<VendorController>().getAllEnquiryList();
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<VendorController>().getAllEnquiryList(page: '1');
+    });
     return Scaffold(
       appBar: const CustomAppBar(title: 'All Enquiry',isBackButtonExist: true,),
       body: GetBuilder<VendorController>(builder: (vendorControl) {
@@ -45,6 +48,7 @@ class _AllEnquiryScreensState extends State<AllEnquiryScreens> {
           child: Column(
             children: [
               ListView.separated(
+                padding: const EdgeInsets.all(Dimensions.fontSizeDefault),
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: list!.length,
                 shrinkWrap: true,

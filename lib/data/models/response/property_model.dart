@@ -1,272 +1,345 @@
+import 'dart:convert';
+
 class PropertyModel {
-  String? sId;
-  String? uniqueId;
-  String? userType;
-  String? slug;
-  String? title;
-  String? description;
-  String? metaTitle;
-  String? metaDescription;
-  String? address;
-  int? views;
-  int? unit;
-  List<GalleryImages>? galleryImages;
-  String? videoLink;
-  int? room;
-  int? space;
-  int? bedroom;
-  int? bathroom;
-  int? floor;
-  int? kitchen;
-  int? builtYear;
-  int? area;
-  String? direction;
-  int? price;
-  int? marketPrice;
-  bool? isFeatured;
-  bool? topProperty;
-  String? expiryDate;
-  String? status;
-  String? createdAt;
-  Type? type;
-  Type? purpose;
-  Type? category;
-  List<Amenity>? amenity;
-  GalleryImages? displayImage;
-  Type? state;
-  Type? city;
-  List<Locality>? locality;
+  final String id;
+  final String uniqueId;
+  final String userType;
+  final String slug;
+  final String title;
+  final String description;
+  final String metaTitle;
+  final String metaDescription;
+  final String address;
+  final int views;
+  final int unit;
+  final List<GalleryImage> galleryImages;
+  final String videoLink;
+  final int room;
+  final int space;
+  final int bedroom;
+  final int bathroom;
+  final int floor;
+  final int kitchen;
+  // final DateTime builtYear;
+  final int area;
+  final String direction;
+  final int price;
+  final int marketPrice;
+  final bool isFeatured;
+  final bool topProperty;
+  final DateTime? expiryDate;
+  final String status;
+  final DateTime createdAt;
+  final PropertyType type;
+  final PropertyPurpose purpose;
+  final PropertyCategory category;
+  final List<Amenity> amenities;
+  final List<DisplayImage> displayImages;
+  final State state;
+  final City city;
+  final List<dynamic> locality;
+  final List<AllImage> allImages;
 
   PropertyModel({
-    this.sId,
-    this.uniqueId,
-    this.userType,
-    this.slug,
-    this.title,
-    this.description,
-    this.metaTitle,
-    this.metaDescription,
-    this.address,
-    this.views,
-    this.unit,
-    this.galleryImages,
-    this.videoLink,
-    this.room,
-    this.space,
-    this.bedroom,
-    this.bathroom,
-    this.floor,
-    this.kitchen,
-    this.builtYear,
-    this.area,
-    this.direction,
-    this.price,
-    this.marketPrice,
-    this.isFeatured,
-    this.topProperty,
+    required this.id,
+    required this.uniqueId,
+    required this.userType,
+    required this.slug,
+    required this.title,
+    required this.description,
+    required this.metaTitle,
+    required this.metaDescription,
+    required this.address,
+    required this.views,
+    required this.unit,
+    required this.galleryImages,
+    required this.videoLink,
+    required this.room,
+    required this.space,
+    required this.bedroom,
+    required this.bathroom,
+    required this.floor,
+    required this.kitchen,
+    // required this.builtYear,
+    required this.area,
+    required this.direction,
+    required this.price,
+    required this.marketPrice,
+    required this.isFeatured,
+    required this.topProperty,
     this.expiryDate,
-    this.status,
-    this.createdAt,
-    this.type,
-    this.purpose,
-    this.category,
-    this.amenity,
-    this.displayImage,
-    this.state,
-    this.city,
-    this.locality,
+    required this.status,
+    required this.createdAt,
+    required this.type,
+    required this.purpose,
+    required this.category,
+    required this.amenities,
+    required this.displayImages,
+    required this.state,
+    required this.city,
+    required this.locality,
+    required this.allImages,
   });
 
-  PropertyModel.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    uniqueId = json['unique_id'];
-    userType = json['user_type'];
-    slug = json['slug'];
-    title = json['title'];
-    description = json['description'];
-    metaTitle = json['meta_title'];
-    metaDescription = json['meta_description'];
-    address = json['address'];
-    views = json['views'];
-    unit = json['unit'];
-    if (json['gallery_images'] != null) {
-      galleryImages = <GalleryImages>[];
-      json['gallery_images'].forEach((v) {
-        galleryImages!.add(GalleryImages.fromJson(v));
-      });
-    }
+  factory PropertyModel.fromJson(Map<String, dynamic> json) => PropertyModel(
+    id: json['_id'],
+    uniqueId: json['unique_id'],
+    userType: json['user_type'],
+    slug: json['slug'],
+    title: json['title'],
+    description: json['description'],
+    metaTitle: json['meta_title'],
+    metaDescription: json['meta_description'],
+    address: json['address'],
+    views: json['views'],
+    unit: json['unit'],
+    galleryImages: List<GalleryImage>.from(json['gallery_images'].map((x) => GalleryImage.fromJson(x))),
+    videoLink: json['video_link'],
+    room: json['room'],
+    space: json['space'],
+    bedroom: json['bedroom'],
+    bathroom: json['bathroom'],
+    floor: json['floor'],
+    kitchen: json['kitchen'],
+    // builtYear: DateTime.parse(json['built_year']),
+    area: json['area'],
+    direction: json['direction'],
+    price: json['price'],
+    marketPrice: json['market_price'],
+    isFeatured: json['is_featured'],
+    topProperty: json['top_property'],
+    expiryDate: json['expiry_date'] != null ? DateTime.parse(json['expiry_date']) : null,
+    status: json['status'],
+    createdAt: DateTime.parse(json['created_at']),
+    type: PropertyType.fromJson(json['type']),
+    purpose: PropertyPurpose.fromJson(json['purpose']),
+    category: PropertyCategory.fromJson(json['category']),
+    amenities: List<Amenity>.from(json['amenity'].map((x) => Amenity.fromJson(x))),
+    displayImages: List<DisplayImage>.from(json['display_image'].map((x) => DisplayImage.fromJson(x))),
+    state: State.fromJson(json['state']),
+    city: City.fromJson(json['city']),
+    locality: List<dynamic>.from(json['locality']),
+    allImages: List<AllImage>.from(json['all_images'].map((x) => AllImage.fromJson(x))),
+  );
 
-    videoLink = json['video_link'];
-    room = json['room'];
-    space = json['space'];
-    bedroom = json['bedroom'];
-    bathroom = json['bathroom'];
-    floor = json['floor'];
-    kitchen = json['kitchen'];
-    builtYear = json['built_year'];
-    area = json['area'];
-    direction = json['direction'];
-    price = json['price'];
-    marketPrice = json['market_price'];
-    isFeatured = json['is_featured'];
-    topProperty = json['top_property'];
-    expiryDate = json['expiry_date'];
-    status = json['status'];
-    createdAt = json['created_at'];
-    type = json['type'] != null ? Type.fromJson(json['type']) : null;
-
-    purpose = json['purpose'] != null ? Type.fromJson(json['purpose']) : null;
-    category = json['category'] != null ? Type.fromJson(json['category']) : null;
-    if (json['amenity'] != null) {
-      amenity = <Amenity>[];
-      json['amenity'].forEach((v) {
-        amenity!.add(Amenity.fromJson(v));
-      });
-    }
-    displayImage = json['display_image'] != null ? GalleryImages.fromJson(json['display_image']) : null;
-    state = json['state'] != null ? Type.fromJson(json['state']) : null;
-    city = json['city'] != null ? Type.fromJson(json['city']) : null;
-    if (json['locality'] != null) {
-      locality = <Locality>[];
-      json['locality'].forEach((v) {
-        locality!.add(Locality.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['unique_id'] = uniqueId;
-    data['user_type'] = userType;
-    data['slug'] = slug;
-    data['title'] = title;
-    data['description'] = description;
-    data['meta_title'] = metaTitle;
-    data['meta_description'] = metaDescription;
-    data['address'] = address;
-    data['views'] = views;
-    data['unit'] = unit;
-    if (galleryImages != null) {
-      data['gallery_images'] = galleryImages!.map((v) => v.toJson()).toList();
-    }
-    data['video_link'] = videoLink;
-    data['room'] = room;
-    data['space'] = space;
-    data['bedroom'] = bedroom;
-    data['bathroom'] = bathroom;
-    data['floor'] = floor;
-    data['kitchen'] = kitchen;
-    data['built_year'] = builtYear;
-    data['area'] = area;
-    data['direction'] = direction;
-    data['price'] = price;
-    data['market_price'] = marketPrice;
-    data['is_featured'] = isFeatured;
-    data['top_property'] = topProperty;
-    data['expiry_date'] = expiryDate;
-    data['status'] = status;
-    data['created_at'] = createdAt;
-    if (type != null) {
-      data['type'] = type!.toJson();
-    }
-    if (purpose != null) {
-      data['purpose'] = purpose!.toJson();
-    }
-    if (category != null) {
-      data['category'] = category!.toJson();
-    }
-    if (amenity != null) {
-      data['amenity'] = amenity!.map((v) => v.toJson()).toList();
-    }
-    if (displayImage != null) {
-      data['display_image'] = displayImage!.toJson();
-    }
-    if (state != null) {
-      data['state'] = state!.toJson();
-    }
-    if (city != null) {
-      data['city'] = city!.toJson();
-    }
-    if (locality != null) {
-      data['locality'] = locality!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    '_id': id,
+    'unique_id': uniqueId,
+    'user_type': userType,
+    'slug': slug,
+    'title': title,
+    'description': description,
+    'meta_title': metaTitle,
+    'meta_description': metaDescription,
+    'address': address,
+    'views': views,
+    'unit': unit,
+    'gallery_images': List<dynamic>.from(galleryImages.map((x) => x.toJson())),
+    'video_link': videoLink,
+    'room': room,
+    'space': space,
+    'bedroom': bedroom,
+    'bathroom': bathroom,
+    'floor': floor,
+    'kitchen': kitchen,
+    // 'built_year': builtYear.toIso8601String(),
+    'area': area,
+    'direction': direction,
+    'price': price,
+    'market_price': marketPrice,
+    'is_featured': isFeatured,
+    'top_property': topProperty,
+    'expiry_date': expiryDate?.toIso8601String(),
+    'status': status,
+    'created_at': createdAt.toIso8601String(),
+    'type': type.toJson(),
+    'purpose': purpose.toJson(),
+    'category': category.toJson(),
+    'amenity': List<dynamic>.from(amenities.map((x) => x.toJson())),
+    'display_image': List<dynamic>.from(displayImages.map((x) => x.toJson())),
+    'state': state.toJson(),
+    'city': city.toJson(),
+    'locality': List<dynamic>.from(locality),
+    'all_images': List<dynamic>.from(allImages.map((x) => x.toJson())),
+  };
 }
 
-class GalleryImages {
-  String? sId;
-  String? image;
+class GalleryImage {
+  final String id;
+  final String image;
 
-  GalleryImages({this.sId, this.image});
+  GalleryImage({
+    required this.id,
+    required this.image,
+  });
 
-  GalleryImages.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    image = json['image'];
-  }
+  factory GalleryImage.fromJson(Map<String, dynamic> json) => GalleryImage(
+    id: json['_id'],
+    image: json['image'],
+  );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['image'] = image;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    '_id': id,
+    'image': image,
+  };
 }
 
-class Type {
-  String? sId;
-  String? name;
+class DisplayImage {
+  final String id;
+  final String image;
 
-  Type({this.sId, this.name});
+  DisplayImage({
+    required this.id,
+    required this.image,
+  });
 
-  Type.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-  }
+  factory DisplayImage.fromJson(Map<String, dynamic> json) => DisplayImage(
+    id: json['_id'],
+    image: json['image'],
+  );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['name'] = name;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    '_id': id,
+    'image': image,
+  };
+}
+
+class AllImage {
+  final String id;
+  final String image;
+
+  AllImage({
+    required this.id,
+    required this.image,
+  });
+
+  factory AllImage.fromJson(Map<String, dynamic> json) => AllImage(
+    id: json['_id'],
+    image: json['image'],
+  );
+
+  Map<String, dynamic> toJson() => {
+    '_id': id,
+    'image': image,
+  };
+}
+
+class PropertyType {
+  final String id;
+  final String name;
+
+  PropertyType({
+    required this.id,
+    required this.name,
+  });
+
+  factory PropertyType.fromJson(Map<String, dynamic> json) => PropertyType(
+    id: json['_id'],
+    name: json['name'],
+  );
+
+  Map<String, dynamic> toJson() => {
+    '_id': id,
+    'name': name,
+  };
+}
+
+class PropertyPurpose {
+  final String id;
+  final String name;
+
+  PropertyPurpose({
+    required this.id,
+    required this.name,
+  });
+
+  factory PropertyPurpose.fromJson(Map<String, dynamic> json) => PropertyPurpose(
+    id: json['_id'],
+    name: json['name'],
+  );
+
+  Map<String, dynamic> toJson() => {
+    '_id': id,
+    'name': name,
+  };
+}
+
+class PropertyCategory {
+  final String id;
+  final String name;
+
+  PropertyCategory({
+    required this.id,
+    required this.name,
+  });
+
+  factory PropertyCategory.fromJson(Map<String, dynamic> json) => PropertyCategory(
+    id: json['_id'],
+    name: json['name'],
+  );
+
+  Map<String, dynamic> toJson() => {
+    '_id': id,
+    'name': name,
+  };
 }
 
 class Amenity {
-  String? sId;
-  String? name;
+  final String id;
+  final String name;
 
-  Amenity({this.sId, this.name});
+  Amenity({
+    required this.id,
+    required this.name,
+  });
 
-  Amenity.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-  }
+  factory Amenity.fromJson(Map<String, dynamic> json) => Amenity(
+    id: json['_id'],
+    name: json['name'],
+  );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['name'] = name;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    '_id': id,
+    'name': name,
+  };
 }
 
-class Locality {
-  String? sId;
-  String? name;
+class State {
+  final String id;
+  final String name;
 
-  Locality({this.sId, this.name});
+  State({
+    required this.id,
+    required this.name,
+  });
 
-  Locality.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-  }
+  factory State.fromJson(Map<String, dynamic> json) => State(
+    id: json['_id'],
+    name: json['name'],
+  );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['name'] = name;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    '_id': id,
+    'name': name,
+  };
+}
+
+class City {
+  final String id;
+  final String name;
+
+  City({
+    required this.id,
+    required this.name,
+  });
+
+  factory City.fromJson(Map<String, dynamic> json) => City(
+    id: json['_id'],
+    name: json['name'],
+  );
+
+  Map<String, dynamic> toJson() => {
+    '_id': id,
+    'name': name,
+  };
 }

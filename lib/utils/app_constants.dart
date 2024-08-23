@@ -1,9 +1,9 @@
 
 class AppConstants {
   static const String baseUrl = "https://dev.invoidea.in/gmp/api/";
-  static const String imgBaseUrl = "https://dev.invoidea.in/gmp/file/";
-  static const String imgProfileBaseUrl = "https://dev.invoidea.in/gmp/image/";
-  static const String appName = 'Get My Properties'; //Download from Scriptzhub.com
+  static const String imgBaseUrl = "https://dev.invoidea.in/gmp/";
+  static const String imgProfileBaseUrl = "https://dev.invoidea.in/gmp/";
+  static const String appName = 'Get My Properties';
   static const double appVersion = 1.0;
   static const String fontFamily = 'Sen';
 
@@ -19,6 +19,8 @@ class AppConstants {
   static const String userPropertyDetails = 'user/property/';
   static const String userSearchPropertyUrl = 'user/property/search';
   static const String userBookmarkPropertyUrl = 'user/property/bookmark';
+  static const String userCreateInquiryUrl = 'user/inquiry';
+
 
 
 

@@ -17,7 +17,8 @@ import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
 class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key});
+  final bool? isBackButton;
+  ProfileScreen({super.key, this.isBackButton = false});
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _nameController = TextEditingController();
   final _usernameController = TextEditingController();
@@ -31,7 +32,6 @@ class ProfileScreen extends StatelessWidget {
       Get.find<AuthController>().isCustomerLoggedIn() ?
       Get.find<AuthController>().profileDetailsApi() :
       Get.find<AuthController>().profileDetailsApi(isVendor : true);
-
       Get.find<ProfileController>().pickImage(isRemove: true);
     });
     return Scaffold(
@@ -40,7 +40,12 @@ class ProfileScreen extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           automaticallyImplyLeading: false,
-          leading:InkWell(
+          leading: isBackButton! ? IconButton(
+            icon:  const Icon(Icons.arrow_back),
+            color: Theme.of(context).cardColor,
+            onPressed: () =>  Navigator.pop(context),
+          ) :
+          InkWell(
             onTap: () {
               _scaffoldKey.currentState?.openDrawer();
             },
@@ -256,7 +261,7 @@ class ProfileScreen extends StatelessWidget {
                         isPassword: true,),
                       sizedBoxDefault(),*/
                           OutlinedButton(onPressed: () {
-                            Get.toNamed(RouteHelper.getSavedRoute(isHistory: true));
+                            // Get.toNamed(RouteHelper.getSavedRoute(isBackButton: true));
                           }, child: Padding(
                             padding:  const EdgeInsets.symmetric(vertical: Dimensions.paddingSize12),
                             child: Row(

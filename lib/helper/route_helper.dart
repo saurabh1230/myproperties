@@ -11,6 +11,7 @@ import 'package:get_my_properties/features/screens/home/home_screen.dart';
 import 'package:get_my_properties/features/screens/notification/notification_screen.dart';
 import 'package:get_my_properties/features/screens/onboard/onboarding_screen.dart';
 import 'package:get_my_properties/features/screens/onboard/splash_screen.dart';
+import 'package:get_my_properties/features/screens/profile/profile_screen.dart';
 import 'package:get_my_properties/features/screens/property/prperties_details_screen.dart';
 import 'package:get_my_properties/features/screens/saved/saved_screen.dart';
 import 'package:get_my_properties/features/screens/search/explore_search_screen.dart';
@@ -40,6 +41,7 @@ class RouteHelper {
   static const String postProperty = '/post-property';
   static const String locationPicker = '/location-View';
   static const String enquiry = '/enquiry';
+  static const String profile = '/profile';
 
 
 
@@ -54,7 +56,8 @@ class RouteHelper {
   static String getAdminDashboardRoute() => adminDashboard;
   static String getHomeRoute() => home;
   static String getPropertiesDetailsScreen(String title,String propertyId) => '$propertiesDetails?title=$title&propertyId=$propertyId';
-  static String getSavedRoute({bool isHistory = false}) => '$saved?isHistory=${isHistory.toString()}';
+  static String getSavedRoute({bool isBackButton = false}) => '$saved?isHistory=${isBackButton.toString()}';
+  static String getProfileRoute({bool isBackButton = false}) => '$profile?isBackButton=${isBackButton.toString()}';
   static String getSearchRoute() => search;
   static String getExploreRoute({bool isBrowser = false, String? title, String? propertyTypeId, String? purposeId}) =>
       '$explore?isBrowser=${isBrowser.toString()}&title=$title&propertyTypeId=$propertyTypeId&purposeId=$purposeId';
@@ -82,7 +85,8 @@ class RouteHelper {
     GetPage(name: home, page: () =>  const HomeScreen()),
     GetPage(name: search, page: () =>   SearchScreen()),
     GetPage(name: propertiesDetails, page: () =>  PropertiesDetailsScreen(title: Get.parameters['title'],propertyId: Get.parameters['propertyId'],)),
-    GetPage(name: saved, page: () => SavedScreen(isHistory: Get.parameters['isHistory'] == 'true')),
+    GetPage(name: saved, page: () => SavedScreen(isBackButton: Get.parameters['isHistory'] == 'true')),
+    GetPage(name: profile, page: () => ProfileScreen(isBackButton: Get.parameters['isBackButton'] == 'true')),
     GetPage(name: explore, page: () => ExploreScreen(
       isBrowser: Get.parameters['isBrowser'] == 'true',title: Get.parameters["title"],propertyTypeId: Get.parameters["propertyTypeId"],purposeId: Get.parameters["purposeId"] ,),),
     GetPage(name: sellRentDashboard, page: () => SaleAndRentDashboard(pageIndex:Get.parameters['page'] == 'Sale' ? 0 : 1, type: Get.parameters['type'],typeId: Get.parameters['typeId'],purposeId: Get.parameters['purposeId'],),),

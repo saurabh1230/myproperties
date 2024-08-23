@@ -104,14 +104,14 @@ class SellerPropertiesScreen extends StatelessWidget {
                     return RecommendedItemCard(
                       isVendor: true,
                       vertical: true,
-                      image: list[i].displayImage?.image ?? '',
+                      image: list[i].displayImages[0].image ?? '',
                       title: list[i].title ?? '',
                       description: list[i].description ?? '',
                       price: '₹ ${list[i].price ?? ''}',
-                      propertyId: list[i].sId ?? '',
+                      propertyId: list[i].id ?? '',
                       ratingText: '4.5',
                       likeTap: () {},
-                      isLikeButton: false,
+                      isLikeButton: false, markerPrice:list[i].marketPrice.toString(),
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) =>

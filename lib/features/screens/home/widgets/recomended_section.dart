@@ -62,11 +62,13 @@ class RecomendedSection extends StatelessWidget {
                               itemCount: list!.length > 6 ? 6 : list.length,
                               itemBuilder: (_, i) {
                                 return RecommendedItemCard(
-                                  image: list[i].displayImage!.image.toString(),
+                                  image: list[i].displayImages[0].image,
                                   title: list[i].title.toString(),
                                   description: list[i].description.toString(),
-                                  price: '₹ ${list[i].price.toString()}',
-                                  propertyId: list[i].sId.toString(), ratingText: '', likeTap: () {  },
+                                  price: '${list[i].price.toString()}',
+                                  propertyId: list[i].id.toString(),
+                                  ratingText: '',
+                                  likeTap: () {  }, markerPrice: list[i].marketPrice.toString(),
                                 );
                               },
                               separatorBuilder:

@@ -44,11 +44,12 @@ class BrowseOtherConstructionsSection extends StatelessWidget {
                 itemCount: list!.length,
                 itemBuilder: (_,i) {
                   return RecommendedItemCard(
-                    image: list[i].displayImage!.image.toString(),
+                    image: list[i].displayImages[0].image,
                     title: list[i].title.toString(),
                     description: list[i].description.toString(),
-                    price: '₹ ${list[i].price.toString()}',
-                    propertyId: list[i].sId.toString(),
+                    price: list[i].price.toString(),
+                    propertyId: list[i].id.toString(),
+                    markerPrice:  list[i].marketPrice.toString(),
                   );
                 }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: Dimensions.paddingSizeDefault,),),
             )

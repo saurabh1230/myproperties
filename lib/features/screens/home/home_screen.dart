@@ -10,6 +10,7 @@ import 'package:get_my_properties/features/screens/home/widgets/popular_in_locat
 import 'package:get_my_properties/features/screens/home/widgets/recomended_section.dart';
 import 'package:get_my_properties/features/screens/home/widgets/services_section.dart';
 import 'package:get_my_properties/features/screens/home/widgets/suitable_property_section.dart';
+import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/features/widgets/sign_up_details_dialog.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
               automaticallyImplyLeading: false,
               pinned: true,
               backgroundColor: Theme.of(context).primaryColor,
-              expandedHeight: 200.0,
+              expandedHeight: 180.0,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   decoration: const BoxDecoration(
@@ -106,19 +107,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ],
                             ),
-                            // Text(
-                            //   "Sign Up",
-                            //   style: senBold.copyWith(
-                            //       color: Theme.of(context).cardColor,
-                            //       fontSize: Dimensions.fontSize14),
-                            // )
+                            CustomNotificationButton(tap: () {
+                              Get.toNamed(RouteHelper.getNotificationRoute());
+                            },color: Theme.of(context).cardColor,)
                           ],
                         ),
                         sizedBox10(),
                         Row(children: [
                            Icon(Icons.location_on_sharp,color : Theme.of(context).cardColor),
                            Expanded(child: Text(authControl.getSaveAddress().toString(),
-                            maxLines: 1,
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: senRegular.copyWith(fontSize: Dimensions.fontSize14,
                                 color: Theme.of(context).cardColor),)),

@@ -185,23 +185,37 @@ class CustomDrawer extends StatelessWidget {
                                 ));
                               }),
                               sizedBoxDefault(),
-                              Text("Our Services",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                              buildContainer(context,"Home Inspection", tap: () {
-                                showCustomSnackBar('Currently in the development');
-                              }),
-                              buildContainer(context,"Rent Agreement", tap: () {
-                                showCustomSnackBar('Currently in the development');
-                              }),
-                              buildContainer(context,"Tenant Verification", tap: () {
-                                showCustomSnackBar('Currently in the development');
-                              }),
-                              buildContainer(context,"Property Valuation", tap: () {
-                                showCustomSnackBar('Currently in the development');
-                              }),
+                              Text("My Account",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
                               buildContainer(context,"Recent Searches", tap: () {
                                 Get.toNamed(RouteHelper.getSearchRoute());
-
                               }),
+                              buildContainer(context,"Saved Properties", tap: () {
+                                Get.toNamed(RouteHelper.getSavedRoute(isBackButton: true,));
+                              }),
+                              buildContainer(context,"Edit Profile", tap: () {
+                                Get.toNamed(RouteHelper.getProfileRoute(isBackButton: true));
+                              }),
+                              buildContainer(context,"History", tap: () {
+                                Get.toNamed(RouteHelper.getSearchRoute());
+                              }),
+                              sizedBoxDefault(),
+                              Text("Other Options",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                              // buildContainer(context,"Home Inspection", tap: () {
+                              //   showCustomSnackBar('Currently in the development');
+                              // }),
+                              // buildContainer(context,"Rent Agreement", tap: () {
+                              //   showCustomSnackBar('Currently in the development');
+                              // }),
+                              // buildContainer(context,"Tenant Verification", tap: () {
+                              //   showCustomSnackBar('Currently in the development');
+                              // }),
+                              // buildContainer(context,"Property Valuation", tap: () {
+                              //   showCustomSnackBar('Currently in the development');
+                              // }),
+                              // buildContainer(context,"Recent Searches", tap: () {
+                              //   Get.toNamed(RouteHelper.getSearchRoute());
+                              //
+                              // }),
                               // buildContainer(context,"Rating & Reviews", tap: () {Get.toNamed(RouteHelper.getRatingsAndReviewRoute());}),
                               buildContainer(context,"Terms & Conditions", tap: () {
                                 showCustomSnackBar('Currently in the development');
@@ -211,17 +225,22 @@ class CustomDrawer extends StatelessWidget {
                               }),
                             ],
                           ): const SizedBox(),
-                          Row(
-                            children: [
-                              TextButton(
-                                  onPressed: () {
+                          buildContainer(color:redColor.withOpacity(0.08),
+                              context,"Logout", tap: () {
                                 Get.dialog(ConfirmationDialog(icon: Images.icLogout, description: 'Are you Sure to Logout', onYesPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},));
 
-                              }, child: Text('Logout',
-                              style: senSemiBold.copyWith(fontSize: Dimensions.fontSize18,
-                              color: redColor),)),
-                            ],
-                          ),
+                              }),
+                          // Row(
+                          //   children: [
+                          //     TextButton(
+                          //         onPressed: () {
+                          //       Get.dialog(ConfirmationDialog(icon: Images.icLogout, description: 'Are you Sure to Logout', onYesPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},));
+                          //
+                          //     }, child: Text('Logout',
+                          //     style: senSemiBold.copyWith(fontSize: Dimensions.fontSize18,
+                          //     color: redColor),)),
+                          //   ],
+                          // ),
                           sizedBoxDefault(),
                         ],
                       ),
@@ -246,16 +265,34 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  InkWell buildContainer(BuildContext context,String title,  {required  Function() tap}) {
+  InkWell buildContainer(
+      BuildContext context,
+      String title, {
+        Color? color,
+        required Function() tap,
+      }) {
     return InkWell(
-      onTap:  tap,
-      child: Container(width: Get.size.width,
-                  margin: const EdgeInsets.only(top: Dimensions.paddingSize10),
-                  padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize10,horizontal: Dimensions.paddingSize10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Dimensions.radius5),
-                   color: Theme.of(context).primaryColor.withOpacity(0.04)),
-                  child: Text(title,style: senRegular.copyWith(fontSize: Dimensions.fontSize13,color: Theme.of(context).disabledColor))),
+      onTap: tap,
+      child: Container(
+        width: Get.size.width,
+        margin: const EdgeInsets.only(top: Dimensions.paddingSize10),
+        padding: const EdgeInsets.symmetric(
+          vertical: Dimensions.paddingSize10,
+          horizontal: Dimensions.paddingSize10,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Dimensions.radius5),
+          color: color ?? Theme.of(context).primaryColor.withOpacity(0.04),
+        ),
+        child: Text(
+          title,
+          style: senRegular.copyWith(
+            fontSize: Dimensions.fontSize13,
+            color: Theme.of(context).disabledColor,
+          ),
+        ),
+      ),
     );
   }
+
 }
