@@ -200,9 +200,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     image: Images.buyAHousePlaceHolderImage,
 
                     onTap: () {
-                      Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Buy A House',
-                      propertyTypeId: '66b097b38e94ad0e435526f4',
-                      purposeId: '66b097948e94ad0e435526ee'));
+                      Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Buy A Property',
+                      propertyTypeId: '',
+                      purposeId: '66b097808e94ad0e435526e6'));
                     },
                   ),
                   BrowseMoreSection(
@@ -211,9 +211,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     'Creating a seamless online rental process: browse top listings, apply, and pay rent easily for a hassle-free experience.',
                     image: Images.rentAHousePlaceHolderImage,
                     onTap: () {
-                      Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Buy A House',
-                          propertyTypeId:'66b097b38e94ad0e435526f4',
-                          purposeId: '66b097948e94ad0e435526ee'));
+                      Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Rent A Property',
+                          propertyTypeId:'',
+                          purposeId: '66b097878e94ad0e435526ea'));
                     },
                   ),
                 ],

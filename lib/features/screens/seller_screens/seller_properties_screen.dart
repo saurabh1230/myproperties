@@ -107,7 +107,7 @@ class SellerPropertiesScreen extends StatelessWidget {
                       image: list[i].displayImages[0].image ?? '',
                       title: list[i].title ?? '',
                       description: list[i].description ?? '',
-                      price: '₹ ${list[i].price ?? ''}',
+                      price: '${list[i].price ?? ''}',
                       propertyId: list[i].id ?? '',
                       ratingText: '4.5',
                       likeTap: () {},

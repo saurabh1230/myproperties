@@ -61,6 +61,7 @@ class BookmarkController extends GetxController implements GetxService {
     }
     update();
   }
+
   Future<void> removeFromBookmarkById(String propertyId) async {
     Response response = await propertyRepo.userBookmarkPropertyRepo(propertyId);
     if (response.statusCode == 200) {
@@ -124,6 +125,7 @@ class BookmarkController extends GetxController implements GetxService {
 
   List<BookmarkPropertyModel>? _bookmarkedPropertyList;
   List<BookmarkPropertyModel>? get bookmarkedPropertyList => _bookmarkedPropertyList;
+
 
   Future<void> getBookmarkedPropertyList({
     String? page,

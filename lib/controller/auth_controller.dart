@@ -276,8 +276,8 @@ class AuthController extends GetxController implements GetxService {
       if (_homeData != null) {
         _propertyTypeID = homeData!.propertyTypes![0].sId!;
         _propertyPurposeID = homeData!.propertyPurposes![0].sId!;
-        // _propertyCategoryId = homeData!.propertyCategory![0].sId!;
-        // _amenityId = homeData!.propertyAmenities![0].sId!;
+        _propertyCategoryId = homeData!.propertyCategory![0].sId!;
+        _amenityId = homeData!.propertyAmenities![0].sId!;
       }
     } else {
     }

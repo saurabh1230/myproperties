@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get_my_properties/utils/images.dart';
-
+import 'package:shimmer/shimmer.dart';
 
 class CustomNetworkImageWidget extends StatelessWidget {
   final String image;
@@ -27,10 +27,7 @@ class CustomNetworkImageWidget extends StatelessWidget {
       ),
       child: CachedNetworkImage(
         imageUrl: image, height: height, width: width, fit: fit,
-        placeholder: (context, url) => Padding(
-          padding:  EdgeInsets.all(imagePadding ?? 0),
-          child: Image.asset(placeholder.isNotEmpty ? placeholder: Images.placeholder, fit: fit),
-        ),
+          placeholder: (context, url) => _buildShimmer(),
         errorWidget: (context, url, error) => Padding(
           padding:  EdgeInsets.all(imagePadding ?? 0),
           child: Image.asset(placeholder.isNotEmpty ? placeholder  : Images.placeholder, fit: fit),
@@ -38,4 +35,18 @@ class CustomNetworkImageWidget extends StatelessWidget {
       ),
     );
   }
+  Widget _buildShimmer() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        height: height ?? 200,
+        width: width ?? Get.size.width,
+        color: Colors.white,
+      ),
+    );
+  }
 }
+
+
+

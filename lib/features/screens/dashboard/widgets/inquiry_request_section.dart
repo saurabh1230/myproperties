@@ -7,7 +7,7 @@ import 'package:get_my_properties/utils/date_converter.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
-
+import 'package:get/get.dart';
 class InquiryRequestSection extends StatelessWidget {
   final List<LatestInquiries> inquiries;
   final VoidCallback onSeeAll;
@@ -114,7 +114,7 @@ class InquiryRequestShimmer extends StatelessWidget {
               ),
             ],
           ),
-          Expanded(
+          SizedBox(height: Get.size.height,
             child: ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
               itemCount: 10,
@@ -137,8 +137,8 @@ class InquiryRequestShimmer extends StatelessWidget {
                               ],
                             ),
                           ),
-            
-            
+
+
                           Flexible(
                             child: Icon(
                               Icons.arrow_forward,
@@ -148,8 +148,8 @@ class InquiryRequestShimmer extends StatelessWidget {
                           ),
                         ],
                       ),
-            
-            
+
+
                     ],
                   ),
                 );

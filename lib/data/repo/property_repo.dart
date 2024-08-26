@@ -123,14 +123,15 @@ class PropertyRepo {
   }
 
   Future<Response> userSearchPropertyRepo(String? page, String? limit,
-      String? latitude, String? longitude, String? query,String? purposeId,) async {
+      String? latitude, String? longitude, String? query,String? purposeId, String? userId,) async {
     return await apiClient.postData(AppConstants.userSearchPropertyUrl, {
       "page": page,
       "limit": limit,
       "lat": latitude,
-      "long": latitude,
+      "long": longitude,
       "query": query,
-      "purpose_id": purposeId
+      "purpose_id": purposeId,
+      "user_id": userId,
     });
   }
 

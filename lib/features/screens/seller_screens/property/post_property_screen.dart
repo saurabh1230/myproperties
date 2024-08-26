@@ -125,7 +125,7 @@ class PostPropertyScreen extends StatelessWidget {
                                 controller: _priceController,
                                 inputType: TextInputType.number,
                                 showTitle: true,
-                                hintText: "Price",
+                                hintText: "Price in ₹",
                                 validation: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please Property Price';
@@ -140,7 +140,7 @@ class PostPropertyScreen extends StatelessWidget {
                                 controller: _marketPriceController,
                                 inputType: TextInputType.number,
                                 showTitle: true,
-                                hintText: "Market Price ",
+                                hintText: "Market Price in ₹ ",
                                 validation: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please Property Market Price';
@@ -351,7 +351,7 @@ class PostPropertyScreen extends StatelessWidget {
                               child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Space",
+                                    "Space in Bhk",
                                     style: senRegular.copyWith(fontSize: Dimensions.fontSize15),
                                   ),
                                   sizedBox10(),
@@ -400,25 +400,25 @@ class PostPropertyScreen extends StatelessWidget {
                             return null;
                           },
                         ),
-                        sizedBoxDefault(),
-                        CustomTextField(
-                          onTap: () {
-                            Get.dialog(controller.yearPicker("Pick Build Year of Property"));
-                          },
-                          controller: controller.expireYearController,
-                          inputType: TextInputType.number,
-                          showTitle: true,
-                          hintText: "Expiry Year",
-                          readOnly: true,
-                          validation: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Add Expiry Year';
-                            }
-                            return null;
-                          },
-
-
-                        ),
+                        // sizedBoxDefault(),
+                        // CustomTextField(
+                        //   onTap: () {
+                        //     Get.dialog(controller.yearPicker("Pick Build Year of Property"));
+                        //   },
+                        //   controller: controller.expireYearController,
+                        //   inputType: TextInputType.number,
+                        //   showTitle: true,
+                        //   hintText: "Expiry Year",
+                        //   readOnly: true,
+                        //   validation: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Add Expiry Year';
+                        //     }
+                        //     return null;
+                        //   },
+                        //
+                        //
+                        // ),
                         sizedBoxDefault(),
                         CustomTextField(
                           controller: _metaTitleController,

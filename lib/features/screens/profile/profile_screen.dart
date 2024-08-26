@@ -214,6 +214,28 @@ class ProfileScreen extends StatelessWidget {
                             ],
                           ),
                           sizedBoxDefault(),
+                          authControl.profileData!.userType == "customer" ?
+                          Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Address',
+                                // Adjust style as needed
+                              ),
+                              const SizedBox(height: 5 ),
+                              CustomTextField(
+                                onTap: () {
+                                  Get.toNamed(RouteHelper.getLocationPickerRoute());
+                                },
+                                controller: _addressController,
+                                readOnly: true,
+                                // showTitle: true,
+                                maxLines: 4,
+                                hintText: authControl.getSaveAddress().toString().isEmpty ?
+                                '' :
+                                authControl.getSaveAddress().toString(),
+                                editText: true,),
+                            ],
+                          ):
                           CustomTextField(
                             controller: _addressController,
                             showTitle: true,

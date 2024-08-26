@@ -65,12 +65,10 @@ class _SellerHomeState extends State<SellerHome> {
 
           final data = authControl.vendorDashboardData;
           final list = data?.latestInquiries ?? [];
-          // final isListEmpty = list.isEmpty;
           final isLoading = authControl.isLoading;
-
-
+          
           if (isLoading) {
-            return const Center(child: SellerHomeShimmer());
+            return SellerHomeShimmer();
           }
 
           if (data == null || list.isEmpty) {

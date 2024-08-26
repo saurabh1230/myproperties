@@ -67,36 +67,48 @@ class CustomDrawer extends StatelessWidget {
                         ],
                       ),
                       // Get.find<AuthController>().profileData!.userType == 'customer' ?
-                      authControl.isCustomerLoggedIn() ? const SizedBox() :
-                      Padding(
-                        padding: const EdgeInsets.only(top: Dimensions.paddingSize10),
-                        child: CustomButtonWidget(color: Theme.of(context).cardColor,
-                            isBold: false,
-                            fontSize: Dimensions.fontSize15,
-                            buttonText: "Register",onPressed: () {},
-                            textColor: Theme.of(context).primaryColor),
-                      )
+                      // authControl.isCustomerLoggedIn() ? const SizedBox() :
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: Dimensions.paddingSize10),
+                      //   child: CustomButtonWidget(color: Theme.of(context).cardColor,
+                      //       isBold: false,
+                      //       fontSize: Dimensions.fontSize15,
+                      //       buttonText: "Register",onPressed: () {},
+                      //       textColor: Theme.of(context).primaryColor),
+                      // )
                     ],
                   ),
                 ),
                     sizedBox10(),
 
                 authControl.isCustomerLoggedIn() ? const SizedBox() :
-                InkWell(onTap: () {  Get.toNamed(RouteHelper.getPostPropertyRoute());},
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Post Property",style: senRegular.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).disabledColor),),
-                        IconButton(onPressed: () {
-                          Get.toNamed(RouteHelper.getPostPropertyRoute());
-                        },
-                          icon: const Icon(Icons.add),
-                          color: Theme.of(context).primaryColor,)
-                      ],
-                    ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                  child: Column(
+                    children: [
+                      InkWell(onTap: () {  Get.toNamed(RouteHelper.getPostPropertyRoute());},
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Post Property",style: senRegular.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).disabledColor),),
+                              IconButton(onPressed: () {
+                                Get.toNamed(RouteHelper.getPostPropertyRoute());
+                              },
+                                icon: const Icon(Icons.add),
+                                color: Theme.of(context).primaryColor,)
+                            ],
+                          ),
+                        ),
+                      ),
+                      buildContainer(context,"Inquiry Request", tap: () {
+                        Get.toNamed(RouteHelper.getEnquiryRoute());
+                      }),
+
+                    ],
                   ),
-                ),sizedBoxDefault(),
+                ),
+                // sizedBoxDefault(),
 
                 Expanded(
                   child: SingleChildScrollView(
@@ -107,7 +119,7 @@ class CustomDrawer extends StatelessWidget {
                           authControl.isCustomerLoggedIn() ?
                           Column(crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Property For Sale",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                              Text("Property For Buy",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
                               ListView.builder(
                                   itemCount: authControl.homeData!.propertyTypes!.length,
                                   shrinkWrap: true,
@@ -118,7 +130,7 @@ class CustomDrawer extends StatelessWidget {
                                       "Sale",
                                       authControl.homeData!.propertyTypes![i].name.toString(),
                                       authControl.homeData!.propertyTypes![i].sId.toString(),
-                                      '66b097948e94ad0e435526ee'
+                                      '66b097808e94ad0e435526e6'
                                     // authControl.homeData!.propertyPurposes![i].sId.toString(),
                                   ));
                                 });
@@ -158,7 +170,7 @@ class CustomDrawer extends StatelessWidget {
                               // buildContainer(context,"Land/ Plot", tap: () {
                               //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("rent", "Land/ Plot",''));
                               // }),
-                              sizedBoxDefault(),
+                          /*    sizedBoxDefault(),
                               Text("Explore",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
                               buildContainer(context,"Near Locality", tap: () {
                                 Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
@@ -183,7 +195,7 @@ class CustomDrawer extends StatelessWidget {
                                     "66b097c68e94ad0e435526fc",
                                     '66b097878e94ad0e435526ea'
                                 ));
-                              }),
+                              }),*/
                               sizedBoxDefault(),
                               Text("My Account",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
                               buildContainer(context,"Recent Searches", tap: () {
@@ -195,9 +207,9 @@ class CustomDrawer extends StatelessWidget {
                               buildContainer(context,"Edit Profile", tap: () {
                                 Get.toNamed(RouteHelper.getProfileRoute(isBackButton: true));
                               }),
-                              buildContainer(context,"History", tap: () {
-                                Get.toNamed(RouteHelper.getSearchRoute());
-                              }),
+                              // buildContainer(context,"History", tap: () {
+                              //   Get.toNamed(RouteHelper.getSearchRoute());
+                              // }),
                               sizedBoxDefault(),
                               Text("Other Options",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
                               // buildContainer(context,"Home Inspection", tap: () {
@@ -228,7 +240,6 @@ class CustomDrawer extends StatelessWidget {
                           buildContainer(color:redColor.withOpacity(0.08),
                               context,"Logout", tap: () {
                                 Get.dialog(ConfirmationDialog(icon: Images.icLogout, description: 'Are you Sure to Logout', onYesPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},));
-
                               }),
                           // Row(
                           //   children: [

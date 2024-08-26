@@ -61,7 +61,7 @@ class SearchScreen extends StatelessWidget {
                             },
                             child: Container(
                               height: 40,
-                              width: 80, // Adjust width to fit text
+                              width: 80,
                               decoration: BoxDecoration(
                                 color: authControl.propertyPurposeID == val.sId.toString()
                                     ? Theme.of(context).cardColor
@@ -71,7 +71,7 @@ class SearchScreen extends StatelessWidget {
                               ),
                               child: Center(
                                 child: Text(
-                                  val.name.toString(),
+                                  val.name.toString().contains('Sale') ? 'Buy' : 'Rent',
                                   style: senBold.copyWith(
                                     color: authControl.propertyPurposeID == val.sId.toString()
                                         ? Theme.of(context).primaryColor
@@ -91,17 +91,13 @@ class SearchScreen extends StatelessWidget {
             ),
           ),
           body: GetBuilder<PropertyController>(builder: (propertyControl) {
-            final list = propertyControl.searchPropertyList;
+            final list = propertyControl.propertyList;
             final isListEmpty = list == null || list.isEmpty;
             final isLoading = propertyControl.isPropertyLoading;
             final recentSearchList = propertyControl.recentSearchList;
             final recentSearchListEmpty =
                 recentSearchList == null || recentSearchList.isEmpty;
             return
-
-
-
-
               Column(
                 children: [
                   Padding(
@@ -146,7 +142,7 @@ class SearchScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const Divider(),
+               /*   const Divider(),
                   Padding(
                     padding:  const EdgeInsets.symmetric(horizontal:  Dimensions.paddingSizeDefault),
                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,27 +160,42 @@ class SearchScreen extends StatelessWidget {
                         const Icon(CupertinoIcons.right_chevron,size: Dimensions.fontSize20 ,)
                       ],
                     ),
-                  ),
+                  ),*/
                   const Divider(),
-                  Wrap(
-                    spacing: 4.0, // Adjust spacing as needed
-                    children: propertyControl.recentSearchList!.map((val) {
-                      return ChoiceChip(
-                        selectedColor: Theme.of(context).primaryColor,
-                        backgroundColor: Colors.white,
-                        label: Text(
-                          val.value.toString(),
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.80),
-                          ),
+                  recentSearchListEmpty ?
+                      const SizedBox() :
+                  Column(
+                    children: [
+                      const Text('Recent Searches'),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSize10),
+                        child: Wrap(
+                          spacing: 6.0, // Adjust spacing as needed
+                          children: propertyControl.recentSearchList!.map((val) {
+                            return ChoiceChip(
+                              selectedColor: Theme.of(context).primaryColor,
+                              backgroundColor: Colors.white,
+                              side: BorderSide(
+                                color: Theme.of(context).primaryColor,
+                                width: 0.7, // Border width
+                              ),
+                              label: Text(
+                                val.value.toString(),
+                                style: senRegular.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSize12),
+                              ),
+                              selected: false,
+                              // Adjust according to your logic
+                              onSelected: (selected) {
+                                print( val.value.toString());
+                                _searchController.text = val.value.toString();
+                                Get.to( SearchPropertyScreen(searchText: val.value.toString(), purposeId: authControl.propertyPurposeID,));
+                                // Handle selection logic if needed
+                              },
+                            );
+                          }).toList(),
                         ),
-                        selected: false,
-                        // Adjust according to your logic
-                        onSelected: (selected) {
-                          // Handle selection logic if needed
-                        },
-                      );
-                    }).toList(),
+                      ),
+                    ],
                   ),
                   // isListEmpty && !isLoading && recentSearchListEmpty
                   //     ? Padding(

@@ -35,4 +35,5 @@ class Images {
   static const String icSearchPlaceHolder = 'assets/icons/ic_search_placeholder.png';
   static const String icEdit = 'assets/icons/ic_editicon.png';
   static const String icAgentProfile = 'assets/icons/ic_agent_holder.png';
+  static const String icRupee = 'assets/icons/ic_rupee.png';
 }

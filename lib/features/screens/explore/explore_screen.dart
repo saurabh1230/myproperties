@@ -35,7 +35,23 @@ class ExploreScreen extends StatefulWidget {
   _ExploreScreenState createState() => _ExploreScreenState();
 }
 
+
 class _ExploreScreenState extends State<ExploreScreen> {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if(widget.isBrowser == true) {
+        Get.find<PropertyController>().getPropertyList(page: '1',typeId:widget.propertyTypeId,
+            purposeId: widget.purposeId );
+      } else {
+        Get.find<PropertyController>().getPropertyList(page: '1',);
+
+      }
+
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +72,40 @@ class _ExploreScreenState extends State<ExploreScreen> {
         return Column(
           children: [
             sizedBox8(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+              child: Row(
+                children: [
+                  Expanded(child: CustomOutlineButton(title: 'Location',
+                    tap: () {
+
+                    },)),
+                  sizedBoxW5(),
+                  Expanded(child: CustomOutlineButton(
+                    title: 'Filters',
+                    filter: true,
+                    filterText: "",
+                    tap: () {
+                      Get.bottomSheet(
+                        const FilterBottomSheet(),
+                        backgroundColor: Colors.transparent, isScrollControlled: true,
+                      );
+                    },)),
+                  sizedBoxW5(),
+                  Expanded(child: CustomButtonWidget(
+                    height: 35,
+                    radius: Dimensions.radius5,
+                    isBold: false,
+                    buttonText: "X Clear Filter",
+                    onPressed: () {
+                      Get.find<PropertyController>().getPropertyList(page: '1',
+                      );
+                    },
+                    fontSize:  Dimensions.fontSize12,))
+
+                ],
+              ),
+            ),
             isListEmpty && !isLoading
                 ? Center(
                     child: EmptyDataWidget(
@@ -65,97 +115,59 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     ),
                   )
                 : Expanded(
-                    child: isLoading || isListEmpty
-                        ? const ExploreScreenShimmer()
-                        : Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                              child: Row(
-                                children: [
-                                  Expanded(child: CustomOutlineButton(title: 'Location',
-                                    tap: () {  },)),
-                                  sizedBoxW5(),
-                                  Expanded(child: CustomOutlineButton(
-                                    title: 'Filters',
-                                    filter: true,
-                                    filterText: "",
-                                    tap: () {
-                                      Get.bottomSheet(
-                                        const FilterBottomSheet(),
-                                        backgroundColor: Colors.transparent, isScrollControlled: true,
-                                      );
-                                    },)),
-                                  sizedBoxW5(),
-                                  Expanded(child: CustomButtonWidget(
-                                    height: 35,
-                                    radius: Dimensions.radius5,
-                                    isBold: false,
-                                    buttonText: "X Clear Filter",
-                                    onPressed: () {
-                                      Get.find<PropertyController>().getPropertyList(page: '1',
-                                      );
+                  child: isLoading || isListEmpty
+                      ? const ExploreScreenShimmer()
+                      : SingleChildScrollView(
+                          child: ListView.separated(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Dimensions.paddingSizeDefault),
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: list.length,
+                            itemBuilder: (_, i) {
+                              print('price ${list[i].price.toString()}');
+                              return GetBuilder<BookmarkController>(
+                                builder: (bookmarkControl) {
+                                  bool isBookmarked = bookmarkControl
+                                      .bookmarkIdList
+                                      .contains(list[i].id);
+                                  return RecommendedItemCard(
+                                    vertical: true,
+                                    image: list[i]
+                                        .displayImages[0].image
+                                        .toString(),
+                                    title: list[i].title.toString(),
+                                    description:
+                                        list[i].description.toString(),
+                                    price: ' ${list[i].price.toString()}',
+                                    propertyId: list[i].id.toString(),
+                                    ratingText: '4.5',
+                                    likeTap: () {
+                                      isBookmarked
+                                          ? bookmarkControl
+                                              .removeFromBookMarkList(
+                                                  list[i].id)
+                                          : bookmarkControl
+                                              .addToBookmarkList(list[i]);
                                     },
-                                    fontSize:  Dimensions.fontSize12,))
-
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: SingleChildScrollView(
-                                  child: ListView.separated(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: Dimensions.paddingSizeDefault),
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: list.length,
-                                    itemBuilder: (_, i) {
-                                      print('price ${list[i].price.toString()}');
-                                      return GetBuilder<BookmarkController>(
-                                        builder: (bookmarkControl) {
-                                          bool isBookmarked = bookmarkControl
-                                              .bookmarkIdList
-                                              .contains(list[i].id);
-                                          return RecommendedItemCard(
-                                            vertical: true,
-                                            image: list[i]
-                                                .displayImages[0].image
-                                                .toString(),
-                                            title: list[i].title.toString(),
-                                            description:
-                                                list[i].description.toString(),
-                                            price: ' ${list[i].price.toString()}',
-                                            propertyId: list[i].id.toString(),
-                                            ratingText: '4.5',
-                                            likeTap: () {
-                                              isBookmarked
-                                                  ? bookmarkControl
-                                                      .removeFromBookMarkList(
-                                                          list[i].id)
-                                                  : bookmarkControl
-                                                      .addToBookmarkList(list[i]);
-                                            },
-                                            bookmarkIconColor: isBookmarked
-                                                ? Theme.of(context).primaryColor
-                                                : Theme.of(context)
-                                                    .cardColor
-                                                    .withOpacity(0.60),
-                                            propertyModel: list[i],
-                                            markerPrice: list[i].marketPrice.toString(),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    separatorBuilder: (BuildContext context,
-                                            int index) =>
-                                        const SizedBox(
-                                            height: Dimensions.paddingSizeDefault),
-                                  ),
-                                ),
-                            ),
-                          ],
+                                    bookmarkIconColor: isBookmarked
+                                        ? Theme.of(context).primaryColor
+                                        : Theme.of(context)
+                                            .cardColor
+                                            .withOpacity(0.60),
+                                    propertyModel: list[i],
+                                    markerPrice: list[i].marketPrice.toString(),
+                                  );
+                                },
+                              );
+                            },
+                            separatorBuilder: (BuildContext context,
+                                    int index) =>
+                                const SizedBox(
+                                    height: Dimensions.paddingSizeDefault),
+                          ),
                         ),
-                  ),
+                ),
           ],
         );
       }),
