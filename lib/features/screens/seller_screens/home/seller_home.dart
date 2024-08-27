@@ -68,7 +68,7 @@ class _SellerHomeState extends State<SellerHome> {
           final isLoading = authControl.isLoading;
           
           if (isLoading) {
-            return SellerHomeShimmer();
+            return const SellerHomeShimmer();
           }
 
           if (data == null || list.isEmpty) {
@@ -294,7 +294,8 @@ class _SellerHomeState extends State<SellerHome> {
                 InquiryRequestSection(
                   inquiries: data.latestInquiries,
                   onSeeAll: () {
-                    Get.toNamed(RouteHelper.getEnquiryRoute());
+                    // Get.toNamed(RouteHelper.getEnquiryRoute());
+                    Get.toNamed(RouteHelper.getAllUserInquiry());
                   },
                 ),
                 sizedBox40(),

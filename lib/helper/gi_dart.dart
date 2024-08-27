@@ -6,6 +6,7 @@ import 'package:get_my_properties/controller/explore_controller.dart';
 import 'package:get_my_properties/controller/home_controller.dart';
 import 'package:get_my_properties/controller/inquiry_controller.dart';
 import 'package:get_my_properties/controller/location_controller.dart';
+import 'package:get_my_properties/controller/map_controller.dart';
 import 'package:get_my_properties/controller/profile_controller.dart';
 import 'package:get_my_properties/controller/properties_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
@@ -52,6 +53,7 @@ Future<void>   init() async {
   Get.lazyPut(() => BookmarkController(propertyRepo:  Get.find()));
   Get.lazyPut(() => BookmarkController(propertyRepo:  Get.find()));
   Get.lazyPut(() => InquiryController(inquiryRepo:  Get.find()));
+  Get.lazyPut(() => MapController());
 
 
 }

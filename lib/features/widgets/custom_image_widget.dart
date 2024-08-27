@@ -23,6 +23,7 @@ class CustomNetworkImageWidget extends StatelessWidget {
       width:width?? Get.size.width,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
+        color: Colors.grey[200],
           borderRadius: BorderRadius.circular(radius ?? Dimensions.radius20)
       ),
       child: CachedNetworkImage(

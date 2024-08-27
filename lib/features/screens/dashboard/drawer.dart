@@ -119,20 +119,25 @@ class CustomDrawer extends StatelessWidget {
                           authControl.isCustomerLoggedIn() ?
                           Column(crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Property For Buy",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                              Text("Looking For",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
                               ListView.builder(
                                   itemCount: authControl.homeData!.propertyTypes!.length,
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (_,i) {
                                 return buildContainer(context,authControl.homeData!.propertyTypes![i].name.toString(),tap : () {
-                                  Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
-                                      "Sale",
-                                      authControl.homeData!.propertyTypes![i].name.toString(),
-                                      authControl.homeData!.propertyTypes![i].sId.toString(),
-                                      '66b097808e94ad0e435526e6'
-                                    // authControl.homeData!.propertyPurposes![i].sId.toString(),
+                                  Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,
+                                      propertyTypeId: authControl.homeData!.propertyTypes![i].sId.toString(),
+                                      title: authControl.homeData!.propertyTypes![i].name.toString(),
+                                      purposeId: ''
                                   ));
+                                  // Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
+                                  //     "Sale",
+                                  //     authControl.homeData!.propertyTypes![i].name.toString(),
+                                  //     authControl.homeData!.propertyTypes![i].sId.toString(),
+                                  //     '66b097808e94ad0e435526e6'
+                                  //   // authControl.homeData!.propertyPurposes![i].sId.toString(),
+                                  // ));
                                 });
                               }),
 
@@ -145,22 +150,27 @@ class CustomDrawer extends StatelessWidget {
                               // buildContainer(context,"Land/ Plot", tap: () {
                               //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Sale", "Land/ Plot",''));
                               // }),
-                              sizedBoxDefault(),
-                              Text("Property For Rent",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
-                              ListView.builder(
-                                  itemCount: authControl.homeData!.propertyTypes!.length,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (_,i) {
-                                    return
-                                      buildContainer(context,authControl.homeData!.propertyTypes![i].name.toString(),tap : () {
-                                        Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
-                                          "Rent",
-                                          authControl.homeData!.propertyTypes![i].name.toString(),
-                                          authControl.homeData!.propertyTypes![i].sId.toString(),
-                                        '66b097878e94ad0e435526ea'));
-                                      });
-                                  }),
+                              // sizedBoxDefault(),
+                              // Text("Property For Rent",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                              // ListView.builder(
+                              //     itemCount: authControl.homeData!.propertyTypes!.length,
+                              //     shrinkWrap: true,
+                              //     physics: const NeverScrollableScrollPhysics(),
+                              //     itemBuilder: (_,i) {
+                              //       return
+                              //         buildContainer(context,authControl.homeData!.propertyTypes![i].name.toString(),tap : () {
+                              //           Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,
+                              //               propertyTypeId: authControl.homeData!.propertyTypes![i].sId.toString(),
+                              //               title: authControl.homeData!.propertyTypes![i].name.toString(),
+                              //               purposeId: '66b097878e94ad0e435526ea'
+                              //           ));
+                              //           // Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
+                              //           //   "Rent",
+                              //           //   authControl.homeData!.propertyTypes![i].name.toString(),
+                              //           //   authControl.homeData!.propertyTypes![i].sId.toString(),
+                              //           // '66b097878e94ad0e435526ea'));
+                              //         });
+                              //     }),
                               // buildContainer(context,"Apartment", tap: () {
                               //   Get.toNamed(RouteHelper.getSellAndRentDashboardRoute("Rent", "Apartment",''));
                               // }),
@@ -198,6 +208,9 @@ class CustomDrawer extends StatelessWidget {
                               }),*/
                               sizedBoxDefault(),
                               Text("My Account",style: senBold.copyWith(fontSize: Dimensions.fontSize12,color: Theme.of(context).disabledColor.withOpacity(0.30)),),
+                              buildContainer(context,"My Enquiry", tap: () {
+                                Get.toNamed(RouteHelper.getAllUserInquiry());
+                              }),
                               buildContainer(context,"Recent Searches", tap: () {
                                 Get.toNamed(RouteHelper.getSearchRoute());
                               }),

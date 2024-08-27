@@ -8,10 +8,12 @@ import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/home/widgets/recommended_item_card.dart';
 import 'package:get_my_properties/features/screens/search/search_property_screen.dart';
+import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/empty_data_widget.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get/get.dart';
+import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -36,60 +38,61 @@ class SearchScreen extends StatelessWidget {
     return SafeArea(
       child: GetBuilder<AuthController>(builder: (authControl) {
         return  Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 80,
-            backgroundColor: Theme.of(context).primaryColor,
-            flexibleSpace: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CustomDecoratedContainer(
-                    horizontal: Dimensions.paddingSize20,
-                    child: Wrap(
-                      spacing: 8.0, // Space between chips
-                      runSpacing: 8.0, // Space between lines of chips
-                      children: List.generate(
-                        authControl.homeData!.propertyPurposes!.length,
-                            (index) {
-                          final val = authControl.homeData!.propertyPurposes![index];
-                          return InkWell(
-                            onTap: () {
-                              final newValue = authControl.propertyPurposeID == val.sId.toString() ? '' : val.sId.toString();
-                              authControl.selectPropertyPurposeId(newValue);
-                              print(authControl.propertyPurposeID);
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                color: authControl.propertyPurposeID == val.sId.toString()
-                                    ? Theme.of(context).cardColor
-                                    : Colors.transparent,
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  val.name.toString().contains('Sale') ? 'Buy' : 'Rent',
-                                  style: senBold.copyWith(
-                                    color: authControl.propertyPurposeID == val.sId.toString()
-                                        ? Theme.of(context).primaryColor
-                                        : Theme.of(context).cardColor,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  )
-
-                ],
-              ),
-            ),
-          ),
+          appBar: const CustomAppBar(title: 'Search',isBackButtonExist: true,),
+          // AppBar(
+          //   toolbarHeight: 80,
+          //   backgroundColor: Theme.of(context).primaryColor,
+          //   flexibleSpace: Center(
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       crossAxisAlignment: CrossAxisAlignment.center,
+          //       children: [
+          //         CustomDecoratedContainer(
+          //           horizontal: Dimensions.paddingSize20,
+          //           child: Wrap(
+          //             spacing: 8.0, // Space between chips
+          //             runSpacing: 8.0, // Space between lines of chips
+          //             children: List.generate(
+          //               authControl.homeData!.propertyPurposes!.length,
+          //                   (index) {
+          //                 final val = authControl.homeData!.propertyPurposes![index];
+          //                 return InkWell(
+          //                   onTap: () {
+          //                     final newValue = authControl.propertyPurposeID == val.sId.toString() ? '' : val.sId.toString();
+          //                     authControl.selectPropertyPurposeId(newValue);
+          //                     print(authControl.propertyPurposeID);
+          //                   },
+          //                   child: Container(
+          //                     height: 40,
+          //                     width: 80,
+          //                     decoration: BoxDecoration(
+          //                       color: authControl.propertyPurposeID == val.sId.toString()
+          //                           ? Theme.of(context).cardColor
+          //                           : Colors.transparent,
+          //                       shape: BoxShape.rectangle,
+          //                       borderRadius: BorderRadius.circular(8.0),
+          //                     ),
+          //                     child: Center(
+          //                       child: Text(
+          //                         val.name.toString().contains('Sale') ? 'Buy' : 'Rent',
+          //                         style: senBold.copyWith(
+          //                           color: authControl.propertyPurposeID == val.sId.toString()
+          //                               ? Theme.of(context).primaryColor
+          //                               : Theme.of(context).cardColor,
+          //                         ),
+          //                       ),
+          //                     ),
+          //                   ),
+          //                 );
+          //               },
+          //             ),
+          //           ),
+          //         )
+          //
+          //       ],
+          //     ),
+          //   ),
+          // ),
           body: GetBuilder<PropertyController>(builder: (propertyControl) {
             final list = propertyControl.propertyList;
             final isListEmpty = list == null || list.isEmpty;
@@ -100,6 +103,52 @@ class SearchScreen extends StatelessWidget {
             return
               Column(
                 children: [
+                  sizedBox10(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                    child: Row(
+                      children: [
+                        Wrap(
+                          spacing: 8.0, // Space between chips
+                          runSpacing: 8.0, // Space between lines of chips
+                          children: List.generate(
+                            authControl.homeData!.propertyPurposes!.length,
+                                (index) {
+                              final val = authControl.homeData!.propertyPurposes![index];
+                              return InkWell(
+                                onTap: () {
+                                  final newValue = authControl.propertyPurposeID == val.sId.toString() ? '' : val.sId.toString();
+                                  authControl.selectPropertyPurposeId(newValue);
+                                  print(authControl.propertyPurposeID);
+                                },
+                                child: Container(
+                                  height: 40,
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                    color: authControl.propertyPurposeID == val.sId.toString()
+                                        ? Theme.of(context).primaryColor
+                                        : Theme.of(context).primaryColor.withOpacity(0.40),
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(Dimensions.radius20),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      val.name.toString().contains('Sale') ? 'Buy' : 'Rent',
+                                      style: senBold.copyWith(
+                                        color: authControl.propertyPurposeID == val.sId.toString()
+                                            ? Theme.of(context).cardColor
+                                            : Theme.of(context).cardColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                     child: Container(
@@ -125,7 +174,7 @@ class SearchScreen extends StatelessWidget {
                           }
                         },
                         onSubmitted: (val) {
-                          Get.to( SearchPropertyScreen(searchText: _searchController.text, purposeId: authControl.propertyPurposeID,));
+                          Get.to( SearchPropertyScreen(searchText: _searchController.text.trim(), purposeId: authControl.propertyPurposeID,));
                         },
                         controller: _searchController,
                         decoration: InputDecoration(

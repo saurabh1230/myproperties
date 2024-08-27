@@ -396,32 +396,32 @@ class FilterBottomSheet extends StatelessWidget {
                               //   },
                               // ),
                               sizedBox20(),
-                              Text(
-                                "Property Category",
-                                style: senRegular.copyWith(
-                                    fontSize: Dimensions.fontSize15),
-                              ),
-                              sizedBox10(),
-                              Wrap(
-                                spacing: 8.0, // Space between chips
-                                runSpacing: 8.0, // Space between lines of chips
-                                children: List.generate(
-                                  authControl.homeData!.propertyCategory!.length,
-                                      (index) {
-                                    final val = authControl.homeData!.propertyCategory![index];
-                                    final isSelected = authControl.propertyCategoryId == val.sId.toString();
-                                    return CustomSelectedButton(
-                                      tap: () {
-                                        authControl.selectPropertyCategoryId(val.sId.toString());
-                                        print(authControl.propertyCategoryId);
-                                      },
-                                      title: val.name.toString(),
-                                      isSelected: isSelected,
-                                    );
-                                  },
-                                ),
-                              ),
-                              sizedBox20(),
+                              // Text(
+                              //   "Property Category",
+                              //   style: senRegular.copyWith(
+                              //       fontSize: Dimensions.fontSize15),
+                              // ),
+                              // sizedBox10(),
+                              // Wrap(
+                              //   spacing: 8.0, // Space between chips
+                              //   runSpacing: 8.0, // Space between lines of chips
+                              //   children: List.generate(
+                              //     authControl.homeData!.propertyCategory!.length,
+                              //         (index) {
+                              //       final val = authControl.homeData!.propertyCategory![index];
+                              //       final isSelected = authControl.propertyCategoryId == val.sId.toString();
+                              //       return CustomSelectedButton(
+                              //         tap: () {
+                              //           authControl.selectPropertyCategoryId(val.sId.toString());
+                              //           print(authControl.propertyCategoryId);
+                              //         },
+                              //         title: val.name.toString(),
+                              //         isSelected: isSelected,
+                              //       );
+                              //     },
+                              //   ),
+                              // ),
+                              // sizedBox20(),
 
                               // Obx(() => FilterScreenField(
                               //   tap: () {
@@ -628,7 +628,7 @@ class FilterBottomSheet extends StatelessWidget {
                                           maxPrice: controller.formatPrice(controller.endPriceValue.toDouble()),
                                           space: controller.spaceTypeIDs.join(','),
                                           bathroom: controller.bathroomIDs.join(','),
-                                          categoryId:  controller.propertyCategoryIds.join(', '),
+                                          // categoryId:  controller.propertyCategoryIds.join(', '),
                                           amenityId: authControl.amenityIds.join(','),
                                         );
                                         Get.back();

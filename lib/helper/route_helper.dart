@@ -1,6 +1,7 @@
 
 import 'package:get/get.dart';
 import 'package:get_my_properties/features/screens/Maps/location_view.dart';
+import 'package:get_my_properties/features/screens/Maps/search_location_map_view.dart';
 import 'package:get_my_properties/features/screens/auth/otp_verification_screen.dart';
 import 'package:get_my_properties/features/screens/auth/sign_up.dart';
 import 'package:get_my_properties/features/screens/dashboard/dashboard.dart';
@@ -8,6 +9,8 @@ import 'package:get_my_properties/features/screens/dashboard/seller_dashboard.da
 import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
 import 'package:get_my_properties/features/screens/explore/ratings_and_review_screen.dart';
 import 'package:get_my_properties/features/screens/home/home_screen.dart';
+import 'package:get_my_properties/features/screens/inquiry/all_user_inquiry.dart';
+import 'package:get_my_properties/features/screens/inquiry/contact_agent_screen.dart';
 import 'package:get_my_properties/features/screens/notification/notification_screen.dart';
 import 'package:get_my_properties/features/screens/onboard/onboarding_screen.dart';
 import 'package:get_my_properties/features/screens/onboard/splash_screen.dart';
@@ -42,6 +45,9 @@ class RouteHelper {
   static const String locationPicker = '/location-View';
   static const String enquiry = '/enquiry';
   static const String profile = '/profile';
+  static const String propertySearchMap = '/property-search-map';
+  static const String contactAgent = '/contact-agent';
+  static const String allUserInquiry = '/all-user-inquiry';
 
 
 
@@ -69,7 +75,9 @@ class RouteHelper {
   static String getPostPropertyRoute() => postProperty;
   static String getLocationPickerRoute() => locationPicker;
   static String getEnquiryRoute() => enquiry;
-
+  static String getPropertySearchMap() => propertySearchMap;
+  static String getContactAgentRoute(String? propertyId,String? agentName,) => '$contactAgent?propertyId=$propertyId&agentName=$agentName';
+  static String getAllUserInquiry() => allUserInquiry;
 
 
 
@@ -96,6 +104,9 @@ class RouteHelper {
     GetPage(name: postProperty, page: () =>  PostPropertyScreen()),
     GetPage(name: locationPicker, page: () =>  const LocationPickerScreen()),
     GetPage(name: enquiry, page: () =>  const AllEnquiryScreens()),
+    GetPage(name: contactAgent, page: () =>   ContactAgentScreen(propertyId: Get.parameters['propertyId'],agentName:  Get.parameters['agentName'],)),
+    // GetPage(name: propertySearchMap, page: () =>  const SearchLocationScreen()),
+    GetPage(name: allUserInquiry, page: () =>  const AllUserInquiry()),
 
 
 

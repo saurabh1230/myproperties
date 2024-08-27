@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/bookmark_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
+import 'package:get_my_properties/features/screens/Maps/properties_map.dart';
+import 'package:get_my_properties/features/screens/Maps/properties_map.dart';
+import 'package:get_my_properties/features/screens/Maps/search_location_map_view.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/home/widgets/filter_bottom_sheet.dart';
@@ -78,6 +81,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 children: [
                   Expanded(child: CustomOutlineButton(title: 'Location',
                     tap: () {
+                    Get.to(PropertiesMapScreen());
+                    // Get.toNamed(RouteHelper.PropertiesMapScreen());
 
                     },)),
                   sizedBoxW5(),

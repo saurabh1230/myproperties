@@ -30,8 +30,7 @@ class SearchPropertyScreen extends StatelessWidget {
         latitude: '',
         longitude: '',
         query: '${searchText}',
-        purposeId: '${purposeId}',);
-
+        purposeId: '${purposeId}');
     });
     return  WillPopScope(
       onWillPop: () async {
