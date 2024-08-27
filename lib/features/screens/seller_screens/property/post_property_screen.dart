@@ -6,16 +6,20 @@ import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/explore_controller.dart';
 import 'package:get_my_properties/controller/location_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
+import 'package:get_my_properties/data/models/response/home_data_model.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
+import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/features/widgets/custom_dropdown_button.dart';
 import 'package:get_my_properties/features/widgets/custom_textfield.dart';
+import 'package:get_my_properties/features/widgets/multiple_data_field.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
 import '../../../../utils/images.dart';
 import '../../../../utils/sizeboxes.dart';
+
 
 class PostPropertyScreen extends StatelessWidget {
    PostPropertyScreen({super.key});
@@ -562,31 +566,53 @@ class PostPropertyScreen extends StatelessWidget {
                           style: senRegular.copyWith(fontSize: Dimensions.fontSize15),
                         ),
                         sizedBox10(),
-                        CustomDropdownButtonFormField<String>(
-                          value: authControl.homeData!.propertyAmenities!.isNotEmpty
-                              ? authControl.homeData!.propertyAmenities!
-                              .firstWhere(
-                                (religion) => religion.sId == authControl.amenityId,
-                            orElse: () => authControl.homeData!.propertyAmenities!.first,
-                          )
-                              .name
-                              : null, // Handle empty list scenario
-                          items: authControl.homeData!.propertyAmenities!
-                              .map((position) => position.name!)
-                              .toList(),
-                          hintText: "Select Amenity",
-                          validator: ,
-                          onChanged: (String? value) {
-                            if (value != null) {
-                              var val = authControl.homeData!.propertyAmenities!.firstWhere(
-                                    (position) => position.name == value,
-                                orElse: () => authControl.homeData!.propertyAmenities!.first,
+
+                        Wrap(
+                          spacing: 8.0, // Space between chips
+                          runSpacing: 8.0, // Space between lines of chips
+                          children: List.generate(
+                            authControl.homeData!.propertyAmenities!.length,
+                                (index) {
+                              final val = authControl.homeData!.propertyAmenities![index];
+                              final isSelected = authControl.amenityIds.contains(val.sId.toString());
+                              return CustomSelectedButton(
+                                tap: () {
+                                  authControl.setAmenityIds(val.sId.toString());
+                                  print(authControl.amenityIds.join(','));
+                                },
+                                title: val.name.toString(),
+                                isSelected: isSelected,
                               );
-                              authControl.setAmenityId(val.sId!);
-                              print(authControl.amenityId);
-                            }
-                          },
+                            },
+                          ),
                         ),
+
+                        // CustomDropdownButtonFormField<String>(
+                        //   value: authControl.amenityId, // ID of the selected amenity
+                        //   items: authControl.homeData!.propertyAmenities!.map((amenity) {
+                        //     return amenity.name!;
+                        //   }).toList(),
+                        //   hintText: "Select Amenity",
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Please select an amenity'; // Validation message
+                        //     }
+                        //     return null;
+                        //   },
+                        //   onChanged: (String? value) {
+                        //     if (value != null) {
+                        //       var selectedAmenity = authControl.homeData!.propertyAmenities!.firstWhere(
+                        //             (amenity) => amenity.name == value,
+                        //         orElse: () => authControl.homeData!.propertyAmenities!.first,
+                        //       );
+                        //       authControl.setAmenityId(selectedAmenity.sId!);
+                        //       print(authControl.amenityId);
+                        //     }
+                        //   },
+                        // ),
+
+
+
                         sizedBoxDefault(),
                         Text(
                           "Property State",
@@ -735,6 +761,7 @@ class PostPropertyScreen extends StatelessWidget {
                           },
                         ),
 
+
                         sizedBoxDefault(),
                         Text(
                           "Media Content",
@@ -834,10 +861,13 @@ class PostPropertyScreen extends StatelessWidget {
                             ),
                           ],
                         ),
+
+
                         sizedBox10(),
                         propertyController.pickedGalleryImages.isNotEmpty ? const SizedBox() :
                         Text('Add Property Gallery Images',style: senRegular.copyWith(color: Colors.redAccent,fontSize:Dimensions.fontSize12)),
                         sizedBoxDefault(),
+
                         propertyController.isLoading ?
                         const Center(child: CircularProgressIndicator()) :
                         CustomButtonWidget(
@@ -980,3 +1010,59 @@ class YearPickerWidget extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+class MultiSelectDropdown<T> extends StatelessWidget {
+  final List<T> items;
+  final List<T> selectedItems;
+  final String Function(T) itemAsString;
+  final void Function(List<T>) onChanged;
+
+  MultiSelectDropdown({
+    required this.items,
+    required this.selectedItems,
+    required this.itemAsString,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<T>(
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+        border: OutlineInputBorder(),
+      ),
+      items: items.map((T item) {
+        return DropdownMenuItem<T>(
+          value: item,
+          child: Row(
+            children: [
+              Checkbox(
+                value: selectedItems.contains(item),
+                onChanged: (bool? selected) {
+                  if (selected != null) {
+                    final updatedSelection = List<T>.from(selectedItems);
+                    if (selected) {
+                      updatedSelection.add(item);
+                    } else {
+                      updatedSelection.remove(item);
+                    }
+                    onChanged(updatedSelection);
+                  }
+                },
+              ),
+              Text(itemAsString(item)),
+            ],
+          ),
+        );
+      }).toList(),
+      onChanged: (_) {}, // Prevent the dropdown from closing on click
+      value: null,
+      isExpanded: true,
+    );
+  }
+}
+

@@ -8,14 +8,14 @@ import 'package:get/get.dart';
 import 'package:get_my_properties/features/widgets/custom_image_widget.dart';
 import 'package:get_my_properties/features/widgets/date_formatter.dart';
 import 'package:get_my_properties/features/widgets/empty_data_widget.dart';
-import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 
 class AllUserInquiry extends StatelessWidget {
-  const AllUserInquiry({super.key});
+  final bool? isBackButtonExist;
+  const AllUserInquiry({super.key, this.isBackButtonExist = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,9 @@ class AllUserInquiry extends StatelessWidget {
       Get.find<InquiryController>().getUserInquiryList();
     });
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar:  CustomAppBar(
         title: 'My Inquiries',
-        isBackButtonExist: true,
+        isBackButtonExist: isBackButtonExist! ? true : false,
       ),
       body: GetBuilder<InquiryController>(builder: (inquiryControl) {
         final list = inquiryControl.userInquiryList;

@@ -4,6 +4,7 @@ import 'package:get_my_properties/controller/home_controller.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/dashboard/widgets/inquiry_request_section.dart';
 import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
+import 'package:get_my_properties/features/screens/inquiry/all_user_inquiry.dart';
 
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
@@ -294,8 +295,9 @@ class _SellerHomeState extends State<SellerHome> {
                 InquiryRequestSection(
                   inquiries: data.latestInquiries,
                   onSeeAll: () {
+                    Get.to(const AllUserInquiry(isBackButtonExist: true,));
                     // Get.toNamed(RouteHelper.getEnquiryRoute());
-                    Get.toNamed(RouteHelper.getAllUserInquiry());
+                    // Get.toNamed(RouteHelper.getAllUserInquiry());
                   },
                 ),
                 sizedBox40(),
