@@ -575,6 +575,7 @@ class PostPropertyScreen extends StatelessWidget {
                               .map((position) => position.name!)
                               .toList(),
                           hintText: "Select Amenity",
+                          validator: ,
                           onChanged: (String? value) {
                             if (value != null) {
                               var val = authControl.homeData!.propertyAmenities!.firstWhere(

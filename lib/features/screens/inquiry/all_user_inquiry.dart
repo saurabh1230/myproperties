@@ -47,21 +47,19 @@ class AllUserInquiry extends StatelessWidget {
               : isLoading
               ? const Center(child: CircularProgressIndicator())
               :
-          Column(
-            children: [
-              ListView.separated(
-                          shrinkWrap: true,
-                          itemCount: list!.length,
-                          itemBuilder: (_, i) {
-                            return InquiryContentComponent(
-                                date: list[i].createdAt.toString(),
-                                image: list[i].property!.displayImage![0].image.toString(),
-                                propertyTitle: list[i].property!.title.toString(),
-                                agentName: list[i].vender?.name ?? 'Gmp',
-                                message: list[i].message.toString());
-                          }, separatorBuilder: (BuildContext context, int index) => sizedBox10(),)
-            ],
-          ),
+          ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: list!.length,
+                      itemBuilder: (_, i) {
+                        return InquiryContentComponent(
+                            date: list[i].createdAt.toString(),
+                            image: list[i].property!.displayImage![0].image.toString(),
+                            propertyTitle: list[i].property!.title.toString(),
+                            agentName: list[i].vender?.name ?? 'Gmp',
+                            message: list[i].message.toString(),
+                          propertyId: list[i].sId.toString(),
+                          status: list[i].status.toString(),);
+                      }, separatorBuilder: (BuildContext context, int index) => sizedBox10(),),
         );
       }),
     );

@@ -54,11 +54,14 @@ class InquiryRequestSection extends StatelessWidget {
               final inquiry = inquiries[i];
               final DateTime createdAtDate = DateConverter.parseDateString(inquiry.createdAt);
               final formattedDate = DateConverter.estimatedOnlyDate(createdAtDate);
-              return EnquirySectionComponent(
-                name: inquiry.name,
-                formattedDate: formattedDate,
-                email: inquiry.email,
-                phone: inquiry.phoneNumber.toString(),);
+              return InkWell(
+                onTap:  onSeeAll,
+                child: EnquirySectionComponent(
+                  name: inquiry.name,
+                  formattedDate: formattedDate,
+                  email: inquiry.email,
+                  phone: inquiry.phoneNumber.toString(),),
+              );
             },
             separatorBuilder: (BuildContext context, int index) => sizedBoxDefault(),
           ),

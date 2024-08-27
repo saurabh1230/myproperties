@@ -4,6 +4,7 @@ import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/explore_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/controller/searchController.dart';
+import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/home/widgets/recommended_item_card.dart';
@@ -29,7 +30,7 @@ class SearchScreen extends StatelessWidget {
   ];
 
   final _searchController = TextEditingController();
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -38,7 +39,9 @@ class SearchScreen extends StatelessWidget {
     return SafeArea(
       child: GetBuilder<AuthController>(builder: (authControl) {
         return  Scaffold(
-          appBar: const CustomAppBar(title: 'Search',isBackButtonExist: true,),
+          key: _scaffoldKey,
+          drawer: const CustomDrawer(),
+          appBar:  CustomAppBar(title: 'Search',isBackButtonExist: isBackButton!,),
           // AppBar(
           //   toolbarHeight: 80,
           //   backgroundColor: Theme.of(context).primaryColor,

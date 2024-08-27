@@ -95,19 +95,21 @@ class FilterBottomSheet extends StatelessWidget {
                                   authControl.homeData!.propertyPurposes!.length,
                                       (index) {
                                     final val = authControl.homeData!.propertyPurposes![index];
+                                    final isSelected = authControl.propertyPurposeID == val.sId.toString();
                                     return CustomSelectedButton(
                                       tap: () {
-                                        // Set the selected ID or clear it if the same button is clicked
-                                        final newValue = authControl.propertyPurposeID == val.sId.toString() ? '' : val.sId.toString();
+                                        // Toggle the selection based on whether it is currently selected
+                                        final newValue = isSelected ? '' : val.sId.toString();
                                         authControl.selectPropertyPurposeId(newValue);
                                         print(authControl.propertyPurposeID);
                                       },
                                       title: val.name.toString().contains("Sale") ? "Buy" : val.name.toString(),
-                                      isSelected: authControl.propertyPurposeID == val.sId.toString(), // Highlight if selected
+                                      isSelected: isSelected, // Highlight if selected
                                     );
                                   },
                                 ),
                               ),
+
 
 
                               sizedBox20(),

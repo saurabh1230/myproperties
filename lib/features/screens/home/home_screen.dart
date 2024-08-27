@@ -194,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // const ServicesSection(),
                   const NewlyConstructedSection(),
                   BrowseMoreSection(
-                    title: 'Buy A House',
+                    title: 'Buy A Property',
                     description:
                     'Discover your location with the most listings, including exclusive items, and an immersive photo experience.',
                     image: Images.buyAHousePlaceHolderImage,
@@ -206,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                   BrowseMoreSection(
-                    title: 'Rent A House',
+                    title: 'Rent A Property',
                     description:
                     'Creating a seamless online rental process: browse top listings, apply, and pay rent easily for a hassle-free experience.',
                     image: Images.rentAHousePlaceHolderImage,

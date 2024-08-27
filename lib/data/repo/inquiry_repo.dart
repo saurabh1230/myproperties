@@ -23,6 +23,13 @@ class InquiryRepo {
     return apiClient.getData(AppConstants.vendorAllEnquiryUrl,method: 'GET');
   }
 
+  Future<Response> getVendorInquiryReplyRepo(String? propertyId,String? status,) {
+    return apiClient.getData(AppConstants.vendorAllEnquiryUrl,method: 'PATCH',body: {
+      "id": propertyId,
+      "status": status
+    });
+  }
+
 
 
 

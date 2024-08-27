@@ -134,7 +134,7 @@ class InquiryController extends GetxController implements GetxService {
     update();
     try {
       Response response;
-      if (Get.find<AuthController>().profileData!.userType == 'customer') {
+      if (Get.find<AuthController>().isCustomerLoggedIn()) {
         response = await inquiryRepo.getUserInquiryRepo();
       } else {
         response = await inquiryRepo.getVendorInquiryRepo();
@@ -154,6 +154,92 @@ class InquiryController extends GetxController implements GetxService {
     _isLoading = false;
     update();
   }
+
+  // Future<void> vendorInquiryReplyApi(String? propertyId,String? status) async {
+  //   _isLoading = true;
+  //   update();
+  //   try {
+  //     Response response = await inquiryRepo.getVendorInquiryReplyRepo(propertyId,status);
+  //
+  //     var responseData = response.body;
+  //     if (responseData["status"] == true) {
+  //       showCustomSnackBar('Status Updated Successfully');
+  //     } else {
+  //       showCustomSnackBar(responseData['message']);
+  //     }
+  //   } catch (e) {
+  //     showCustomSnackBar('An error occurred, please try again.');
+  //   } finally {
+  //     _isLoading = false;
+  //     update();
+  //   }
+  // }
+  //
+
+  Future<dynamic> vendorInquiryReplyApi({
+    required String propertyID,
+    required String status,
+  }) async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = sharedPreferences.getString(AppConstants.token);
+
+    _isLoading = true;
+    update();
+
+    if (token == null || token.isEmpty) {
+      print('Token is null or empty');
+      _isLoading = false;
+      update();
+      return false;
+    }
+
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    };
+
+    var body = jsonEncode({
+      "id": propertyID,
+      "status": status
+    });
+
+    try {
+      final response = await http.patch(
+        Uri.parse('${AppConstants.baseUrl}${AppConstants.vendorAllEnquiryUrl}'),
+        headers: headers,
+        body: body,
+      );
+
+      print('Request URL: ${AppConstants.baseUrl}${AppConstants.vendorAllEnquiryUrl}');
+      print('Request Headers: $headers');
+      print('Request Body: $body');
+
+      if (response.statusCode == 200) {
+        var responseData = jsonDecode(response.body);
+        print('Response Body: ${response.body}');
+        if (responseData["status"] == true) {
+          showCustomSnackBar('Inquiry Created Successfully');
+          return responseData;
+        } else {
+          showCustomSnackBar('Please Try Again');
+          return false;
+        }
+      } else {
+        print('Error: ${response.statusCode}');
+        print('Response Body: ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      print('Exception: $e');
+      return false;
+    } finally {
+      _isLoading = false;
+      Get.back();
+      update();
+    }
+  }
+
 
 
 
