@@ -65,7 +65,7 @@ class SearchScreen extends StatelessWidget {
                     buttonText: 'Add Filters',
                     onPressed: () {
                       Get.bottomSheet(
-                        const FilterBottomSheet(),
+                         FilterBottomSheet(searchNavigation: true,),
                         backgroundColor: Colors.transparent,
                         isScrollControlled: true,
                       );
@@ -81,7 +81,7 @@ class SearchScreen extends StatelessWidget {
           final isLoading = propertyControl.isPropertyLoading;
           final recentSearchList = propertyControl.recentSearchList;
           final recentSearchListEmpty =
-              recentSearchList == null || recentSearchList.isEmpty;
+              recentSearchList == null || recentSearchList.isEmpty  ||  authControl.homeData == null;
           return
             Column(
               children: [
@@ -246,46 +246,6 @@ class SearchScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                // isListEmpty && !isLoading && recentSearchListEmpty
-                //     ? Padding(
-                //         padding:
-                //             const EdgeInsets.only(top: Dimensions.paddingSize40),
-                //         child: Center(
-                //           child: EmptyDataWidget(
-                //             image: Images.icSearchPlaceHolder,
-                //             fontColor: Theme.of(context).disabledColor,
-                //             text: '',
-                //           ),
-                //         ),
-                //       )
-                //     : Expanded(
-                //         child: isLoading || isListEmpty
-                //             ? const ExploreScreenShimmer()
-                //             : ListView.separated(
-                //                 padding: const EdgeInsets.symmetric(
-                //                     horizontal: Dimensions.paddingSizeDefault),
-                //                 physics: const BouncingScrollPhysics(),
-                //                 shrinkWrap: true,
-                //                 itemCount: list.length,
-                //                 itemBuilder: (_, i) {
-                //                   return RecommendedItemCard(
-                //                     vertical: true,
-                //                     image: list[i].displayImage!.image.toString(),
-                //                     title: list[i].title.toString(),
-                //                     description: list[i].description.toString(),
-                //                     price: '${list[i].price.toString()}',
-                //                     propertyId: list[i].sId.toString(),
-                //                     ratingText: '4.5',
-                //                     likeTap: () {},
-                //                     markerPrice: list[i].marketPrice.toString(),
-                //                   );
-                //                 },
-                //                 separatorBuilder: (BuildContext context,
-                //                         int index) =>
-                //                     const SizedBox(
-                //                         height: Dimensions.paddingSizeDefault),
-                //               ),
-                //       ),
               ],
             );
         }),
