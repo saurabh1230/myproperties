@@ -16,10 +16,12 @@ class InquiryContentComponent extends StatelessWidget {
   final String image;
   final String propertyTitle;
   final String agentName;
+  final String customerName;
+  final String customerContactNo;
   final String message;
   final String propertyId;
   final String status;
-  const InquiryContentComponent({super.key, required this.date, required this.image, required this.propertyTitle, required this.agentName, required this.message, required this.propertyId, required this.status});
+  const InquiryContentComponent({super.key, required this.date, required this.image, required this.propertyTitle, required this.agentName, required this.message, required this.propertyId, required this.status, required this.customerName, required this.customerContactNo});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,7 @@ class InquiryContentComponent extends StatelessWidget {
               ],
             ),
             sizedBox10(),
-            Row(
+            Row(crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomNetworkImageWidget(
                   image:
@@ -102,6 +104,7 @@ class InquiryContentComponent extends StatelessWidget {
                         ),
                       ),
                       sizedBox10(),
+                      Get.find<AuthController>().isCustomerLoggedIn() ?
                       RichText(maxLines :3,overflow: TextOverflow.ellipsis,
                         text:  TextSpan(
                           children: [
@@ -119,6 +122,47 @@ class InquiryContentComponent extends StatelessWidget {
                             ),
                           ],
                         ),
+                      ) :
+                      Column(
+                        children: [
+                          RichText(maxLines :3,overflow: TextOverflow.ellipsis,
+                            text:  TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Customer: ',
+                                  style: senRegular.copyWith(color: Theme.of(context).disabledColor.withOpacity(0.60),
+                                      fontSize: Dimensions.fontSize14),
+                                ),
+                                // New line
+                                TextSpan(
+                                    text: customerName,
+                                    style: senRegular.copyWith(
+                                        fontSize: Dimensions.fontSize14,color: Theme.of(context).disabledColor
+                                    )
+                                ),
+                              ],
+                            ),
+                          ),
+                          sizedBox10(),
+                          RichText(maxLines :3,overflow: TextOverflow.ellipsis,
+                            text:  TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Contact No: ',
+                                  style: senRegular.copyWith(color: Theme.of(context).disabledColor.withOpacity(0.60),
+                                      fontSize: Dimensions.fontSize14),
+                                ),
+                                // New line
+                                TextSpan(
+                                    text: customerContactNo,
+                                    style: senRegular.copyWith(
+                                        fontSize: Dimensions.fontSize14,color: Theme.of(context).disabledColor
+                                    )
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                       sizedBox10(),
                       RichText(maxLines :6,overflow: TextOverflow.ellipsis,

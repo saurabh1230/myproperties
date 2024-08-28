@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/inquiry_controller.dart';
+import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/inquiry/widgets/inquiry_content_component.dart';
 import 'package:get_my_properties/features/screens/seller_screens/enquiry/components/enquiry_section_component.dart';
@@ -22,7 +23,7 @@ class AllUserInquiry extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<InquiryController>().getUserInquiryList();
     });
-    return Scaffold(
+    return Scaffold(drawer: const CustomDrawer(),
       appBar:  CustomAppBar(
         title: 'My Inquiries',
         isBackButtonExist: isBackButtonExist! ? true : false,
@@ -55,10 +56,12 @@ class AllUserInquiry extends StatelessWidget {
                             date: list[i].createdAt.toString(),
                             image: list[i].property!.displayImage![0].image.toString(),
                             propertyTitle: list[i].property!.title.toString(),
-                            agentName: list[i].vender?.name ?? 'Gmp',
+                            agentName: list[i].vender?.name ?? 'Gmp Admin',
                             message: list[i].message.toString(),
                           propertyId: list[i].sId.toString(),
-                          status: list[i].status.toString(),);
+                          status: list[i].status.toString(),
+                          customerName: list[i].name ?? '',
+                          customerContactNo: list[i].phoneNumber ?? '',);
                       }, separatorBuilder: (BuildContext context, int index) => sizedBox10(),),
         );
       }),

@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
               automaticallyImplyLeading: false,
               pinned: true,
               backgroundColor: Theme.of(context).primaryColor,
-              expandedHeight: 180.0,
+              expandedHeight: 190.0,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   decoration: const BoxDecoration(

@@ -1,4 +1,8 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:get_my_properties/controller/property_controller.dart';
+import 'package:get_my_properties/features/screens/Maps/widgets/map_property_bottomsheet.dart';
+import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:http/http.dart'as http;
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -13,18 +17,8 @@ class MapController extends GetxController {
   double? selectedLatitude;
   double? selectedLongitude;
 
+  List<LatLng> markerCoordinates = Get.find<PropertyController>().markerCoordinates;
 
-  final List<LatLng> markerCoordinates = [
-    LatLng(22.5431, 88.1871),
-    LatLng(22.5914, 88.3238),
-    LatLng(22.5678, 88.3477),
-    LatLng(22.5593, 88.3705),
-    LatLng(22.5586, 88.3773),
-    LatLng(22.5163, 88.3225),
-    LatLng(22.5678, 88.3576),
-    LatLng(22.6411, 88.3500),
-    LatLng(22.5724, 88.4030),
-  ];
 
   @override
   void onInit() {
@@ -101,6 +95,17 @@ class MapController extends GetxController {
       bounds = LatLngBounds(southwest: southwest, northeast: northeast);
 
       mapController!.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
+      Get.bottomSheet(
+        const MapPropertySheet(),
+        isScrollControlled: true,
+        backgroundColor: Colors.white, // Customize the background color if needed
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(Dimensions.radius20),
+            topRight: Radius.circular(Dimensions.radius20),
+          ),
+        ),
+      );
     }
   }
 
@@ -157,7 +162,7 @@ class MapController extends GetxController {
         selectedLatitude = location['lat'];
         selectedLongitude = location['lng'];
         print('====================> selectedLatitude ${selectedLatitude}');
-        print('====================> selectedLongitude ${selectedLongitude}');
+        print('====================> selectedLatitude ${selectedLongitude}');
         update();  // Update the UI
       }
     }

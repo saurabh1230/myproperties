@@ -5,7 +5,6 @@ import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/data/models/response/property_detail_model.dart';
 import 'package:get_my_properties/data/models/response/property_model.dart';
 import 'package:get_my_properties/data/models/response/recent_search_model.dart';
-import 'package:get_my_properties/data/models/response/search_property_model.dart';
 import 'package:get_my_properties/data/repo/property_repo.dart';
 import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
@@ -13,6 +12,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 class PropertyController extends GetxController implements GetxService {
   final PropertyRepo propertyRepo;
@@ -84,7 +85,7 @@ class PropertyController extends GetxController implements GetxService {
   List<PropertyModel>? _featuredPropertyList;
   List<PropertyModel>? get featuredPropertyList => _featuredPropertyList;
 
-
+  List<LatLng> markerCoordinates = [];
   Future<void> getPropertyList({
     String? page,
     String? stateId,
@@ -160,7 +161,13 @@ class PropertyController extends GetxController implements GetxService {
             _featuredPropertyList!.addAll(featuredProperties);
           }
 
+          markerCoordinates = newDataList.map((property) {
+            double latitude =  property.latitude ?? 0;
+            double longitude = property.longitude ?? 0;
 
+            return LatLng(latitude, longitude);
+          }).toList();
+            print(' ============>>${markerCoordinates.length}');
           _isPropertyLoading = false;
           update();
         } else {

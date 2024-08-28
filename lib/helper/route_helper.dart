@@ -1,7 +1,6 @@
 
 import 'package:get/get.dart';
 import 'package:get_my_properties/features/screens/Maps/location_view.dart';
-import 'package:get_my_properties/features/screens/Maps/search_location_map_view.dart';
 import 'package:get_my_properties/features/screens/auth/otp_verification_screen.dart';
 import 'package:get_my_properties/features/screens/auth/sign_up.dart';
 import 'package:get_my_properties/features/screens/dashboard/dashboard.dart';

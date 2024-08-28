@@ -85,7 +85,7 @@ class SellerDashboardScreenState extends State<SellerDashboardScreen> {
             padding: const EdgeInsets.all(0/*Dimensions.paddingSize20*/),
             child: Row(children: [
               BottomNavItem(img: Images.icSellerDashboardIcon, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home',),
-              BottomNavItem(img: Images.navBarExplore, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'My Properties',),
+              BottomNavItem(img: Images.navBarExplore, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Properties',),
               const Expanded(child: SizedBox()),
               BottomNavItem(img: Images.icInquiry, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Inquiries',),
               BottomNavItem(img:Images.navBarProfile, isSelected: _pageIndex == 4, tap: () {

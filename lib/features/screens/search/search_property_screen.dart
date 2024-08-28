@@ -114,12 +114,12 @@ class SearchPropertyScreen extends StatelessWidget {
                                 color: Theme.of(context).primaryColor),
                           ),
                           TextSpan(
-                            text: 'Property',
+                            text: 'Properties',
                             style: senSemiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
                                 color: Theme.of(context).primaryColor),
                           ),
                           TextSpan(
-                            text: ' Found Related To Your Search',
+                            text: ' Available For You',
                             style: senRegular.copyWith(fontSize: Dimensions.fontSize14,
                               color: Theme.of(context).disabledColor,
                             ),

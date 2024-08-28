@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:get_my_properties/utils/theme/price_converter.dart';
 
 class FilterBottomSheet extends StatelessWidget {
+
   const FilterBottomSheet({super.key});
 
   @override
@@ -268,7 +269,7 @@ class FilterBottomSheet extends StatelessWidget {
                                 width: double.infinity,
                                 child: Obx(() => RangeSlider(
                                   min: 0.0, // Minimum value
-                                  max: 10000000.0, // Maximum value (1 crore)
+                                  max: 100000000.0, // Maximum value (1 crore)
                                   divisions: 100, // Number of divisions for finer granularity
                                   labels: RangeLabels(
                                     controller.formatCurrency(controller.startPriceValue.value),
