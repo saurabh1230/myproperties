@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart'as http;
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,19 +10,20 @@ class MapController extends GetxController {
   double? latitude;
   double? longitude;
   String? address;
+  double? selectedLatitude;
+  double? selectedLongitude;
 
-  // List of marker coordinates
+
   final List<LatLng> markerCoordinates = [
-    LatLng(22.5431, 88.1871), // Victoria Memorial
-    LatLng(22.5914, 88.3238), // Howrah Bridge
-    LatLng(22.5644, 88.1241), // Indian Museum
-    LatLng(22.5678, 88.3477), // New Market
-    LatLng(22.5593, 88.3705), // Kolkata Zoo
-    LatLng(22.5586, 88.3773), // Science City
-    LatLng(22.5163, 88.3225), // Kalighat Temple
-    LatLng(22.5678, 88.3576), // Nandan
-    LatLng(22.6411, 88.3500), // Alambazar
-    LatLng(22.5724, 88.4030), // Salt Lake Stadium
+    LatLng(22.5431, 88.1871),
+    LatLng(22.5914, 88.3238),
+    LatLng(22.5678, 88.3477),
+    LatLng(22.5593, 88.3705),
+    LatLng(22.5586, 88.3773),
+    LatLng(22.5163, 88.3225),
+    LatLng(22.5678, 88.3576),
+    LatLng(22.6411, 88.3500),
+    LatLng(22.5724, 88.4030),
   ];
 
   @override
@@ -106,4 +109,59 @@ class MapController extends GetxController {
     update();
     focusOnMarkers(); // Focus on markers when the map is created
   }
+
+
+
+  String apiKey = 'AIzaSyBNB2kmkXSOtldNxPdJ6vPs_yaiXBG6SSU';  // Replace with your Google API Key
+  RxList<Map<String, String>> suggestions = <Map<String, String>>[].obs;
+
+  Future<void> fetchSuggestions(String query) async {
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$query&key=$apiKey';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      print('API Response: $data'); // Log API response
+      if (data['status'] == 'OK') {
+        final List<dynamic> predictions = data['predictions'];
+        suggestions.value = predictions.map((prediction) {
+          return {
+            'description': prediction['description'] as String,
+            'place_id': prediction['place_id'] as String,
+          };
+        }).toList();
+        print('Suggestions: ${suggestions.value}'); // Log suggestions
+      } else {
+        suggestions.value = [];
+      }
+    } else {
+      suggestions.value = [];
+    }
+  }
+
+
+
+
+  Future<void> fetchLocationDetails(String placeId) async {
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$apiKey';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data['status'] == 'OK') {
+        final location = data['result']['geometry']['location'];
+        selectedLatitude = location['lat'];
+        selectedLongitude = location['lng'];
+        print('====================> selectedLatitude ${selectedLatitude}');
+        print('====================> selectedLongitude ${selectedLongitude}');
+        update();  // Update the UI
+      }
+    }
+  }
+
+
 }

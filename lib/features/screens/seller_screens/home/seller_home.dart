@@ -296,8 +296,6 @@ class _SellerHomeState extends State<SellerHome> {
                   inquiries: data.latestInquiries,
                   onSeeAll: () {
                     Get.to(const AllUserInquiry(isBackButtonExist: true,));
-                    // Get.toNamed(RouteHelper.getEnquiryRoute());
-                    // Get.toNamed(RouteHelper.getAllUserInquiry());
                   },
                 ),
                 sizedBox40(),
