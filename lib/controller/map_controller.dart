@@ -46,7 +46,6 @@ class MapController extends GetxController {
       permission = await Geolocator.requestPermission();
       if (permission != LocationPermission.whileInUse &&
           permission != LocationPermission.always) {
-        return;  // Handle if permission is denied
       }
     }
 
