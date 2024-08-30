@@ -92,7 +92,6 @@ class MapController extends GetxController {
         selectedLongitude = location['lng'];
         print('Selected Latitude: $selectedLatitude');
         print('Selected Longitude: $selectedLongitude');
-
         if (selectedLatitude != null && selectedLongitude != null) {
           mapController?.animateCamera(
             CameraUpdate.newLatLng(LatLng(selectedLatitude!, selectedLongitude!)),
