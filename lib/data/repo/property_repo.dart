@@ -149,4 +149,10 @@ class PropertyRepo {
     return await apiClient.getData(AppConstants.userBookmarkPropertyUrl,method: 'GET');
   }
 
+  Future<Response> vendorDeletePropertyRepo(String propertyId) async {
+    return await apiClient.getData('${AppConstants.vendorPropertyUrl}/$propertyId',method: 'DELETE');
+  }
+
+
+
 }

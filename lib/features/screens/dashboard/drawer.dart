@@ -4,6 +4,7 @@ import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/profile_controller.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/inquiry/all_user_inquiry.dart';
+import 'package:get_my_properties/features/screens/seller_screens/property/post_property_screen.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/features/widgets/custom_confirmation_dialog.dart';
@@ -95,6 +96,8 @@ class CustomDrawer extends StatelessWidget {
                               children: [
                                 Text("Post Property",style: senRegular.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).disabledColor),),
                                 IconButton(onPressed: () {
+                                  // Get.to(() => PostPropertyScreen(isBackButton: true,));
+                                  // Get.to(PostPropertyScreen(isBackButton: true,));
                                   Get.toNamed(RouteHelper.getPostPropertyRoute());
                                 },
                                   icon: const Icon(Icons.add),

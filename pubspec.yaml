@@ -61,6 +61,7 @@ dev_dependencies:
   google_places_flutter: ^2.0.9
   pretty_animated_buttons: ^0.0.2
   flutter_typeahead: ^4.0.0
+  animated_custom_dropdown: ^3.1.1
  
 
   # The "flutter_lints" package below contains a set of recommended lints to

@@ -1,20 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
-import 'package:get_my_properties/controller/explore_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
-import 'package:get_my_properties/controller/searchController.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
-import 'package:get_my_properties/features/screens/explore/explore_screen.dart';
-import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/home/widgets/filter_bottom_sheet.dart';
-import 'package:get_my_properties/features/screens/home/widgets/recommended_item_card.dart';
 import 'package:get_my_properties/features/screens/search/search_property_screen.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
-import 'package:get_my_properties/features/widgets/empty_data_widget.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
-import 'package:get_my_properties/utils/images.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
@@ -167,7 +160,7 @@ class SearchScreen extends StatelessWidget {
                             controller: _searchController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'City | Locality | Landmark',
+                              hintText: 'Search Property',
                               hintStyle: TextStyle(
                                 color: Theme.of(context).hintColor,),
                             ),

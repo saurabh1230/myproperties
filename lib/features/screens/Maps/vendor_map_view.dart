@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:get_my_properties/data/models/body/vendor_locality.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -100,6 +101,17 @@ class VendorMapView extends StatelessWidget {
                     CustomButtonWidget(
                       buttonText: 'Continue',
                       onPressed: () {
+                        // For demonstration, printing the list of localities
+                        print(locationControl.localities[0].name);
+                        print(locationControl.localities[0].lat);
+                        print(locationControl.localities[0].lng);
+
+                        // Example of how to use the locality data:
+                        // if (locationControl.localities.isNotEmpty) {
+                        //   LocalityMapData selectedLocality = locationControl.localities.last;
+                        //   print('Selected Locality: ${selectedLocality.name}, Lat: ${selectedLocality.lat}, Lng: ${selectedLocality.lng}');
+                        // }
+
                         Get.back();
                         // Get.find<AuthController>().saveLatitude(latitude);
                         // Get.find<AuthController>().saveLongitude(longitude);

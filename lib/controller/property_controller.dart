@@ -2,10 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
+import 'package:get_my_properties/controller/location_controller.dart';
+import 'package:get_my_properties/data/models/body/vendor_locality.dart';
 import 'package:get_my_properties/data/models/response/property_detail_model.dart';
 import 'package:get_my_properties/data/models/response/property_model.dart';
 import 'package:get_my_properties/data/models/response/recent_search_model.dart';
+import 'package:get_my_properties/data/models/response/vendor_property_model.dart';
 import 'package:get_my_properties/data/repo/property_repo.dart';
+import 'package:get_my_properties/features/screens/dashboard/seller_dashboard.dart';
 import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:http/http.dart' as http;
@@ -212,6 +216,10 @@ class PropertyController extends GetxController implements GetxService {
 
   /// ######  VENDOR  ##########////
 ///
+
+  List<VendorPropertyModel>? _verderPropertyList;
+  List<VendorPropertyModel>? get verdorPropertyList => _verderPropertyList;
+
   Future<void> getVendorPropertyList({
     String? page,
     String? status,
@@ -222,7 +230,7 @@ class PropertyController extends GetxController implements GetxService {
       if (page == '1') {
         _pageList = []; // Reset page list for new search
         _offset = 1;
-        _propertyList = []; // Reset product list for the first page
+        _verderPropertyList = []; // Reset product list for the first page
         update();
       }
 
@@ -231,12 +239,12 @@ class PropertyController extends GetxController implements GetxService {
         Response response = await propertyRepo.getVendorProperty(status);
         if (response.statusCode == 200) {
           List<dynamic> dataList = response.body['data'];
-          List<PropertyModel> newDataList = dataList.map((json) => PropertyModel.fromJson(json)).toList();
+          List<VendorPropertyModel> newDataList = dataList.map((json) => VendorPropertyModel.fromJson(json)).toList();
 
           if (page == '1') {
-            _propertyList = newDataList;
+            _verderPropertyList = newDataList;
           } else {
-            _propertyList!.addAll(newDataList);
+            _verderPropertyList!.addAll(newDataList);
           }
 
           _isPropertyLoading = false;
@@ -286,7 +294,8 @@ class PropertyController extends GetxController implements GetxService {
     required String expiryDate,
     required String stateId,
     required String cityId,
-    required String localityId,
+    required List<LocalityMapData> localityId,
+    // required String localityId,
     required String latitude,
     required String longitude,
     required XFile? displayImage,
@@ -344,7 +353,8 @@ class PropertyController extends GetxController implements GetxService {
       "expiry_date": expiryDate,
       "state_id": stateId,
       "city_id": cityId,
-      "locality_id": jsonEncode(["66b09b8fc7068370892553c0", "66b09b9bc7068370892553c3"]),
+      // "locality_id": localityId,
+      // "locality_id": jsonEncode(["66b09b8fc7068370892553c0", "66b09b9bc7068370892553c3"]),
       "latitude": latitude,
       "longitude": longitude,
     });
@@ -387,7 +397,8 @@ class PropertyController extends GetxController implements GetxService {
 
       var responseBody = await response.stream.bytesToString();
       print('Raw Response Body: $responseBody'); // Print raw response for debugging
-      showCustomSnackBar('Property Created Successfully');
+      showCustomSnackBar('Property Created Successfully You will notify when Admin Approved your listing');
+
 
       // Try to decode response as JSON
       try {
@@ -401,6 +412,12 @@ class PropertyController extends GetxController implements GetxService {
       print('Exception: $e');
       return false;
     } finally {
+      // Get.to(() => SellerDashboardScreen(pageIndex: 0));
+      Get.find<AuthController>().getHomeDataApi();
+      Get.find<LocationController>().getCountryList();
+      Get.find<LocationController>().getStateList();
+      Get.find<LocationController>().getCityList('66b356ec18a20385edf487a7');
+      Get.find<LocationController>().getLocalityList();
       _isLoading = false;
       update();
     }
@@ -487,4 +504,31 @@ class PropertyController extends GetxController implements GetxService {
     _isLoading = false;
     update();
   }
+
+  Future<void> deleteVenderProperty(propertyId,String? propertyStatus) async {
+    _isLoading = true;
+    update();
+    try {
+      Response response = await propertyRepo.vendorDeletePropertyRepo(propertyId);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = response.body;
+        if (responseData['status'] == true) {
+          showCustomSnackBar(responseData['message']);
+
+        }
+      } else {
+        // Handle error if status code is not 200
+        showCustomSnackBar("Error in deleting property", isError: true);
+      }
+    } catch (error) {
+      print("Error while deleting property: $error");
+      showCustomSnackBar("An error occurred", isError: true);
+    }
+    getVendorPropertyList(page: '1', status: propertyStatus);
+
+
+    _isLoading = false;
+    update();
+  }
+
 }
