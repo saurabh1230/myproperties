@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/map_controller.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/Maps/widgets/map_property_bottomsheet.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
@@ -22,41 +23,29 @@ class PropertiesMapScreen extends StatelessWidget {
     final MapController mapController = Get.put(MapController());
 
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor:  Theme.of(context).cardColor,
-      //   onPressed: () {
-      //   Get.bottomSheet(
-      //     const MapPropertySheet(),
-      //     isScrollControlled: true,
-      //     backgroundColor: Colors.white, // Customize the background color if needed
-      //     shape: const RoundedRectangleBorder(
-      //       borderRadius: BorderRadius.only(
-      //         topLeft: Radius.circular(Dimensions.radius20),
-      //         topRight: Radius.circular(Dimensions.radius20),
-      //       ),
-      //     ),
-      //   );
-      // },child:  Icon(Icons.apartment,color: Theme.of(context).primaryColor,),),
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: "Find Properties",
         isBackButtonExist: true,
+        onBackPressed: () {
+          Get.back();
+          Get.find<PropertyController>().getPropertyList(page: '1');
+        },
       ),
       body: GetBuilder<MapController>(
         builder: (locationControl) {
-          if (locationControl.latitude == null || locationControl.longitude == null) {
+          if (locationControl.markerCoordinates.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          LatLng center = LatLng(locationControl.latitude!, locationControl.longitude!);
-
           return Stack(
             children: [
-              GoogleMap(zoomControlsEnabled: false,
+              GoogleMap(
+                zoomControlsEnabled: false,
                 mapToolbarEnabled: false,
                 onMapCreated: locationControl.onMapCreated,
                 initialCameraPosition: CameraPosition(
-                  target: center,
-                  zoom: 14.0,
+                  target: locationControl.markerCoordinates.first,
+                  zoom: 25.0,
                 ),
                 markers: locationControl.markerCoordinates.map((coord) {
                   return Marker(
@@ -64,12 +53,6 @@ class PropertiesMapScreen extends StatelessWidget {
                     position: coord,
                   );
                 }).toSet(),
-                onCameraMove: (CameraPosition position) {
-                  locationControl.latitude = position.target.latitude;
-                  locationControl.longitude = position.target.longitude;
-                  locationControl.updateAddress();
-                  locationControl.update();
-                },
               ),
               Positioned(
                 top: 10,
@@ -100,43 +83,67 @@ class PropertiesMapScreen extends StatelessWidget {
                     await locationControl.fetchLocationDetails(placeId);
                     if (locationControl.selectedLatitude != null &&
                         locationControl.selectedLongitude != null) {
-                      locationControl.mapController?.animateCamera(
-                        CameraUpdate.newLatLng(
-                          LatLng(locationControl.selectedLatitude!, locationControl.selectedLongitude!),
+                      Get.bottomSheet(
+                        MapPropertySheet(
+                          lat: locationControl.selectedLatitude.toString(),
+                          long: locationControl.selectedLongitude.toString(),
+                        ),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.white,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(Dimensions.radius20),
+                            topRight: Radius.circular(Dimensions.radius20),
+                          ),
                         ),
                       );
                     }
                   },
                 ),
               ),
-              Positioned(bottom: Dimensions.paddingSizeDefault,
+              Positioned(
+                bottom: Dimensions.paddingSizeDefault,
                 left: Dimensions.paddingSizeDefault,
                 right: Dimensions.paddingSizeDefault,
-                child:  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                   InkWell(onTap: () {
-
-
-                   },
-                     child: Container(
-                       padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSize40,
-                       vertical: Dimensions.fontSize18),
-                       decoration: BoxDecoration(
-                         color: Theme.of(context).cardColor,
-                         borderRadius: BorderRadius.circular(Dimensions.radius20)),
-                       child: Text('← Save Location',style: senBold.copyWith(
-                         fontSize: Dimensions.fontSizeDefault,
-                         color: Theme.of(context).primaryColor
-                       ),),
-                     ),
-                   ),
+                    InkWell(
+                      onTap: () {
+                        Get.find<PropertyController>().getPropertyList(
+                          page: '1',
+                          lat: locationControl.selectedLatitude.toString(),
+                          long: locationControl.selectedLongitude.toString(),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.paddingSize40,
+                          vertical: Dimensions.fontSize18,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.circular(Dimensions.radius20),
+                        ),
+                        child: Text(
+                          '← Save Location',
+                          style: senBold.copyWith(
+                            fontSize: Dimensions.fontSizeDefault,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
                     FloatingActionButton(
-                      backgroundColor:  Theme.of(context).cardColor,
+                      backgroundColor: Theme.of(context).cardColor,
                       onPressed: () {
                         Get.bottomSheet(
-                          const MapPropertySheet(),
+                          MapPropertySheet(
+                            lat: locationControl.selectedLatitude.toString(),
+                            long: locationControl.selectedLongitude.toString(),
+                          ),
                           isScrollControlled: true,
-                          backgroundColor: Colors.white, // Customize the background color if needed
+                          backgroundColor: Colors.white,
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(Dimensions.radius20),
@@ -144,88 +151,15 @@ class PropertiesMapScreen extends StatelessWidget {
                             ),
                           ),
                         );
-                      },child:  Icon(Icons.apartment,color: Theme.of(context).primaryColor,),),
+                      },
+                      child: Icon(
+                        Icons.apartment,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              // Positioned(
-              //   bottom: Dimensions.paddingSizeDefault,
-              //   left: 0,right: 0,
-              //   child: CustomButtonWidget(
-              //     buttonText: 'Continue',
-              //     onPressed: () {
-              //       // if (locationControl.latitude != null && locationControl.longitude != null) {
-              //       //   // Show BottomSheet
-              //       //   showModalBottomSheet(
-              //       //     shape: const RoundedRectangleBorder(
-              //       //       borderRadius: BorderRadius.only(
-              //       //         topLeft: Radius.circular(Dimensions.radius20),
-              //       //         topRight: Radius.circular(Dimensions.radius20),
-              //       //       ),
-              //       //     ),
-              //       //     context: context,
-              //       //     builder: (context) {
-              //       //       return MapPropertySheet();
-              //       //     },
-              //       //   );
-              //       // } else {
-              //       //   // Handle the case where latitude and longitude are null (optional)
-              //       //   Get.snackbar(
-              //       //     'Error',
-              //       //     'Please select a valid location.',
-              //       //     backgroundColor: Colors.red,
-              //       //     colorText: Colors.white,
-              //       //   );
-              //       // }
-              //     },
-              //   ),
-              // ),
-              // Positioned(
-              //   bottom: 20,
-              //   left: 20,
-              //   right: 20,
-              //   child: Column(
-              //     children: [
-              //       Container(
-              //         padding: const EdgeInsets.all(16.0),
-              //         color: Colors.white,
-              //         child: Text(
-              //           locationControl.address ?? 'Fetching address...',
-              //           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              //         ),
-              //       ),
-              //       // sizedBoxDefault(),
-              //       // CustomButtonWidget(
-              //       //   buttonText: 'Continue',
-              //       //   onPressed: () {
-              //       //     // if (locationControl.latitude != null && locationControl.longitude != null) {
-              //       //     //   // Show BottomSheet
-              //       //     //   showModalBottomSheet(
-              //       //     //     shape: const RoundedRectangleBorder(
-              //       //     //       borderRadius: BorderRadius.only(
-              //       //     //         topLeft: Radius.circular(Dimensions.radius20),
-              //       //     //         topRight: Radius.circular(Dimensions.radius20),
-              //       //     //       ),
-              //       //     //     ),
-              //       //     //     context: context,
-              //       //     //     builder: (context) {
-              //       //     //       return MapPropertySheet();
-              //       //     //     },
-              //       //     //   );
-              //       //     // } else {
-              //       //     //   // Handle the case where latitude and longitude are null (optional)
-              //       //     //   Get.snackbar(
-              //       //     //     'Error',
-              //       //     //     'Please select a valid location.',
-              //       //     //     backgroundColor: Colors.red,
-              //       //     //     colorText: Colors.white,
-              //       //     //   );
-              //       //     // }
-              //       //   },
-              //       // ),
-              //     ],
-              //   ),
-              // ),
             ],
           );
         },
@@ -233,4 +167,5 @@ class PropertiesMapScreen extends StatelessWidget {
     );
   }
 }
+
 

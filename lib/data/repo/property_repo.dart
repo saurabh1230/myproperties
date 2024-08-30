@@ -31,7 +31,7 @@ class PropertyRepo {
     String? space,
   }) async {
     // Initialize the map to hold the fields
-    Map<String, String> fields = {};
+    Map<String, dynamic> fields = {}; // Changed to dynamic to allow different data types
 
     // Add fields conditionally based on their presence
     if (stateId != null) fields['state_id'] = stateId;
@@ -46,19 +46,37 @@ class PropertyRepo {
     if (page != null) fields['page'] = page;
     if (limit != null) fields['limit'] = limit;
     if (sortBy != null) fields['sort_by'] = sortBy;
-    if (lat != null) fields['lat'] = lat;
-    if (long != null) fields['long'] = long;
+
+    // Convert lat and long to double, if provided
+    if (lat != null) fields['lat'] = double.tryParse(lat) ?? lat;
+    if (long != null) fields['long'] = double.tryParse(long) ?? long;
+
     if (direction != null) fields['direction'] = direction;
     if (bathroom != null) fields['bathroom'] = bathroom;
     if (space != null) fields['space'] = space;
     if (userId != null) fields['user_id'] = userId;
 
     // Make the API request
-    return apiClient.postData(
-      AppConstants.userGetPropertyUrl,
-      fields,
-    );
+    try {
+      Response response = await apiClient.postData(
+        AppConstants.userGetPropertyUrl,
+        fields,
+      );
+
+      if (response.statusCode == 200) {
+        print('API call successful.');
+      } else {
+        print('API call failed with status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+
+      return response;
+    } catch (e) {
+      print('Error making API call: $e');
+      rethrow; // You can choose to rethrow the error or handle it differently
+    }
   }
+
 
   Future<Response> getPropertyDetails(String? propertyId) {
     print('${AppConstants.userPropertyDetails}$propertyId');

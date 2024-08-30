@@ -11,71 +11,16 @@ import 'package:geocoding/geocoding.dart';
 
 class MapController extends GetxController {
   GoogleMapController? mapController;
-  double? latitude;
-  double? longitude;
-  String? address;
   double? selectedLatitude;
   double? selectedLongitude;
+  String? address;
 
   List<LatLng> markerCoordinates = Get.find<PropertyController>().markerCoordinates;
-
 
   @override
   void onInit() {
     super.onInit();
-    getUserLocation();
-  }
-
-  Future<void> getUserLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return;  // Handle if location services are not enabled
-    }
-
-    // Check for location permissions
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.deniedForever) {
-      return;  // Handle if permission is permanently denied
-    }
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
-      }
-    }
-
-    // Get current position
-    Position currentPosition = await Geolocator.getCurrentPosition();
-    latitude = currentPosition.latitude;
-    longitude = currentPosition.longitude;
-
-    // Convert coordinates to address
-    await updateAddress();
-
-    // Focus on markers
-    focusOnMarkers();
-
-    // Notify listeners to rebuild the UI
-    update();
-  }
-
-  Future<void> updateAddress() async {
-    if (latitude != null && longitude != null) {
-      try {
-        List<Placemark> placemarks = await placemarkFromCoordinates(latitude!, longitude!);
-        if (placemarks.isNotEmpty) {
-          Placemark placemark = placemarks.first;
-          address = '${placemark.street}, ${placemark.locality}, ${placemark.administrativeArea}, ${placemark.postalCode}, ${placemark.country}';
-        }
-      } catch (e) {
-        print("Error occurred while converting coordinates to address: $e");
-      }
-    }
+    focusOnMarkers(); // Only focus on the initial markers
   }
 
   void focusOnMarkers() {
@@ -94,17 +39,7 @@ class MapController extends GetxController {
       bounds = LatLngBounds(southwest: southwest, northeast: northeast);
 
       mapController!.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
-      Get.bottomSheet(
-        const MapPropertySheet(),
-        isScrollControlled: true,
-        backgroundColor: Colors.white, // Customize the background color if needed
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(Dimensions.radius20),
-            topRight: Radius.circular(Dimensions.radius20),
-          ),
-        ),
-      );
+
     }
   }
 
@@ -114,9 +49,8 @@ class MapController extends GetxController {
     focusOnMarkers(); // Focus on markers when the map is created
   }
 
-
-
-  String apiKey = 'AIzaSyBNB2kmkXSOtldNxPdJ6vPs_yaiXBG6SSU';  // Replace with your Google API Key
+  // API key for Google Places API
+  String apiKey = 'AIzaSyBNB2kmkXSOtldNxPdJ6vPs_yaiXBG6SSU';
   RxList<Map<String, String>> suggestions = <Map<String, String>>[].obs;
 
   Future<void> fetchSuggestions(String query) async {
@@ -135,8 +69,7 @@ class MapController extends GetxController {
             'description': prediction['description'] as String,
             'place_id': prediction['place_id'] as String,
           };
-        }).toList();
-        print('Suggestions: ${suggestions.value}'); // Log suggestions
+        }).toList();// Log suggestions
       } else {
         suggestions.value = [];
       }
@@ -144,9 +77,6 @@ class MapController extends GetxController {
       suggestions.value = [];
     }
   }
-
-
-
 
   Future<void> fetchLocationDetails(String placeId) async {
     final String url =
@@ -160,12 +90,32 @@ class MapController extends GetxController {
         final location = data['result']['geometry']['location'];
         selectedLatitude = location['lat'];
         selectedLongitude = location['lng'];
-        print('====================> selectedLatitude ${selectedLatitude}');
-        print('====================> selectedLatitude ${selectedLongitude}');
+        print('Selected Latitude: $selectedLatitude');
+        print('Selected Longitude: $selectedLongitude');
+
+        if (selectedLatitude != null && selectedLongitude != null) {
+          mapController?.animateCamera(
+            CameraUpdate.newLatLng(LatLng(selectedLatitude!, selectedLongitude!)),
+          );
+          Get.bottomSheet(
+            MapPropertySheet(
+              lat: selectedLatitude.toString(),
+              long: selectedLongitude.toString(),
+            ),
+            isScrollControlled: true,
+            backgroundColor: Colors.white,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(Dimensions.radius20),
+                topRight: Radius.circular(Dimensions.radius20),
+              ),
+            ),
+          );
+        }
+
         update();  // Update the UI
       }
     }
   }
-
-
 }
+

@@ -47,10 +47,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
         Get.find<PropertyController>().getPropertyList(page: '1',typeId:widget.propertyTypeId,
             purposeId: widget.purposeId );
       } else {
+        print('check');
         Get.find<PropertyController>().getPropertyList(page: '1',);
-
       }
-
     });
     super.initState();
   }

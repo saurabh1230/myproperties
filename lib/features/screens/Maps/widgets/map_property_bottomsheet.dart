@@ -15,10 +15,18 @@ import 'package:get_my_properties/utils/theme/price_converter.dart';
 
 
 class MapPropertySheet extends StatelessWidget {
-  const MapPropertySheet({super.key});
+  final String lat;
+  final String long;
+  const MapPropertySheet({super.key, required this.lat, required this.long});
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<PropertyController>().getPropertyList(page: '1',
+          lat: lat,
+          long:long );
+    });
+
     return Container(
       height: Get.size.height * 0.50,
       decoration: BoxDecoration(

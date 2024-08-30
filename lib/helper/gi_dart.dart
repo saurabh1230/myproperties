@@ -11,6 +11,7 @@ import 'package:get_my_properties/controller/profile_controller.dart';
 import 'package:get_my_properties/controller/properties_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/controller/searchController.dart';
+import 'package:get_my_properties/controller/user_map_controller.dart';
 import 'package:get_my_properties/controller/vendor_controller.dart';
 import 'package:get_my_properties/controller/vendor_map_controller.dart';
 import 'package:get_my_properties/data/api/api_client.dart';
@@ -56,6 +57,7 @@ Future<void>   init() async {
   Get.lazyPut(() => InquiryController(inquiryRepo:  Get.find()));
   Get.lazyPut(() => MapController());
   Get.lazyPut(() => VendorMapController());
+  Get.lazyPut(() => UserMapController());
 
 
 }
