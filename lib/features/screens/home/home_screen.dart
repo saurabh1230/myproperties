@@ -37,6 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.find<AuthController>().profileDetailsApi();
       Get.find<AuthController>().getHomeDataApi();
       Get.find<PropertyController>().getPropertyList(page: '1',);
+      Get.find<PropertyController>().getTopPopularPropertyList(page: '1',);
+
     });
   }
   @override
@@ -116,12 +118,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(children: [
                            Icon(Icons.location_on_sharp,color : Theme.of(context).cardColor),
                            Expanded(child: Text(authControl.getSaveAddress().toString(),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2, overflow: TextOverflow.ellipsis,
                             style: senRegular.copyWith(fontSize: Dimensions.fontSize14,
                                 color: Theme.of(context).cardColor),)),
                         ],),
-                        // sizedBox12(),
                       ],
                     ),
                   ),

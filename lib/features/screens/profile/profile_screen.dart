@@ -3,11 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/profile_controller.dart';
+import 'package:get_my_properties/features/screens/Maps/location_view.dart';
+import 'package:get_my_properties/features/screens/Maps/vendor_map_view.dart';
+import 'package:get_my_properties/features/screens/dashboard/dashboard.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
 import 'package:get_my_properties/features/widgets/custom_image_widget.dart';
+import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
 import 'package:get_my_properties/features/widgets/custom_textfield.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
@@ -26,6 +30,13 @@ class ProfileScreen extends StatelessWidget {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _registerTypeController = TextEditingController();
+  final _stateController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _zipcodeController = TextEditingController();
+  final _websiteController = TextEditingController();
+
+
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -65,6 +76,7 @@ class ProfileScreen extends StatelessWidget {
         body: GetBuilder<AuthController>(builder: (authControl) {
           return authControl.profileData == null || authControl.profileDetailsLoading ?
               const Center(child: CircularProgressIndicator()) :
+
            GetBuilder<ProfileController>(builder: (profileControl) {
             _nameController.text = authControl.profileData?.name?.toString() ?? '';
             _addressController.text = authControl.profileData?.address?.toString() ?? '';
@@ -72,8 +84,11 @@ class ProfileScreen extends StatelessWidget {
             _phoneController.text = authControl.profileData?.phoneNumber?.toString() ?? '';
             _registerTypeController.text = authControl.profileData?.userType?.toString() ?? '';
 
+
+
             if(authControl.profileData!.userType == "vender") {
               _usernameController.text = authControl.profileData?.username?.toString() ?? '';
+
 
             } else {
 
@@ -187,29 +202,32 @@ class ProfileScreen extends StatelessWidget {
                                 hintText: "Username",
                                 editText: true,),
                               sizedBoxDefault(),
-                              const CustomTextField(
-                                showTitle: true,
-                                hintText: "State",
-                                editText: true,),
-                              sizedBoxDefault(),
-                              Row(
-                                children: [
-                                  const Expanded(
-                                    child: CustomTextField(
-                                      showTitle: true,
-                                      hintText: "City",
-                                      editText: false,),
-                                  ),
-                                  sizedBoxW10(),
-                                  const Expanded(
-                                    child: CustomTextField(
-                                      inputType: TextInputType.number,
-                                      showTitle: true,
-                                      hintText: "Zip-Code",
-                                      editText: false,),
-                                  ),
-                                ],
-                              ),
+                               // CustomTextField(
+                               //  controller: _stateController,
+                               //  showTitle: true,
+                               //  hintText: "State",
+                               //  editText: true,),
+                              // sizedBoxDefault(),
+                              // Row(
+                              //   children: [
+                              //      Expanded(
+                              //       child: CustomTextField(
+                              //         controller: _cityController,
+                              //         showTitle: true,
+                              //         hintText: "City",
+                              //         editText: false,),
+                              //     ),
+                              //     sizedBoxW10(),
+                              //      Expanded(
+                              //       child: CustomTextField(
+                              //         controller: _zipcodeController,
+                              //         inputType: TextInputType.number,
+                              //         showTitle: true,
+                              //         hintText: "Zip-Code",
+                              //         editText: false,),
+                              //     ),
+                              //   ],
+                              // ),
 
                             ],
                           ),
@@ -224,10 +242,12 @@ class ProfileScreen extends StatelessWidget {
                               const SizedBox(height: 5 ),
                               CustomTextField(
                                 onTap: () {
-                                  Get.toNamed(RouteHelper.getLocationPickerRoute());
+                                  // Get.to(() => const VendorMapView());
+                                  // Get.to(LocationPickerScreen(isAddress: true,));
+                                  // Get.toNamed(RouteHelper.getLocationPickerRoute(isAddress: true));
                                 },
                                 controller: _addressController,
-                                readOnly: true,
+                                // readOnly: true,
                                 // showTitle: true,
                                 maxLines: 4,
                                 hintText: authControl.getSaveAddress().toString().isEmpty ?
@@ -282,26 +302,26 @@ class ProfileScreen extends StatelessWidget {
                         hintText: "Password",
                         isPassword: true,),
                       sizedBoxDefault(),*/
-                          OutlinedButton(onPressed: () {
-                            // Get.toNamed(RouteHelper.getSavedRoute(isBackButton: true));
-                          }, child: Padding(
-                            padding:  const EdgeInsets.symmetric(vertical: Dimensions.paddingSize12),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("History",style: senRegular.copyWith(fontSize: Dimensions.fontSize15,color: Theme.of(context).disabledColor),),
-                                const Icon(Icons.arrow_forward)
-
-                              ],
-                            ),
-                          )),
+                          // OutlinedButton(onPressed: () {
+                          //   // Get.toNamed(RouteHelper.getSavedRoute(isBackButton: true));
+                          // }, child: Padding(
+                          //   padding:  const EdgeInsets.symmetric(vertical: Dimensions.paddingSize12),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Text("History",style: senRegular.copyWith(fontSize: Dimensions.fontSize15,color: Theme.of(context).disabledColor),),
+                          //       const Icon(Icons.arrow_forward)
+                          //
+                          //     ],
+                          //   ),
+                          // )),
                           sizedBox20(),
                           profileControl.isLoading ?
                           const CircularProgressIndicator() :
                           CustomButtonWidget(
                             buttonText: 'Save',
                             onPressed: () {
-                              if(authControl.profileData!.userType == "customer") {
+                              if(authControl.isCustomerLoggedIn()) {
                                 profileControl.updateProfile(
                                   name: _nameController.text,
                                   email: _emailController.text,
@@ -309,6 +329,10 @@ class ProfileScreen extends StatelessWidget {
                                   image: profileControl.pickedImage != null && profileControl.pickedImage!.path.isNotEmpty
                                       ? profileControl.pickedImage
                                       : null,);
+
+
+                                // Get.toNamed(RouteHelper.getDashboardRoute());
+
 
                               } else {
                                 profileControl.updateVendorProfile(
@@ -323,6 +347,7 @@ class ProfileScreen extends StatelessWidget {
 
 
                               }
+
 
                             },),
                           sizedBox20(),

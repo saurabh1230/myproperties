@@ -17,14 +17,18 @@ import 'package:get_my_properties/utils/theme/price_converter.dart';
 class MapPropertySheet extends StatelessWidget {
   final String lat;
   final String long;
-  const MapPropertySheet({super.key, required this.lat, required this.long});
+  final String? purposeId;
+  final String? propertyTypeId;
+  const MapPropertySheet({super.key, required this.lat, required this.long,  this.purposeId, this.propertyTypeId});
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<PropertyController>().getPropertyList(page: '1',
           lat: lat,
-          long:long );
+          long:long,
+      purposeId: purposeId,
+      typeId: propertyTypeId);
     });
 
     return Container(
@@ -67,21 +71,23 @@ class MapPropertySheet extends StatelessWidget {
             ),
             sizedBox5(),
             Expanded(
-              child: SingleChildScrollView(
+              child:  isListEmpty && !isLoading
+                  ? Center(
+                child:
+                EmptyDataWidget(
+                  image: Images.icSearchPlaceHolder,
+                  fontColor: Theme.of(context).disabledColor,
+                  text: 'No Properties Found',
+                ),
+              )
+                  : isLoading || isListEmpty
+                  ? Center(child: const CircularProgressIndicator())
+                  :
+              SingleChildScrollView(
                 child: Column(
                   children: [
                     sizedBox8(),
-                    isListEmpty && !isLoading
-                        ? Center(
-                      child: EmptyDataWidget(
-                        image: Images.emptyDataImage,
-                        fontColor: Theme.of(context).disabledColor,
-                        text: 'No Properties yet',
-                      ),
-                    )
-                        : isLoading || isListEmpty
-                        ? const CircularProgressIndicator()
-                        : ListView.separated(
+                    ListView.separated(
                       padding: const EdgeInsets.symmetric(
                           horizontal: Dimensions.paddingSizeDefault),
                       physics: const NeverScrollableScrollPhysics(),

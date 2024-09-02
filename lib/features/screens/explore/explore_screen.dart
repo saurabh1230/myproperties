@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_properties/controller/bookmark_controller.dart';
@@ -79,7 +81,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 children: [
                   Expanded(child: CustomOutlineButton(title: 'Location',
                     tap: () {
-                      Get.to(() => const PropertiesMapScreen());
+                      Get.to(() =>  PropertiesMapScreen(
+                        purposeId: widget.purposeId!,
+                        propertyTypeId:
+                        widget.propertyTypeId != null ?
+                        widget.propertyTypeId.toString() : '',
+
+                      ));
                     },)),
                   sizedBoxW5(),
                   Expanded(child: CustomOutlineButton(
@@ -107,16 +115,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 ],
               ),
             ),
-            isListEmpty && !isLoading
-                ? Center(
+             Expanded(
+                  child: isListEmpty && !isLoading
+                      ? Center(
                     child: EmptyDataWidget(
-                      image: Images.emptyDataImage,
+                      image: Images.icSearchPlaceHolder,
                       fontColor: Theme.of(context).disabledColor,
-                      text: 'No Properties yet',
+                      text: 'No Properties Found',
                     ),
                   )
-                : Expanded(
-                  child: isLoading || isListEmpty
+                      :
+                  isLoading || isListEmpty
                       ? const ExploreScreenShimmer()
                       : SingleChildScrollView(
                           child: ListView.separated(

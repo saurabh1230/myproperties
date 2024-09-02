@@ -13,7 +13,7 @@ import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:flutter/services.dart';
 
 class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;
@@ -340,6 +340,26 @@ class AuthController extends GetxController implements GetxService {
   void updateLastBackPressTime(DateTime time) {
     lastBackPressTime = time;
     update();
+  }
+
+  DateTime? _lastBackPressTime;
+
+  Future<bool> willPopCallback() async {
+    final now = DateTime.now();
+    if (_lastBackPressTime == null ||
+        now.difference(_lastBackPressTime!) > const Duration(seconds: 2)) {
+      _lastBackPressTime = now;
+      Get.showSnackbar(
+        GetSnackBar(
+          message: 'Press back again to exit',
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return Future.value(false);
+    }
+    SystemNavigator.pop(); // Closes the app
+    update();
+    return Future.value(true);
   }
 
 }

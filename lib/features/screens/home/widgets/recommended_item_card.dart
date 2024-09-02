@@ -141,7 +141,8 @@ class RecommendedItemCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (ratingText != null) // Check if ratingText is not null
-                    // const SizedBox(),
+
+                    isVendor! ?
                     CustomDecoratedContainer(
                       child: Row(
                         children: [
@@ -165,7 +166,32 @@ class RecommendedItemCard extends StatelessWidget {
                           // ),
                         ],
                       ),
-                    ),
+                    ): const SizedBox(),
+                    // const SizedBox(),
+                    // CustomDecoratedContainer(
+                    //   child: Row(
+                    //     children: [
+                    //       IconButton(onPressed: () {
+                    //         vendorDeleteTap!();
+                    //       }, icon: Icon(Icons.delete,color: Theme.of(context).cardColor,))
+                    //       // IconButton(onPressed: () {
+                    //       //   Get.to(SellerDashboardScreen(pageIndex: 2));
+                    //       // }, icon: Icon(Icons.edit,color: Theme.of(context).primaryColor,))
+                    //       // Text(
+                    //       //   ratingText!,
+                    //       //   style: senRegular.copyWith(
+                    //       //     fontSize: Dimensions.fontSize12,
+                    //       //     color: Theme.of(context).hintColor,
+                    //       //   ),
+                    //       // ),
+                    //       // Icon(
+                    //       //   Icons.star,
+                    //       //   color: Theme.of(context).hintColor,
+                    //       //   size: Dimensions.fontSize15,
+                    //       // ),
+                    //     ],
+                    //   ),
+                    // ),
                   if (isLikeButton == true && likeTap != null) // Check if isLikeButton is true and likeTap is not null
                     CustomNotificationButton(
                       color: bookmarkIconColor,

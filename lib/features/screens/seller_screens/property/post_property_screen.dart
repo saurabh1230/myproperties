@@ -34,6 +34,7 @@ class PostPropertyScreen extends StatelessWidget {
    final TextEditingController _metaTitleController = TextEditingController();
    final TextEditingController _metaDescController = TextEditingController();
    final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _localityController = TextEditingController();
    final TextEditingController _slugController = TextEditingController();
    final TextEditingController _videoLinkController = TextEditingController();
    final TextEditingController _priceController = TextEditingController();
@@ -63,6 +64,7 @@ class PostPropertyScreen extends StatelessWidget {
       appBar:  CustomAppBar(title: "Post Property",isBackButtonExist: isBackButton == true  ? true : false ,),
       body: GetBuilder<VendorMapController>(builder: (vendorMapController) {
         _addressController.text = vendorMapController.address ?? 'Add Address';
+        // _localityController.text = vendorMapController.locality ?? 'Pick Address';
         return  GetBuilder<AuthController>(builder: (authControl) {
           final data = authControl.homeData;
           final list = data == null  || authControl.homeData!.propertyTypes == null ||
@@ -93,6 +95,9 @@ class PostPropertyScreen extends StatelessWidget {
                                   return 'Please Property Title';
                                 }
                                 return null;
+                              },
+                              onChanged: (val) {
+
                               },
                             ),
                             sizedBoxDefault(),
@@ -553,60 +558,60 @@ class PostPropertyScreen extends StatelessWidget {
                                 }
                               },
                             ),
-                            sizedBoxDefault(),
-                            Text(
-                              "Locality",
-                              style: senRegular.copyWith(
-                                  fontSize: Dimensions.fontSize15),
-                            ),
-                            sizedBox10(),
-                            CustomDropdown<String>(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Select Locality';
-                                }
-                                return null;
-                              },
-                              hintText: 'Select Locality',
-                              items: locationControl.localityList!
-                                  .map((purpose) => purpose.name)
-                                  .toList(),
-                              onChanged: (value) {
-                                if (value != null) {
-                                  var selectedPurpose = locationControl.localityList!
-                                      .firstWhere((purpose) => purpose.name == value);
-                                  locationControl.setLocalityId( selectedPurpose.id.toString());
-                                  print(locationControl.localityId);
-                                }
-                              },
-                            ),
-                            sizedBoxDefault(),
-                            Text(
-                              "Near By Location",
-                              style: senRegular.copyWith(
-                                  fontSize: Dimensions.fontSize15),
-                            ),
-                            sizedBox10(),
-                            CustomDropdown<String>(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Select Locality';
-                                }
-                                return null;
-                              },
-                              hintText: 'Select Locality',
-                              items: authControl.homeData!.nearbyLocations!
-                                  .map((purpose) => purpose.name!)
-                                  .toList(),
-                              onChanged: (value) {
-                                if (value != null) {
-                                  var selectedPurpose = authControl.homeData!.nearbyLocations!
-                                      .firstWhere((purpose) => purpose.name == value);
-                                  controller.setNearByLocationId(selectedPurpose.sId!);
-                                  print(controller.nearByLocationId);
-                                }
-                              },
-                            ),
+                            // sizedBoxDefault(),
+                            // Text(
+                            //   "Locality",
+                            //   style: senRegular.copyWith(
+                            //       fontSize: Dimensions.fontSize15),
+                            // ),
+                            // sizedBox10(),
+                            // CustomDropdown<String>(
+                            //   validator: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       return 'Select Locality';
+                            //     }
+                            //     return null;
+                            //   },
+                            //   hintText: 'Select Locality',
+                            //   items: locationControl.localityList!
+                            //       .map((purpose) => purpose.name)
+                            //       .toList(),
+                            //   onChanged: (value) {
+                            //     if (value != null) {
+                            //       var selectedPurpose = locationControl.localityList!
+                            //           .firstWhere((purpose) => purpose.name == value);
+                            //       locationControl.setLocalityId( selectedPurpose.id.toString());
+                            //       print(locationControl.localityId);
+                            //     }
+                            //   },
+                            // ),
+                            // sizedBoxDefault(),
+                            // Text(
+                            //   "Near By Location",
+                            //   style: senRegular.copyWith(
+                            //       fontSize: Dimensions.fontSize15),
+                            // ),
+                            // sizedBox10(),
+                            // CustomDropdown<String>(
+                            //   validator: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       return 'Select Locality';
+                            //     }
+                            //     return null;
+                            //   },
+                            //   hintText: 'Select Locality',
+                            //   items: authControl.homeData!.nearbyLocations!
+                            //       .map((purpose) => purpose.name!)
+                            //       .toList(),
+                            //   onChanged: (value) {
+                            //     if (value != null) {
+                            //       var selectedPurpose = authControl.homeData!.nearbyLocations!
+                            //           .firstWhere((purpose) => purpose.name == value);
+                            //       controller.setNearByLocationId(selectedPurpose.sId!);
+                            //       print(controller.nearByLocationId);
+                            //     }
+                            //   },
+                            // ),
                             sizedBoxDefault(),
                             Text(
                               "Property Direction",
@@ -630,6 +635,26 @@ class PostPropertyScreen extends StatelessWidget {
                                 }
                               },
                             ),
+                            // CustomDropdown<String>(
+                            //   validator: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       return 'Select Locality';
+                            //     }
+                            //     return null;
+                            //   },
+                            //   hintText: 'Select Locality',
+                            //   items: authControl.homeData!.nearbyLocations!
+                            //       .map((purpose) => purpose.name!)
+                            //       .toList(),
+                            //   onChanged: (value) {
+                            //     if (value != null) {
+                            //       var selectedPurpose = authControl.homeData!.nearbyLocations!
+                            //           .firstWhere((purpose) => purpose.name == value);
+                            //       controller.setNearByLocationId(selectedPurpose.sId!);
+                            //       print(controller.nearByLocationId);
+                            //     }
+                            //   },
+                            // ),
                             sizedBoxDefault(),
                             Text(
                               "Property Address",
@@ -651,6 +676,27 @@ class PostPropertyScreen extends StatelessWidget {
                                 }
                                 return null;
                               },),
+                            // sizedBoxDefault(),
+                            // Text(
+                            //   "Near By Locality",
+                            //   style: senRegular.copyWith(
+                            //       fontSize: Dimensions.fontSize15),
+                            // ),
+                            // sizedBox10(),
+                            // CustomTextField(
+                            //   onTap: () {
+                            //     Get.to(() => const VendorMapView());
+                            //   },
+                            //   controller: _localityController,
+                            //   maxLines: 4,
+                            //   readOnly: true,
+                            //   hintText: "Add Locality ",
+                            //   validation: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       return 'Add Pick Address to Add Locality';
+                            //     }
+                            //     return null;
+                            //   },),
                             sizedBoxDefault(),
                             Text(
                               "Media Content",
@@ -765,7 +811,7 @@ class PostPropertyScreen extends StatelessWidget {
                                 print('PropertyId: ${authControl.propertyTypeID}');
                                 print('PurposeId: ${authControl.propertyPurposeID}');
                                 print('CategoryId: ${authControl.propertyCategoryId}');
-                                print('AmenityId: ${authControl.amenityId}');
+                                print('AmenityId: ${authControl.amenityIds.join(',')}');
                                 print('Slug: for-sale-in-the-world-towers-lower-parel');
                                 print('Title: ${_titleController.text}');
                                 print('Description: ${_descController.text}');
@@ -790,7 +836,7 @@ class PostPropertyScreen extends StatelessWidget {
                                 print('ExpiryDate: ${controller.expireYearController.text}');
                                 print('StateId: ${locationControl.stateId}');
                                 print('CityId: ${locationControl.cityId}');
-                                print('LocalityId: ${locationControl.localityId}');
+                                print('LocalityId: ${vendorMapController.localities[0].name}');
                                 print('Latitude: ${vendorMapController.latitude.toString()}');
                                 print('Longitude: ${vendorMapController.longitude.toString()}');
                                 print('DisplayImage: ${propertyController.pickedDisplayImage}');
@@ -802,7 +848,6 @@ class PostPropertyScreen extends StatelessWidget {
                                       typeId: authControl.propertyTypeID,
                                       purposeId: authControl.propertyPurposeID,
                                       categoryId: authControl.propertyCategoryId,
-                                      amenityId:authControl.amenityIds.join(','),
                                       slug: _slugController.text,
                                       title: _titleController.text,
                                       description: _descController.text,
@@ -828,14 +873,16 @@ class PostPropertyScreen extends StatelessWidget {
                                       expiryDate: controller.expireYearController.text,
                                       stateId: locationControl.stateId!,
                                       cityId: locationControl.cityId!,
-                                      localityId: [],
+                                      // localityId: vendorMapController.localities,
                                       latitude: vendorMapController.latitude.toString(),
                                       longitude:  vendorMapController.longitude.toString(),
                                       displayImage: propertyController.pickedDisplayImage,
                                       galleryImages: propertyController.pickedGalleryImages,
+                                      localityName: vendorMapController.localities[0].name,
+                                      localityLat: vendorMapController.initialLat.toString(),
+                                      localityLng:vendorMapController.initialLng.toString(),
+                                      amenityIds: authControl.amenityIds.join(','),
                                     );
-
-
                                   }
 
 

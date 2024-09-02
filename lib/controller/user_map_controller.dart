@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get_my_properties/data/models/body/vendor_locality.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
@@ -6,35 +7,44 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
+import 'dart:convert';
+import 'package:get_my_properties/data/models/body/vendor_locality.dart';
+import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+
+import 'dart:convert';
+import 'package:get_my_properties/data/models/body/vendor_locality.dart';
+import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:app_settings/app_settings.dart';  // Import the package
+
 class UserMapController extends GetxController {
   GoogleMapController? mapController;
   double? latitude;
   double? longitude;
   String? address;
   String? locality;
-  // double? currentLatitude;
-  // double? currentLongitude;
-
-
 
   RxList<Map<String, String>> suggestions = <Map<String, String>>[].obs;
+  RxBool isLoading = false.obs; // Loading indicator
 
   List<LocalityMapData> _localities = [];
   List<LocalityMapData> get localities => _localities;
 
-
   String _selectedAddress = '';
   String get selectedAddress => _selectedAddress;
+
   void selectDirection(String val) {
     _selectedAddress = val;
     update();
   }
-
-
-
-
-
-
 
   @override
   void onInit() {
@@ -43,35 +53,65 @@ class UserMapController extends GetxController {
   }
 
   Future<void> getUserLocation() async {
+    isLoading.value = true; // Start loading
+
     bool serviceEnabled;
     LocationPermission permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return;  // Handle if location services are not enabled
+      isLoading.value = false; // Stop loading
+      Get.snackbar(
+        'Location Services Disabled',
+        'Please enable location services to continue.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
-      return;  // Handle if permission is permanently denied
+      isLoading.value = false; // Stop loading
+      Get.snackbar(
+        'Location Permission Denied',
+        'Please enable location permission from settings.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
     }
 
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission != LocationPermission.whileInUse &&
           permission != LocationPermission.always) {
-        return;  // Handle if permission is denied
+        isLoading.value = false; // Stop loading
+        Get.snackbar(
+          'Location Permission Denied',
+          'Please grant location permission to continue.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          mainButton: TextButton(
+            onPressed: () => AppSettings.openAppSettings(), // Open app settings
+            child: Text('Open Settings', style: TextStyle(color: Colors.white)),
+          ),
+        );
+        return;
       }
     }
 
     Position currentPosition = await Geolocator.getCurrentPosition();
     latitude = currentPosition.latitude;
     longitude = currentPosition.longitude;
-    // currentLatitude = currentPosition.latitude;
-    // currentLongitude = currentPosition.longitude;
     await updateAddress();
+    isLoading.value = false; // Stop loading
     update();
   }
+
   Future<void> updateAddress() async {
     if (latitude != null && longitude != null) {
       try {
@@ -83,12 +123,6 @@ class UserMapController extends GetxController {
           print('City =>>>>: ${placemark.locality ?? 'Not available'}');
           print('State =>>>>: ${placemark.administrativeArea ?? 'Not available'}');
           print('Locality =>>>> : ${placemark.subLocality ?? 'Not available'}');
-
-
-          // print('========>currentLatitude ${currentLatitude}');
-          // print('========> currentLongitude ${currentLongitude}');
-
-
         } else {
           print('No placemarks found');
         }
@@ -143,8 +177,10 @@ class UserMapController extends GetxController {
         latitude = location['lat'];
         longitude = location['lng'];
         update();  // Update the UI
-        ///
+        await updateAddress(); // Update address based on new location
       }
     }
   }
 }
+
+

@@ -41,6 +41,8 @@ class VendorMapView extends StatelessWidget {
                 onCameraMove: (CameraPosition position) {
                   locationControl.latitude = position.target.latitude;
                   locationControl.longitude = position.target.longitude;
+                  locationControl.setMainLat(position.target.latitude);
+                  locationControl.setMainLng(position.target.longitude);
                   locationControl.updateAddress(); // Update address on camera move
                   locationControl.update();  // Notify listeners to update UI
                 },

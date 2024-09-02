@@ -33,12 +33,13 @@ class SearchScreen extends StatelessWidget {
     });
     return GetBuilder<AuthController>(builder: (authControl) {
       return  Scaffold(
+        resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
         drawer: const CustomDrawer(),
         appBar:  CustomAppBar(title: 'Search',isBackButtonExist: isBackButton!,),
         bottomNavigationBar: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+            padding: const EdgeInsets.symmetric(horizontal : Dimensions.paddingSizeDefault,vertical: Dimensions.paddingSize30),
             child: Row(
               children: [
                 TextButton(onPressed: () {
@@ -73,12 +74,15 @@ class SearchScreen extends StatelessWidget {
           final isListEmpty = list == null || list.isEmpty;
           final isLoading = propertyControl.isPropertyLoading;
           final recentSearchList = propertyControl.recentSearchList;
+          final homedat =   authControl.homeData == null;
           final recentSearchListEmpty =
-              recentSearchList == null || recentSearchList.isEmpty  ||  authControl.homeData == null;
+              recentSearchList == null || recentSearchList.isEmpty ;
           return
             Column(
               children: [
                 sizedBox10(),
+                homedat ?
+                    Center(child: CircularProgressIndicator()) :
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                   child: Row(

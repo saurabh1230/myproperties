@@ -83,11 +83,11 @@ class PropertyController extends GetxController implements GetxService {
   List<PropertyModel>? _propertyList;
   List<PropertyModel>? get propertyList => _propertyList;
 
-  List<PropertyModel>? _topPropertyList;
-  List<PropertyModel>? get topPropertyList => _topPropertyList;
-
-  List<PropertyModel>? _featuredPropertyList;
-  List<PropertyModel>? get featuredPropertyList => _featuredPropertyList;
+  // List<PropertyModel>? _topPropertyList;
+  // List<PropertyModel>? get topPropertyList => _topPropertyList;
+  //
+  // List<PropertyModel>? _featuredPropertyList;
+  // List<PropertyModel>? get featuredPropertyList => _featuredPropertyList;
 
   List<LatLng> markerCoordinates = [];
   Future<void> getPropertyList({
@@ -155,15 +155,15 @@ class PropertyController extends GetxController implements GetxService {
             _propertyList!.addAll(newDataList);
           }
 
-          List<PropertyModel> topProperties = newDataList.where((property) => property.topProperty == true).toList();
-          if (topProperties.isNotEmpty) {
-            _topPropertyList!.addAll(topProperties);
-          }
-
-          List<PropertyModel> featuredProperties = newDataList.where((property) => property.isFeatured == true).toList();
-          if (topProperties.isNotEmpty) {
-            _featuredPropertyList!.addAll(featuredProperties);
-          }
+          // List<PropertyModel> topProperties = newDataList.where((property) => property.topProperty == true).toList();
+          // if (topProperties.isNotEmpty) {
+          //   _topPropertyList!.addAll(topProperties);
+          // }
+          //
+          // List<PropertyModel> featuredProperties = newDataList.where((property) => property.isFeatured == true).toList();
+          // if (topProperties.isNotEmpty) {
+          //   _featuredPropertyList!.addAll(featuredProperties);
+          // }
 
           markerCoordinates = newDataList.map((property) {
             double latitude =  property.latitude ?? 0;
@@ -269,7 +269,6 @@ class PropertyController extends GetxController implements GetxService {
     required String typeId,
     required String purposeId,
     required String categoryId,
-    required String amenityId,
     required String slug,
     required String title,
     required String description,
@@ -294,7 +293,12 @@ class PropertyController extends GetxController implements GetxService {
     required String expiryDate,
     required String stateId,
     required String cityId,
-    required List<LocalityMapData> localityId,
+    // required List<LocalityMapData> localityId,
+    required String localityName,
+    required String localityLat,
+    required String localityLng,
+    required String amenityIds,
+
     // required String localityId,
     required String latitude,
     required String longitude,
@@ -328,7 +332,7 @@ class PropertyController extends GetxController implements GetxService {
       "type_id": typeId,
       "purpose_id": purposeId,
       "category_id": categoryId,
-      "amenity_id": jsonEncode(["66b0999290ff51eb47b9bb13"]),
+      "amenity_id": jsonEncode(['66b0999290ff51eb47b9bb13','66b0998b90ff51eb47b9bb0f','66b0998190ff51eb47b9bb0b']),
       "slug": slug,
       "title": title,
       "description": description,
@@ -353,8 +357,10 @@ class PropertyController extends GetxController implements GetxService {
       "expiry_date": expiryDate,
       "state_id": stateId,
       "city_id": cityId,
+
       // "locality_id": localityId,
-      // "locality_id": jsonEncode(["66b09b8fc7068370892553c0", "66b09b9bc7068370892553c3"]),
+
+      "locality_id": jsonEncode([{"name":localityName,"lat":localityLat,"lng":localityLng}]),
       "latitude": latitude,
       "longitude": longitude,
     });
@@ -531,4 +537,102 @@ class PropertyController extends GetxController implements GetxService {
     update();
   }
 
+
+
+  // top and popular property //
+
+  List<PropertyModel>? _topPropertyList;
+  List<PropertyModel>? get topPropertyList => _topPropertyList;
+
+  List<PropertyModel>? _featuredPropertyList;
+  List<PropertyModel>? get featuredPropertyList => _featuredPropertyList;
+
+
+  Future<void> getTopPopularPropertyList({
+    String? page,
+    String? stateId,
+    String? cityId,
+    String? localityId,
+    String? purposeId,
+    String? categoryId,
+    String? amenityId,
+    String? typeId,
+    String? limit,
+    String? userId,
+    String? minPrice,
+    String? maxPrice,
+    String? sortBy,
+    String? lat,
+    String? long,
+    String? direction,
+    String? bathroom,
+    String? space,
+  }) async {
+    _isPropertyLoading = true;
+    try {
+      if (page == '1') {
+        _pageList = []; // Reset page list for new search
+        _offset = 1;
+        _propertyList = []; // Reset product list for the first page
+        _topPropertyList = [];
+        _featuredPropertyList = [];
+        update();
+      }
+      if (!_pageList.contains(page)) {
+        _pageList.add(page!);
+
+        Response response = await propertyRepo.getUserProperty(
+          stateId: stateId,
+          cityId: cityId,
+          localityId: localityId,
+          purposeId: purposeId,
+          categoryId: categoryId,
+          amenityId: amenityId,
+          typeId: typeId,
+          page: page,
+          limit: '20',
+          userId: userId,
+          minPrice: minPrice,
+          maxPrice: maxPrice,
+          sortBy: sortBy,
+          lat: lat,
+          long: long,
+          direction: direction,
+          bathroom: bathroom,
+          space: space,
+        );
+
+        if (response.statusCode == 200) {
+          List<dynamic> dataList = response.body['data'];
+          List<PropertyModel> newDataList = dataList.map((json) => PropertyModel.fromJson(json)).toList();
+
+
+
+          List<PropertyModel> topProperties = newDataList.where((property) => property.topProperty == true).toList();
+          if (topProperties.isNotEmpty) {
+            _topPropertyList!.addAll(topProperties);
+          }
+
+          List<PropertyModel> featuredProperties = newDataList.where((property) => property.isFeatured == true).toList();
+          if (topProperties.isNotEmpty) {
+            _featuredPropertyList!.addAll(featuredProperties);
+          }
+
+          _isPropertyLoading = false;
+          update();
+        } else {
+
+        }
+      } else {
+        if (_isPropertyLoading) {
+          _isPropertyLoading = false;
+          update();
+        }
+      }
+    } catch (e) {
+      print('Error fetching property list: $e');
+      _isPropertyLoading = false;
+      update();
+    }
+  }
 }

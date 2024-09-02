@@ -72,7 +72,7 @@ class RouteHelper {
   static String getRatingsAndReviewRoute() => ratingsAndReviews;
   static String getNotificationRoute() => notification;
   static String getPostPropertyRoute() => postProperty;
-  static String getLocationPickerRoute() => locationPicker;
+  static String getLocationPickerRoute({bool isAddress = false}) => '$locationPicker?isAddress=${isAddress.toString()}';
   static String getEnquiryRoute() => enquiry;
   static String getPropertySearchMap() => propertySearchMap;
   static String getContactAgentRoute(String? propertyId,String? agentName,) => '$contactAgent?propertyId=$propertyId&agentName=$agentName';
@@ -101,7 +101,7 @@ class RouteHelper {
     GetPage(name: ratingsAndReviews, page: () =>  RatingsAndReviewScreen()),
     GetPage(name: notification, page: () => const NotificationScreen()),
     GetPage(name: postProperty, page: () =>  PostPropertyScreen()),
-    GetPage(name: locationPicker, page: () =>  const LocationPickerScreen()),
+    GetPage(name: locationPicker, page: () =>   LocationPickerScreen(isAddress: Get.parameters['isAddress'] == 'true',)),
     GetPage(name: enquiry, page: () =>  const AllEnquiryScreens()),
     GetPage(name: contactAgent, page: () =>   ContactAgentScreen(propertyId: Get.parameters['propertyId'],agentName:  Get.parameters['agentName'],)),
     // GetPage(name: propertySearchMap, page: () =>  const SearchLocationScreen()),
