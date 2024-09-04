@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
 import 'package:get_my_properties/features/screens/home/widgets/recommended_item_card.dart';
@@ -19,7 +20,11 @@ class RecomendedSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<PropertyController>().getPropertyList(page: '1');
+      Get.find<PropertyController>().getPropertyList(page: '1',
+      lat: Get.find<AuthController>().getLatitude().toString(),
+      long: Get.find<AuthController>().getLongitude().toString(),
+        direction: ''
+      );
     });
     return GetBuilder<PropertyController>(builder: (propertyControl) {
       final list = propertyControl.propertyList;

@@ -44,7 +44,7 @@ class SuitablePropertySection extends StatelessWidget {
                         Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,
                            propertyTypeId: authControl.homeData!.propertyTypes![i].sId.toString(),
                           title: authControl.homeData!.propertyTypes![i].name.toString(),
-                          purposeId: ''
+                          purposeId: '',direction: ''
                         ));
                           // Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
                           //     "Sale",

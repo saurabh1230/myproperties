@@ -4,6 +4,7 @@ import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
 import 'package:get_my_properties/features/screens/home/widgets/browse_more_section.dart';
+import 'package:get_my_properties/features/screens/home/widgets/by_area_section.dart';
 import 'package:get_my_properties/features/screens/home/widgets/home_screen_shimmer.dart';
 import 'package:get_my_properties/features/screens/home/widgets/newly_constructed.dart';
 import 'package:get_my_properties/features/screens/home/widgets/popular_in_location_section.dart';
@@ -18,6 +19,7 @@ import 'package:get_my_properties/utils/images.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -38,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.find<AuthController>().getHomeDataApi();
       Get.find<PropertyController>().getPropertyList(page: '1',);
       Get.find<PropertyController>().getTopPopularPropertyList(page: '1',);
-
     });
   }
   @override
@@ -115,13 +116,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                         sizedBox10(),
-                        Row(children: [
-                           Icon(Icons.location_on_sharp,color : Theme.of(context).cardColor),
-                           Expanded(child: Text(authControl.getSaveAddress().toString(),
-                            maxLines: 2, overflow: TextOverflow.ellipsis,
-                            style: senRegular.copyWith(fontSize: Dimensions.fontSize14,
-                                color: Theme.of(context).cardColor),)),
-                        ],),
+                        InkWell(onTap: () {
+                          Get.toNamed(RouteHelper.getLocationPickerRoute(isAddress: true));
+                        },
+                          child: Row(children: [
+                             Icon(Icons.location_on_sharp,color : Theme.of(context).cardColor),
+                             Expanded(child: Text(authControl.getSaveAddress().toString(),
+                              maxLines: 2, overflow: TextOverflow.ellipsis,
+                              style: senRegular.copyWith(fontSize: Dimensions.fontSize14,
+                                  color: Theme.of(context).cardColor),)),
+                          ],),
+                        ),
                       ],
                     ),
                   ),
@@ -153,20 +158,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: "  Search  ",
+                                    text: "  Search Property  ",
                                     style: senRegular.copyWith(
                                         fontSize: Dimensions.fontSize13,
                                         color: Theme.of(context)
                                             .hintColor), // Different color for "resend"
                                   ),
-                                  TextSpan(
-                                    text: "City | Locality | Landmark",
-                                    style: senRegular.copyWith(
-                                        fontSize: Dimensions.fontSize12,
-                                        color: Theme.of(context)
-                                            .disabledColor
-                                            .withOpacity(0.40)), // Default text color
-                                  ),
+                                  // TextSpan(
+                                  //   text: "Property",
+                                  //   style: senRegular.copyWith(
+                                  //       fontSize: Dimensions.fontSize12,
+                                  //       color: Theme.of(context)
+                                  //           .disabledColor
+                                  //           .withOpacity(0.40)), // Default text color
+                                  // ),
                                 ],
                               ),
                             ),
@@ -193,6 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const PopularInLocationSectionSection(),
                   // const ServicesSection(),
                   const NewlyConstructedSection(),
+                  const ByAreaSection(),
                   BrowseMoreSection(
                     title: 'Buy A Property',
                     description:
@@ -202,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Buy A Property',
                       propertyTypeId: '',
-                      purposeId: '66b097808e94ad0e435526e6'));
+                      purposeId: '66b097808e94ad0e435526e6',direction: ''));
                     },
                   ),
                   BrowseMoreSection(
@@ -213,9 +219,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Rent A Property',
                           propertyTypeId:'',
-                          purposeId: '66b097878e94ad0e435526ea'));
+                          purposeId: '66b097878e94ad0e435526ea',direction: ''));
                     },
                   ),
+
                 ],
               ),
             )
@@ -225,3 +232,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+

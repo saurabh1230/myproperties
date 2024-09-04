@@ -10,6 +10,7 @@ import 'package:get_my_properties/controller/map_controller.dart';
 import 'package:get_my_properties/controller/profile_controller.dart';
 import 'package:get_my_properties/controller/properties_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
+import 'package:get_my_properties/controller/property_map_controller.dart';
 import 'package:get_my_properties/controller/searchController.dart';
 import 'package:get_my_properties/controller/user_map_controller.dart';
 import 'package:get_my_properties/controller/vendor_controller.dart';
@@ -58,6 +59,7 @@ Future<void>   init() async {
   Get.lazyPut(() => MapController());
   Get.lazyPut(() => VendorMapController());
   Get.lazyPut(() => UserMapController());
+  // Get.lazyPut(() => PropertyMapController(latitude: null, longitude: null));
 
 
 }

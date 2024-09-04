@@ -29,6 +29,7 @@ class PropertyRepo {
     String? direction,
     String? bathroom,
     String? space,
+    String? distance,
   }) async {
     // Initialize the map to hold the fields
     Map<String, dynamic> fields = {}; // Changed to dynamic to allow different data types
@@ -47,6 +48,8 @@ class PropertyRepo {
     if (limit != null) fields['limit'] = limit;
     if (sortBy != null) fields['sort_by'] = sortBy;
 
+
+
     // Convert lat and long to double, if provided
     if (lat != null) fields['lat'] = double.tryParse(lat) ?? lat;
     if (long != null) fields['long'] = double.tryParse(long) ?? long;
@@ -55,6 +58,7 @@ class PropertyRepo {
     if (bathroom != null) fields['bathroom'] = bathroom;
     if (space != null) fields['space'] = space;
     if (userId != null) fields['user_id'] = userId;
+    if (sortBy != null) fields['distance'] = distance;
 
     // Make the API request
     try {

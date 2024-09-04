@@ -109,6 +109,7 @@ class PropertyController extends GetxController implements GetxService {
     String? direction,
     String? bathroom,
     String? space,
+    String? distance,
   }) async {
     _isPropertyLoading = true;
     try {
@@ -142,6 +143,7 @@ class PropertyController extends GetxController implements GetxService {
           direction: direction,
           bathroom: bathroom,
           space: space,
+          distance: '10',
         );
 
         if (response.statusCode == 200) {

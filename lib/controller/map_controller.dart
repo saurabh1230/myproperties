@@ -136,15 +136,15 @@ class MapController extends GetxController {
             // Clear suggestions if outside West Bengal
             suggestions.value = [];
             // Show Snackbar indicating server is not available outside West Bengal
-            ScaffoldMessenger.of(Get.context!).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'The server is not available outside West Bengal, India.',
-                  style: TextStyle(color: Colors.white),
-                ),
-                backgroundColor: Colors.red,
-              ),
-            );
+            // ScaffoldMessenger.of(Get.context!).showSnackBar(
+            //   SnackBar(
+            //     content: Text(
+            //       'The server is not available outside West Bengal, India.',
+            //       style: TextStyle(color: Colors.white),
+            //     ),
+            //     backgroundColor: Colors.red,
+            //   ),
+            // );
             // snackbarShown = true; // Set flag to true after showing Snackbar
           }
         }

@@ -90,6 +90,7 @@ class PostPropertyScreen extends StatelessWidget {
                             CustomTextField(
                               maxLines: 3, controller: _titleController,
                               showTitle: true, hintText: "Title ",
+                              inputType: TextInputType.text,
                               capitalization: TextCapitalization.words, validation: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please Property Title';
@@ -97,6 +98,11 @@ class PostPropertyScreen extends StatelessWidget {
                                 return null;
                               },
                               onChanged: (val) {
+                                _slugController.text = val.toLowerCase()
+                                    .replaceAll(RegExp(r'[^\w\s-]'), '')   // Remove all special characters except hyphens
+                                    .replaceAll(RegExp(r'[\s-]+'), '-')    // Replace spaces and hyphens with a single hyphen
+                                    .trim();
+                                print(_slugController.text);
 
                               },
                             ),
@@ -384,8 +390,9 @@ class PostPropertyScreen extends StatelessWidget {
                               },),
                             sizedBoxDefault(),
                             CustomTextField(
+                              readOnly: true,
                               controller: _slugController, maxLines: 1,
-                              showTitle: true, hintText: "Slug",
+                              showTitle: true, hintText: "Slug (Auto Generated)",
                               capitalization: TextCapitalization.words,
                               validation: (value) {
                                 if (value == null || value.isEmpty) {
