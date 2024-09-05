@@ -33,7 +33,6 @@ class MapController extends GetxController {
 
   // Check if the given location is within West Bengal
   bool isWithinWestBengal(double lat, double long) {
-    // Define the bounding box for West Bengal
     double minLat = 21.5422;
     double maxLat = 27.6217;
     double minLong = 85.5301;
@@ -71,13 +70,12 @@ class MapController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    focusOnMarkers(); // Only focus on the initial markers
+    focusOnMarkers();   // Only focus on the initial markers
   }
 
   void focusOnMarkers() {
     if (mapController != null && markerCoordinates.isNotEmpty) {
       LatLngBounds bounds = getBounds();
-
       mapController!.animateCamera(CameraUpdate.newLatLngBounds(bounds, 100));
       Get.bottomSheet(
         MapPropertySheet(
