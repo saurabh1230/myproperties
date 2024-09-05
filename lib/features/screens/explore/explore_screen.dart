@@ -52,7 +52,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
             purposeId: widget.purposeId,direction: widget.direction );
       } else {
         print('check');
-        Get.find<PropertyController>().getPropertyList(page: '1',);
+        print(Get.find<AuthController>().getLatitude().toString());
+        print(Get.find<AuthController>().getLatitude().toString());
+
+        Get.find<PropertyController>().getPropertyList(page: '1',
+          lat: Get.find<AuthController>().getLatitude().toString(),
+          long: Get.find<AuthController>().getLongitude().toString(),
+        );
       }
     });
     super.initState();
@@ -66,6 +72,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
           lat: Get.find<AuthController>().getLatitude().toString(),
           long: Get.find<AuthController>().getLongitude().toString(),
           direction: '',
+
         );
         Get.find<PropertyController>().getPropertyList(page: '1',);
         Get.find<PropertyController>().getTopPopularPropertyList(page: '1',);
@@ -104,11 +111,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
           backgroundColor: Theme.of(context).primaryColor,
           elevation: 0,
           actions: [
-          CustomNotificationButton(
-              tap: () {
-                Get.toNamed(RouteHelper.getNotificationRoute());
-              },
-            )
+          Padding(
+            padding: const EdgeInsets.only(right: Dimensions.paddingSizeDefault),
+            child: CustomNotificationButton(
+                tap: () {
+                  Get.toNamed(RouteHelper.getNotificationRoute());
+                },
+              ),
+          )
           ],
         ),
         // appBar: CustomAppBar(

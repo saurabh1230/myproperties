@@ -185,9 +185,9 @@ class UserMapController extends GetxController {
   String? locality;
 
   RxList<Map<String, String>> suggestions = <Map<String, String>>[].obs;
-  RxBool isLoading = false.obs; // Loading indicator
+  RxBool isLoading = false.obs;
 
-  final LatLng _initialLocation = LatLng(22.5726, 88.3639); // Kolkata coordinates
+  final LatLng _initialLocation = LatLng(22.5726, 88.3639);
   LatLng get initialLocation => _initialLocation;
 
   List<LocalityMapData> _localities = [];
@@ -204,7 +204,6 @@ class UserMapController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Set initial location
     latitude = _initialLocation.latitude;
     longitude = _initialLocation.longitude;
     updateAddress();

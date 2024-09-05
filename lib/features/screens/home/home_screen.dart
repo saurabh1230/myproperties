@@ -38,8 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<AuthController>().profileDetailsApi();
       Get.find<AuthController>().getHomeDataApi();
-      Get.find<PropertyController>().getPropertyList(page: '1',);
-      Get.find<PropertyController>().getTopPopularPropertyList(page: '1',);
+      // Get.find<PropertyController>().getPropertyList(page: '1',typeId: '66b097b38e94ad0e435526f4');
+      // Get.find<PropertyController>().getTopPopularPropertyList(page: '1',);
     });
   }
   @override
@@ -204,7 +204,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     description:
                     'Discover your location with the most listings, including exclusive items, and an immersive photo experience.',
                     image: Images.buyAHousePlaceHolderImage,
-
                     onTap: () {
                       Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,title: 'Buy A Property',
                       propertyTypeId: '',
@@ -222,7 +221,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           purposeId: '66b097878e94ad0e435526ea',direction: ''));
                     },
                   ),
-
                 ],
               ),
             )

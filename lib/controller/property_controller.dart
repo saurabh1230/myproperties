@@ -123,7 +123,6 @@ class PropertyController extends GetxController implements GetxService {
       }
       if (!_pageList.contains(page)) {
         _pageList.add(page!);
-
         Response response = await propertyRepo.getUserProperty(
           stateId: stateId,
           cityId: cityId,
@@ -133,7 +132,7 @@ class PropertyController extends GetxController implements GetxService {
           amenityId: amenityId,
           typeId: typeId,
           page: page,
-          limit: '20',
+          limit: '40',
           userId: userId,
           minPrice: minPrice,
           maxPrice: maxPrice,
@@ -602,6 +601,7 @@ class PropertyController extends GetxController implements GetxService {
           direction: direction,
           bathroom: bathroom,
           space: space,
+          distance: '10'
         );
 
         if (response.statusCode == 200) {

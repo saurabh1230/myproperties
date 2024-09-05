@@ -18,7 +18,7 @@ class PopularInLocationSectionSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<PropertyController>().getPropertyList(page: '1',
+      Get.find<PropertyController>().getTopPopularPropertyList(page: '1',
           lat: Get.find<AuthController>().getLatitude().toString(),
           long: Get.find<AuthController>().getLongitude().toString(),
           direction: ''
@@ -37,15 +37,17 @@ class PopularInLocationSectionSection extends StatelessWidget {
         const RecommendedSectionShimmer(title: 'Top Properties ',)
             :
           isListEmpty && !isLoading
-            ? Padding(
-          padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
-          child: Center(
-              child: EmptyDataWidget(
-                image: Images.emptyDataImage,
-                fontColor: Theme.of(context).disabledColor,
-                text: 'No Popular Properties yet',
-              )),
-        ) :  Column(crossAxisAlignment: CrossAxisAlignment.start,
+            ? RecommendedSectionShimmer(title: 'Top Properties ',)
+        //   Padding(
+        //   padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
+        //   child: Center(
+        //       child: EmptyDataWidget(
+        //         image: Images.emptyDataImage,
+        //         fontColor: Theme.of(context).disabledColor,
+        //         text: 'No Popular Properties yet',
+        //       )),
+        // )
+              :  Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Top Properties",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
             sizedBox12(),

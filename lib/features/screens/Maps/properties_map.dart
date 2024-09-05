@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/map_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/Maps/widgets/map_property_bottomsheet.dart';
@@ -22,12 +23,15 @@ class PropertiesMapScreen extends StatelessWidget {
     mapController.setPropertyTypeID(propertyTypeId);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Find Properties"),
+        title: const Text("Find Properties"),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Get.back();
-            Get.find<PropertyController>().getPropertyList(page: '1');
+            Get.find<PropertyController>().getPropertyList(page: '1',
+            lat: Get.find<AuthController>().getLatitude().toString(),
+              long: Get.find<AuthController>().getLatitude().toString(),
+            );
           },
         ),
       ),
@@ -85,6 +89,11 @@ class PropertiesMapScreen extends StatelessWidget {
                         await locationControl.fetchLocationDetails(placeId);
                         if (locationControl.selectedLatitude != null &&
                             locationControl.selectedLongitude != null) {
+                          Get.find<PropertyController>().getPropertyList(
+                            page: '1',
+                            lat: Get.find<AuthController>().getLatitude().toString(),
+                            long: Get.find<AuthController>().getLongitude().toString(),
+                            direction: '',);
                           if (!locationControl.isWithinWestBengal(
                               locationControl.selectedLatitude!,
                               locationControl.selectedLongitude!)) {
@@ -96,13 +105,14 @@ class PropertiesMapScreen extends StatelessWidget {
                               backgroundColor: Colors.red,
                               colorText: Colors.white,
                             );
+
                             return;
                           }
 
                           Get.bottomSheet(
                             MapPropertySheet(
                               lat: locationControl.selectedLatitude.toString(),
-                              long: locationControl.selectedLongitude.toString(),
+                              long: locationControl.selectedLatitude.toString(),
                             ),
                             isScrollControlled: true,
                             backgroundColor: Colors.white,
@@ -117,7 +127,7 @@ class PropertiesMapScreen extends StatelessWidget {
                       },
                     ),
                     sizedBox10(),
-                     Text('Note : Currently We are only available in West Bengal ',
+                     Text('Note : Currently We are only available in West Bengal',
                        style: senRegular.copyWith(color: Theme.of(context).primaryColor),
                     textAlign: TextAlign.center,),
                   ],
@@ -172,7 +182,6 @@ class PropertiesMapScreen extends StatelessWidget {
                           );
                           return;
                         }
-
                         Get.bottomSheet(
                           MapPropertySheet(
                             lat: locationControl.lat.toString(),

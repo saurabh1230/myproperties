@@ -32,9 +32,9 @@ class PropertyRepo {
     String? distance,
   }) async {
     // Initialize the map to hold the fields
-    Map<String, dynamic> fields = {}; // Changed to dynamic to allow different data types
+    Map<String, dynamic> fields = {
 
-    // Add fields conditionally based on their presence
+    };
     if (stateId != null) fields['state_id'] = stateId;
     if (cityId != null) fields['city_id'] = cityId;
     if (localityId != null) fields['locality_id'] = localityId;
@@ -47,25 +47,19 @@ class PropertyRepo {
     if (page != null) fields['page'] = page;
     if (limit != null) fields['limit'] = limit;
     if (sortBy != null) fields['sort_by'] = sortBy;
-
-
-
-    // Convert lat and long to double, if provided
     if (lat != null) fields['lat'] = double.tryParse(lat) ?? lat;
     if (long != null) fields['long'] = double.tryParse(long) ?? long;
-
+    if (distance != null) fields['distance'] = distance;
     if (direction != null) fields['direction'] = direction;
     if (bathroom != null) fields['bathroom'] = bathroom;
     if (space != null) fields['space'] = space;
     if (userId != null) fields['user_id'] = userId;
-    if (sortBy != null) fields['distance'] = distance;
-
-    // Make the API request
     try {
       Response response = await apiClient.postData(
         AppConstants.userGetPropertyUrl,
         fields,
       );
+      print('Body Fields : ${fields}');
 
       if (response.statusCode == 200) {
         print('API call successful.');

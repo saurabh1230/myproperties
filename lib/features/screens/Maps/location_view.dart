@@ -153,6 +153,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
+import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/controller/user_map_controller.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/helper/route_helper.dart';
@@ -295,6 +296,23 @@ class LocationPickerScreen extends StatelessWidget {
                                   authControl.saveLongitude(locationControl.longitude ?? 0.0);
                                   authControl.saveAddress(locationControl.address!);
                                   if (isAddress) {
+                                    Get.find<PropertyController>().getPropertyList(page: '1',
+                                        lat: Get.find<AuthController>().getLatitude().toString(),
+                                        long: Get.find<AuthController>().getLongitude().toString(),
+                                        direction: ''
+                                    );
+                                    Get.find<PropertyController>().getTopPopularPropertyList(page: '1',
+                                        lat: Get.find<AuthController>().getLatitude().toString(),
+                                        long: Get.find<AuthController>().getLongitude().toString(),
+                                        direction: ''
+                                    );
+                                    Get.find<PropertyController>().getTopPopularPropertyList(page: '1',
+                                        lat: Get.find<AuthController>().getLatitude().toString(),
+                                        long: Get.find<AuthController>().getLongitude().toString(),
+                                        direction: ''
+                                    );
+
+
                                     Get.back();
                                   } else {
                                     Get.offNamed(RouteHelper.getDashboardRoute());

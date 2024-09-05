@@ -29,6 +29,7 @@ class ContactAgentScreen extends StatelessWidget {
           child: Stack(
             children: [
               SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
                 child: SizedBox(
                   height: Get.size.height,
                   child: Padding(

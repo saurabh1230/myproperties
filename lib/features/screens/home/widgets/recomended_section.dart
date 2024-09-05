@@ -21,9 +21,8 @@ class RecomendedSection extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<PropertyController>().getPropertyList(page: '1',
-      lat: Get.find<AuthController>().getLatitude().toString(),
-      long: Get.find<AuthController>().getLongitude().toString(),
-        direction: ''
+        direction: '',
+
       );
     });
     return GetBuilder<PropertyController>(builder: (propertyControl) {
@@ -33,16 +32,17 @@ class RecomendedSection extends StatelessWidget {
       return Column(
         children: [
           isListEmpty && !isLoading
-              ? Padding(
-                  padding:
-                      const EdgeInsets.only(top: Dimensions.paddingSize100),
-                  child: Center(
-                      child: EmptyDataWidget(
-                    image: Images.emptyDataImage,
-                    fontColor: Theme.of(context).disabledColor,
-                    text: 'No Recommended Properties yet',
-                  )),
-                )
+              ? const RecommendedSectionShimmer(title: 'Recommended For You"',)
+          // Padding(
+          //         padding:
+          //             const EdgeInsets.only(top: Dimensions.paddingSize100),
+          //         child: Center(
+          //             child: EmptyDataWidget(
+          //           image: Images.emptyDataImage,
+          //           fontColor: Theme.of(context).disabledColor,
+          //           text: 'No Recommended Properties yet',
+          //         )),
+          //       )
               : isLoading
                   ? const RecommendedSectionShimmer(title: 'Recommended For You"',)
                   : Padding(
