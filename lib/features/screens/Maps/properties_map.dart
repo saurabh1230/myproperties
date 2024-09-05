@@ -105,7 +105,6 @@ class PropertiesMapScreen extends StatelessWidget {
                               backgroundColor: Colors.red,
                               colorText: Colors.white,
                             );
-
                             return;
                           }
 
