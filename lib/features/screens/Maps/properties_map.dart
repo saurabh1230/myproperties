@@ -128,7 +128,7 @@ class PropertiesMapScreen extends StatelessWidget {
                     sizedBox10(),
                      Text('Note : Currently We are only available in West Bengal',
                        style: senRegular.copyWith(color: Theme.of(context).primaryColor),
-                    textAlign: TextAlign.center,),
+                        textAlign: TextAlign.center,),
                   ],
                 ),
               ),
