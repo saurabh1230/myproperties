@@ -20,6 +20,7 @@ class AppConstants {
   static const String userSearchPropertyUrl = 'user/property/search';
   static const String userBookmarkPropertyUrl = 'user/property/bookmark';
   static const String userCreateInquiryUrl = 'user/inquiry';
+  static const String userSearchSuggestionUrl = 'search/suggestion';
 
 
 

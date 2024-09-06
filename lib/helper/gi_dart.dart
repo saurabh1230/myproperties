@@ -21,6 +21,7 @@ import 'package:get_my_properties/data/repo/inquiry_repo.dart';
 import 'package:get_my_properties/data/repo/location_repo.dart';
 import 'package:get_my_properties/data/repo/profile_repo.dart';
 import 'package:get_my_properties/data/repo/property_repo.dart';
+import 'package:get_my_properties/data/repo/search_repo.dart';
 import 'package:get_my_properties/data/repo/vendor_repo.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,13 +42,14 @@ Future<void>   init() async {
   Get.lazyPut(() => LocationRepo(apiClient: Get.find()));
   Get.lazyPut(() => VendorRepo(apiClient: Get.find()));
   Get.lazyPut(() => InquiryRepo(apiClient: Get.find()));
+  Get.lazyPut(() => SearchRepo(apiClient: Get.find()));
 
 
   /// Controller
 
   Get.lazyPut(() => HomeController());
   Get.lazyPut(() => ExploreController());
-  Get.lazyPut(() => PropertySearchController());
+  Get.lazyPut(() => PropertySearchController(searchRepo: Get.find()));
   Get.lazyPut(() => ProfileController(profileRepo: Get.find(), apiClient: Get.find()));
   Get.lazyPut(() => AuthController(authRepo:  Get.find(),sharedPreferences: Get.find()));
   Get.lazyPut(() => PropertyController(propertyRepo:  Get.find()));
