@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/controller/location_controller.dart';
 import 'package:get_my_properties/data/models/body/vendor_locality.dart';
 import 'package:get_my_properties/data/models/response/property_detail_model.dart';
+import 'package:get_my_properties/data/models/response/property_lat_lng_model.dart';
 import 'package:get_my_properties/data/models/response/property_model.dart';
 import 'package:get_my_properties/data/models/response/recent_search_model.dart';
 import 'package:get_my_properties/data/models/response/vendor_property_model.dart';
@@ -17,7 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'dart:developer';
 
 class PropertyController extends GetxController implements GetxService {
   final PropertyRepo propertyRepo;
@@ -48,15 +50,27 @@ class PropertyController extends GetxController implements GetxService {
     try {
       final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image != null) {
-        _pickedGalleryImages.add(image);
-        update();
+        final file = File(image.path);
+        final fileSizeInBytes = await file.length();
+        final fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+        if (fileSizeInMB > 8) {
+          Get.snackbar(
+            'Warning',
+            'Image exceeds 8 MB. Please select a smaller image.',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.redAccent,
+            colorText: Colors.white,
+          );
+        } else {
+          _pickedGalleryImages.add(image);
+          update();
+        }
       }
     } catch (e) {
       print('Error picking image: $e');
     }
   }
 
-  // Method to remove an image by index
   void removeImage(int index) {
     _pickedGalleryImages.removeAt(index);
     update();
@@ -89,7 +103,7 @@ class PropertyController extends GetxController implements GetxService {
   // List<PropertyModel>? _featuredPropertyList;
   // List<PropertyModel>? get featuredPropertyList => _featuredPropertyList;
 
-  List<LatLng> markerCoordinates = [];
+  // List<LatLng> markerCoordinates = [];
   Future<void> getPropertyList({
     String? page,
     String? stateId,
@@ -119,6 +133,7 @@ class PropertyController extends GetxController implements GetxService {
         _propertyList = []; // Reset product list for the first page
         _topPropertyList = [];
         _featuredPropertyList = [];
+        // markerCoordinates=[];
         update();
       }
       if (!_pageList.contains(page)) {
@@ -166,13 +181,12 @@ class PropertyController extends GetxController implements GetxService {
           //   _featuredPropertyList!.addAll(featuredProperties);
           // }
 
-          markerCoordinates = newDataList.map((property) {
-            double latitude =  property.latitude ?? 0;
-            double longitude = property.longitude ?? 0;
-
-            return LatLng(latitude, longitude);
-          }).toList();
-            print(' ============>>${markerCoordinates.length}');
+          // markerCoordinates = newDataList.map((property) {
+          //   double latitude =  property.latitude ?? 0;
+          //   double longitude = property.longitude ?? 0;
+          //   return LatLng(latitude, longitude);
+          // }).toList();
+          //   print(' ============>>${markerCoordinates.length}');
           _isPropertyLoading = false;
           update();
         } else {
@@ -637,4 +651,149 @@ class PropertyController extends GetxController implements GetxService {
       update();
     }
   }
+
+  // List<LatLng> markerCoordinates = [];
+  // List<PropertyLatLngModel>? _propertyLatLng;
+  // List<PropertyLatLngModel>? get propertyLatLng => _propertyLatLng;
+  //
+  // Future<void> getPropertyLatLngList({
+  //   String? limit,
+  //   String? lat,
+  //   String? long,
+  //   String? distance,
+  // }) async {
+  //   _isPropertyLoading = true;
+  //   try {
+  //     Response response = await propertyRepo.getPropertyLatLng(limit: limit, lat: lat, long: long);
+  //
+  //     if (response.statusCode == 200) {
+  //       List<dynamic> dataList = response.body['data'];
+  //       List<PropertyLatLngModel> newDataList = dataList.map((json) => PropertyLatLngModel.fromJson(json)).toList();
+  //
+  //       // Replace existing list with the new data
+  //       _propertyLatLng = newDataList;
+  //
+  //       // Map property locations to marker coordinates
+  //       markerCoordinates = newDataList.map((property) {
+  //         double latitude = property.latitude ?? 0;
+  //         double longitude = property.longitude ?? 0;
+  //         return LatLng(latitude, longitude);
+  //       }).toList();
+  //
+  //       print('===========>> ${markerCoordinates.length}');
+  //       _isPropertyLoading = false;
+  //       update();
+  //     } else {
+  //       print('API call failed with status code: ${response.statusCode}');
+  //       print('Response body: ${response.body}'); // Check if there's any error message
+  //       print('Response error: ${response.statusText}');
+  //       _isPropertyLoading = false;
+  //       update();
+  //     }
+  //   } catch (e) {
+  //     print('Error fetching property list: $e');
+  //     _isPropertyLoading = false;
+  //     update();
+  //   }
+  // }
+
+  List<PropertyModel>? _propertyLatList;
+  List<PropertyModel>? get propertyLatList => _propertyList;
+
+
+  List<LatLng> markerCoordinates = [];
+  Future<void> getPropertyLatLngList({
+    String? page,
+    String? stateId,
+    String? cityId,
+    String? localityId,
+    String? purposeId,
+    String? categoryId,
+    String? amenityId,
+    String? typeId,
+    String? limit,
+    String? userId,
+    String? minPrice,
+    String? maxPrice,
+    String? sortBy,
+    String? lat,
+    String? long,
+    String? direction,
+    String? bathroom,
+    String? space,
+    String? distance,
+  }) async {
+    _isPropertyLoading = true;
+    try {
+      if (page == '1') {
+        _pageList = []; // Reset page list for new search
+        _offset = 1;
+        _propertyLatList = []; // Reset product list for the first page
+        // markerCoordinates=[];
+        update();
+      }
+      if (!_pageList.contains(page)) {
+        _pageList.add(page!);
+        Response response = await propertyRepo.getUserProperty(
+          stateId: stateId,
+          cityId: cityId,
+          localityId: localityId,
+          purposeId: purposeId,
+          categoryId: categoryId,
+          amenityId: amenityId,
+          typeId: typeId,
+          page: page,
+          limit: '40',
+          userId: userId,
+          minPrice: minPrice,
+          maxPrice: maxPrice,
+          sortBy: sortBy,
+          lat: lat,
+          long: long,
+          direction: direction,
+          bathroom: bathroom,
+          space: space,
+          distance: '10',
+        );
+
+        if (response.statusCode == 200) {
+          List<dynamic> dataList = response.body['data'];
+          List<PropertyModel> newDataList = dataList.map((json) => PropertyModel.fromJson(json)).toList();
+
+          if (page == '1') {
+
+            _propertyLatList = newDataList;
+          } else {
+            _propertyLatList!.addAll(newDataList);
+          }
+
+
+          markerCoordinates = newDataList.map((property) {
+            double latitude =  property.latitude ?? 0;
+            double longitude = property.longitude ?? 0;
+            return LatLng(latitude, longitude);
+          }).toList();
+            print(' ============>>${markerCoordinates.length}');
+          _isPropertyLoading = false;
+          update();
+        } else {
+
+        }
+      } else {
+        if (_isPropertyLoading) {
+          _isPropertyLoading = false;
+          update();
+        }
+      }
+    } catch (e) {
+      print('Error fetching property list: $e');
+      _isPropertyLoading = false;
+      update();
+    }
+  }
+
+
+
+
+
 }

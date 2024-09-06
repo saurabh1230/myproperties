@@ -45,9 +45,9 @@ class SearchScreen extends StatelessWidget {
           ),
           bottomNavigationBar: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: Dimensions.paddingSizeDefault,
-                  vertical: Dimensions.paddingSize30),
+              padding: const EdgeInsets.only(
+                  left: Dimensions.paddingSizeDefault,
+                  right: Dimensions.paddingSizeDefault,bottom: Dimensions.paddingSizeDefault),
               child: Row(
                 children: [
                   TextButton(
@@ -66,7 +66,7 @@ class SearchScreen extends StatelessWidget {
                       buttonText: 'Add Filters',
                       onPressed: () {
                         Get.bottomSheet(
-                          FilterBottomSheet(
+                          const FilterBottomSheet(
                             searchNavigation: true,
                           ),
                           backgroundColor: Colors.transparent,
@@ -86,79 +86,78 @@ class SearchScreen extends StatelessWidget {
               final isLoading = propertyControl.isPropertyLoading;
               final recentSearchList = propertyControl.recentSearchList;
               final homedat = authControl.homeData == null;
-              final recentSearchListEmpty =
-                  recentSearchList == null || recentSearchList.isEmpty;
+              final recentSearchListEmpty = recentSearchList == null || recentSearchList.isEmpty;
               return Column(
                 children: [
                   sizedBox10(),
-                  homedat
-                      ? Center(child: CircularProgressIndicator())
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: Dimensions.paddingSizeDefault),
-                          child: Row(
-                            children: [
-                              Wrap(
-                                spacing: 8.0, // Space between chips
-                                runSpacing: 8.0, // Space between lines of chips
-                                children: List.generate(
-                                  authControl
-                                      .homeData!.propertyPurposes!.length,
-                                  (index) {
-                                    final val = authControl
-                                        .homeData!.propertyPurposes![index];
-                                    return InkWell(
-                                      onTap: () {
-                                        final newValue =
-                                            authControl.propertyPurposeID ==
-                                                    val.sId.toString()
-                                                ? ''
-                                                : val.sId.toString();
-                                        authControl
-                                            .selectPropertyPurposeId(newValue);
-                                        print(authControl.propertyPurposeID);
-                                      },
-                                      child: Container(
-                                        height: 40,
-                                        width: 80,
-                                        decoration: BoxDecoration(
-                                          color: authControl
-                                                      .propertyPurposeID ==
-                                                  val.sId.toString()
-                                              ? Theme.of(context).primaryColor
-                                              : Theme.of(context).cardColor,
-                                          border: Border.all(
-                                            width: 0.5,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                          ),
-                                          shape: BoxShape.rectangle,
-                                          borderRadius: BorderRadius.circular(
-                                              Dimensions.radius20),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            val.name.toString().contains('Sale')
-                                                ? 'Buy'
-                                                : 'Rent',
-                                            style: senBold.copyWith(
-                                              color: authControl
-                                                          .propertyPurposeID ==
-                                                      val.sId.toString()
-                                                  ? Theme.of(context).cardColor
-                                                  : Theme.of(context)
-                                                      .primaryColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                  // homedat
+                  //     ? Center(child: CircularProgressIndicator())
+                  //     : Padding(
+                  //         padding: const EdgeInsets.symmetric(
+                  //             horizontal: Dimensions.paddingSizeDefault),
+                  //         child: Row(
+                  //           children: [
+                  //             Wrap(
+                  //               spacing: 8.0, // Space between chips
+                  //               runSpacing: 8.0, // Space between lines of chips
+                  //               children: List.generate(
+                  //                 authControl
+                  //                     .homeData!.propertyPurposes!.length,
+                  //                 (index) {
+                  //                   final val = authControl
+                  //                       .homeData!.propertyPurposes![index];
+                  //                   return InkWell(
+                  //                     onTap: () {
+                  //                       final newValue =
+                  //                           authControl.propertyPurposeID ==
+                  //                                   val.sId.toString()
+                  //                               ? ''
+                  //                               : val.sId.toString();
+                  //                       authControl
+                  //                           .selectPropertyPurposeId(newValue);
+                  //                       print(authControl.propertyPurposeID);
+                  //                     },
+                  //                     child: Container(
+                  //                       height: 40,
+                  //                       width: 80,
+                  //                       decoration: BoxDecoration(
+                  //                         color: authControl
+                  //                                     .propertyPurposeID ==
+                  //                                 val.sId.toString()
+                  //                             ? Theme.of(context).primaryColor
+                  //                             : Theme.of(context).cardColor,
+                  //                         border: Border.all(
+                  //                           width: 0.5,
+                  //                           color:
+                  //                               Theme.of(context).primaryColor,
+                  //                         ),
+                  //                         shape: BoxShape.rectangle,
+                  //                         borderRadius: BorderRadius.circular(
+                  //                             Dimensions.radius20),
+                  //                       ),
+                  //                       child: Center(
+                  //                         child: Text(
+                  //                           val.name.toString().contains('Sale')
+                  //                               ? 'Buy'
+                  //                               : 'Rent',
+                  //                           style: senBold.copyWith(
+                  //                             color: authControl
+                  //                                         .propertyPurposeID ==
+                  //                                     val.sId.toString()
+                  //                                 ? Theme.of(context).cardColor
+                  //                                 : Theme.of(context)
+                  //                                     .primaryColor,
+                  //                           ),
+                  //                         ),
+                  //                       ),
+                  //                     ),
+                  //                   );
+                  //                 },
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TypeAheadField<String>(
@@ -170,18 +169,32 @@ class SearchScreen extends StatelessWidget {
                         return searchControl.suggestions;
                       },
                       itemBuilder: (context, String suggestion) {
-                        return ListTile(
-                          title: RichText(
-                            text: TextSpan(
-                              text: '',
-                              style: DefaultTextStyle.of(context).style.copyWith(color: Colors.black,),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: suggestion,
-                                  style: senRegular.copyWith(color: Theme.of(context).primaryColor),
+                        return Padding(
+                          padding: const EdgeInsets.all(Dimensions.paddingSize12),
+                          child: Row(
+                            children: [
+                              Icon(CupertinoIcons.arrow_up_right,
+                                size: Dimensions.fontSizeDefault,
+                                color: Theme.of(context).disabledColor.withOpacity(0.60),),
+                              sizedBoxW5(),
+                              Expanded(
+                                child: RichText(
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  text: TextSpan(
+                                    text: '',
+                                    style: DefaultTextStyle.of(context).style.copyWith(color: Colors.black,),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: suggestion,
+                                        style: senRegular.copyWith(color: Theme.of(context).disabledColor,
+                                            fontSize: Dimensions.fontSizeDefault),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         );
                       },
@@ -195,7 +208,7 @@ class SearchScreen extends StatelessWidget {
                       noItemsFoundBuilder: (context) => const Padding(
                         padding: EdgeInsets.all(8.0),
                         child:
-                            Text('No Matches Found According to your search'),
+                            Text('No Matching Option Found Please Type Complete query'),
                       ),
                       textFieldConfiguration: TextFieldConfiguration(
                         controller: _controller,
@@ -296,49 +309,55 @@ class SearchScreen extends StatelessWidget {
                   const Divider(),
                   recentSearchListEmpty
                       ? const SizedBox()
-                      : Column(
-                          children: [
-                            const Text('Recent Searches'),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: Dimensions.paddingSize10),
-                              child: Wrap(
-                                spacing: 6.0, // Adjust spacing as needed
-                                children: propertyControl.recentSearchList!
-                                    .map((val) {
-                                  return ChoiceChip(
-                                    selectedColor:
-                                        Theme.of(context).primaryColor,
-                                    backgroundColor: Colors.white,
-                                    side: BorderSide(
-                                      color: Theme.of(context).primaryColor,
-                                      width: 0.7, // Border width
+                      : Expanded(
+                        child: ListView(
+                            children: [
+                              const Text('Recent Searches',textAlign: TextAlign.center,),
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: Dimensions.paddingSize10),
+                                    child: Wrap(
+                                      spacing: 6.0, // Adjust spacing as needed
+                                      children: propertyControl.recentSearchList!
+                                          .map((val) {
+                                        return ChoiceChip(
+                                          selectedColor:
+                                              Theme.of(context).primaryColor,
+                                          backgroundColor: Colors.white,
+                                          side: BorderSide(
+                                            color: Theme.of(context).primaryColor,
+                                            width: 0.7, // Border width
+                                          ),
+                                          label: Text(
+                                            val.value.toString(),
+                                            style: senRegular.copyWith(
+                                                color: Theme.of(context).primaryColor,
+                                                fontSize: Dimensions.fontSize12),
+                                          ),
+                                          selected: false,
+                                          // Adjust according to your logic
+                                          onSelected: (selected) {
+                                            print(val.value.toString());
+                                            _searchController.text =
+                                                val.value.toString();
+                                            Get.to(() => SearchPropertyScreen(
+                                                  searchText: val.value.toString(),
+                                                  purposeId:
+                                                      authControl.propertyPurposeID,
+                                                ));
+                                            // Handle selection logic if needed
+                                          },
+                                        );
+                                      }).toList(),
                                     ),
-                                    label: Text(
-                                      val.value.toString(),
-                                      style: senRegular.copyWith(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: Dimensions.fontSize12),
-                                    ),
-                                    selected: false,
-                                    // Adjust according to your logic
-                                    onSelected: (selected) {
-                                      print(val.value.toString());
-                                      _searchController.text =
-                                          val.value.toString();
-                                      Get.to(() => SearchPropertyScreen(
-                                            searchText: val.value.toString(),
-                                            purposeId:
-                                                authControl.propertyPurposeID,
-                                          ));
-                                      // Handle selection logic if needed
-                                    },
-                                  );
-                                }).toList(),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                      ),
                 ],
               );
             });

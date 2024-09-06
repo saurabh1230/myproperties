@@ -176,7 +176,7 @@ class LocationPickerScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: const Text('Select Location for Property', style: senRegular),
+          title: const Text('Select Your Location', style: senRegular),
           centerTitle: true,
         ),
         body: GetBuilder<AuthController>(builder: (authControl) {

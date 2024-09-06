@@ -819,7 +819,7 @@ class PostPropertyScreen extends StatelessWidget {
                                 print('PurposeId: ${authControl.propertyPurposeID}');
                                 print('CategoryId: ${authControl.propertyCategoryId}');
                                 print('AmenityId: ${authControl.amenityIds.join(',')}');
-                                print('Slug: for-sale-in-the-world-towers-lower-parel');
+                                print('Slug: ${_slugController.text}');
                                 print('Title: ${_titleController.text}');
                                 print('Description: ${_descController.text}');
                                 print('MetaTitle: ${_metaTitleController.text}');

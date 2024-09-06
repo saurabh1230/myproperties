@@ -138,3 +138,21 @@ class SuggestLocality {
     };
   }
 }
+
+class SuggestionSpaceModel {
+  final int space;
+  SuggestionSpaceModel({required this.space});
+
+  factory SuggestionSpaceModel.fromJson(Map<String, dynamic> json) {
+    return SuggestionSpaceModel(
+      space: json['space'],
+    );
+  }
+
+  // Method to convert the Dart object back into JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'space': space,
+    };
+  }
+}
