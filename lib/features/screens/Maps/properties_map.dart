@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/map_controller.dart';
+import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/features/screens/Maps/widgets/map_property_bottomsheet.dart';
+import 'package:get_my_properties/features/screens/home/widgets/custom_container.dart';
+import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/sizeboxes.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
+import '../../../controller/auth_controller.dart';
+
 class PropertiesMapScreen extends StatelessWidget {
   final String purposeId;
   final String propertyTypeId;
-  const PropertiesMapScreen({
+
+   PropertiesMapScreen({
     Key? key,
     required this.purposeId,
     required this.propertyTypeId,
   }) : super(key: key);
 
+  final _locationController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final MapController mapController = Get.put(MapController());
@@ -38,9 +45,9 @@ class PropertiesMapScreen extends StatelessWidget {
       ),
       body: GetBuilder<MapController>(
         builder: (locationControl) {
-          if (locationControl.markerCoordinates.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          }
+          // if (locationControl.markerCoordinates.isEmpty) {
+          //   return const Center(child: CircularProgressIndicator());
+          // }
 
           return Stack(
             children: [
@@ -56,6 +63,9 @@ class PropertiesMapScreen extends StatelessWidget {
                   return Marker(
                     markerId: MarkerId(coord.toString()),
                     position: coord,
+                    infoWindow: InfoWindow(
+                      title: locationControl.markerNames[coord] ?? 'No Name',
+                    ),
                   );
                 }).toSet(),
               ),
@@ -67,7 +77,9 @@ class PropertiesMapScreen extends StatelessWidget {
                   children: [
                     TypeAheadField(
                       textFieldConfiguration: TextFieldConfiguration(
+                        controller: _locationController,
                         decoration: InputDecoration(
+
                           filled: true,
                           fillColor: Theme.of(context).cardColor,
                           hintText: 'Search Location',
@@ -88,6 +100,7 @@ class PropertiesMapScreen extends StatelessWidget {
                       onSuggestionSelected: (suggestion) async {
                         String placeId = suggestion['place_id'] ?? '';
                         await locationControl.fetchLocationDetails(placeId);
+                        _locationController.text = suggestion['description'] ?? '';
 
                         if (locationControl.selectedLatitude != null &&
                             locationControl.selectedLongitude != null) {
@@ -103,21 +116,6 @@ class PropertiesMapScreen extends StatelessWidget {
                             );
                             return;
                           }
-
-                          Get.bottomSheet(
-                            MapPropertySheet(
-                              lat: locationControl.selectedLatitude.toString(),
-                              long: locationControl.selectedLongitude.toString(),
-                            ),
-                            isScrollControlled: true,
-                            backgroundColor: Colors.white,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(Dimensions.radius20),
-                                topRight: Radius.circular(Dimensions.radius20),
-                              ),
-                            ),
-                          );
                         }
                       },
                     ),
@@ -125,6 +123,35 @@ class PropertiesMapScreen extends StatelessWidget {
                     Text(
                       'Note: Currently, we are only available in West Bengal',
                       style: senRegular.copyWith(fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: Dimensions.paddingSizeDefault,
+                left: Dimensions.paddingSizeDefault,
+                right: Dimensions.paddingSizeDefault,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: CustomButtonWidget(
+                        onPressed: () {
+                          if (locationControl.selectedLatitude == null || locationControl.selectedLongitude == null ) {
+                            Get.back();
+                          } else {
+                            Get.find<AuthController>().saveExploreLatitude(locationControl.selectedLatitude!);
+                            Get.find<AuthController>().saveExploreLongitude(locationControl.selectedLongitude!);
+                            Get.find<AuthController>().saveExploreAddress(_locationController.text);
+                            Get.find<PropertyController>().getExplorePropertyList(page: '1',
+                              lat:  locationControl.selectedLatitude.toString(),
+                              long: locationControl.selectedLongitude.toString(),
+                            );
+                            Get.back();
+                          }
+                        },
+                        buttonText: 'Save',
+                      ),
                     ),
                   ],
                 ),

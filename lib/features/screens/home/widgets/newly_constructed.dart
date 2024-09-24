@@ -35,20 +35,22 @@ class NewlyConstructedSection extends StatelessWidget {
         final list = propertyControl.featuredPropertyList;
         final isListEmpty = list == null || list.isEmpty ;
         final isLoading = propertyControl.isPropertyLoading;
-        return  isListEmpty && !isLoading
-            ? NewlyConstructedSectionShimmer()
-        // Center(
-        //         child: EmptyDataWidget(
-        //           image: Images.emptyDataImage,
-        //           fontColor: Theme.of(context).disabledColor,
-        //           text: 'No Popular Properties yet',
-        //         ))
-            : isLoading ?
+        return  isLoading ?
         const NewlyConstructedSectionShimmer() :
           Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Featured Properties",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
             sizedBox12(),
+            isListEmpty && !isLoading
+                ?
+            // NewlyConstructedSectionShimmer()
+            Center(
+                    child: EmptyDataWidget(
+                      image: Images.icEmptyPropertyPlaceHolder,
+                      fontColor: Theme.of(context).disabledColor,
+                      text: 'No Properties Near You',
+                    ))
+                :
             SizedBox(
               height: Get.size.height * 0.40,
               child: ListView.separated(

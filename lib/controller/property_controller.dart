@@ -11,8 +11,10 @@ import 'package:get_my_properties/data/models/response/property_model.dart';
 import 'package:get_my_properties/data/models/response/recent_search_model.dart';
 import 'package:get_my_properties/data/models/response/vendor_property_model.dart';
 import 'package:get_my_properties/data/repo/property_repo.dart';
+import 'package:get_my_properties/features/screens/dashboard/dashboard.dart';
 import 'package:get_my_properties/features/screens/dashboard/seller_dashboard.dart';
 import 'package:get_my_properties/features/widgets/custom_snackbar.dart';
+import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/app_constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,15 +39,39 @@ class PropertyController extends GetxController implements GetxService {
   void pickDisplayImage({required bool isRemove}) async {
     if (isRemove) {
       _pickedDisplayImage = null;
-    } else {
-      _pickedDisplayImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      update();
+      return;
     }
-    update();
+    try {
+      final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        final file = File(image.path);
+        final fileSizeInBytes = await file.length();
+        final fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+
+        if (fileSizeInMB > 8) {
+          Get.snackbar(
+            'Warning',
+            'Image exceeds 8 MB. Please select a smaller image.',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.redAccent,
+            colorText: Colors.white,
+          );
+        } else {
+          _pickedDisplayImage = image;
+          update();
+        }
+      }
+    } catch (e) {
+      print('Error picking image: $e');
+    }
   }
+
   List<XFile> _pickedGalleryImages = [];
   List<XFile> get pickedGalleryImages => _pickedGalleryImages;
 
   // Method to pick a single image
+
   Future<void> pickGalleryImage() async {
     try {
       final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -204,6 +230,108 @@ class PropertyController extends GetxController implements GetxService {
       update();
     }
   }
+
+  List<PropertyModel>? _explorePropertyList;
+  List<PropertyModel>? get explorePropertyList => _explorePropertyList;
+  Future<void> getExplorePropertyList({
+    String? page,
+    String? stateId,
+    String? cityId,
+    String? localityId,
+    String? purposeId,
+    String? categoryId,
+    String? amenityId,
+    String? typeId,
+    String? limit,
+    String? userId,
+    String? minPrice,
+    String? maxPrice,
+    String? sortBy,
+    String? lat,
+    String? long,
+    String? direction,
+    String? bathroom,
+    String? space,
+    String? distance,
+  }) async {
+    _isPropertyLoading = true;
+    try {
+      if (page == '1') {
+        _pageList = []; // Reset page list for new search
+        _offset = 1;
+        _explorePropertyList = []; // Reset product list for the first page
+        // markerCoordinates=[];
+        update();
+      }
+      if (!_pageList.contains(page)) {
+        _pageList.add(page!);
+        Response response = await propertyRepo.getUserProperty(
+          stateId: stateId,
+          cityId: cityId,
+          localityId: localityId,
+          purposeId: purposeId,
+          categoryId: categoryId,
+          amenityId: amenityId,
+          typeId: typeId,
+          page: page,
+          limit: '40',
+          userId: userId,
+          minPrice: minPrice,
+          maxPrice: maxPrice,
+          sortBy: sortBy,
+          lat: lat,
+          long: long,
+          direction: direction,
+          bathroom: bathroom,
+          space: space,
+          distance: '10',
+        );
+
+        if (response.statusCode == 200) {
+          List<dynamic> dataList = response.body['data'];
+          List<PropertyModel> newDataList = dataList.map((json) => PropertyModel.fromJson(json)).toList();
+
+          if (page == '1') {
+
+            _explorePropertyList = newDataList;
+          } else {
+            _explorePropertyList!.addAll(newDataList);
+          }
+
+          // List<PropertyModel> topProperties = newDataList.where((property) => property.topProperty == true).toList();
+          // if (topProperties.isNotEmpty) {
+          //   _topPropertyList!.addAll(topProperties);
+          // }
+          //
+          // List<PropertyModel> featuredProperties = newDataList.where((property) => property.isFeatured == true).toList();
+          // if (topProperties.isNotEmpty) {
+          //   _featuredPropertyList!.addAll(featuredProperties);
+          // }
+
+          // markerCoordinates = newDataList.map((property) {
+          //   double latitude =  property.latitude ?? 0;
+          //   double longitude = property.longitude ?? 0;
+          //   return LatLng(latitude, longitude);
+          // }).toList();
+          //   print(' ============>>${markerCoordinates.length}');
+          _isPropertyLoading = false;
+          update();
+        } else {
+
+        }
+      } else {
+        if (_isPropertyLoading) {
+          _isPropertyLoading = false;
+          update();
+        }
+      }
+    } catch (e) {
+      print('Error fetching property list: $e');
+      _isPropertyLoading = false;
+      update();
+    }
+  }
+
 
 
 
@@ -419,6 +547,8 @@ class PropertyController extends GetxController implements GetxService {
       var responseBody = await response.stream.bytesToString();
       print('Raw Response Body: $responseBody'); // Print raw response for debugging
       showCustomSnackBar('Property Created Successfully You will notify when Admin Approved your listing');
+      // Get.toNamed(RouteHelper.getDashboardRoute());
+
 
 
       // Try to decode response as JSON
@@ -439,6 +569,7 @@ class PropertyController extends GetxController implements GetxService {
       Get.find<LocationController>().getStateList();
       Get.find<LocationController>().getCityList('66b356ec18a20385edf487a7');
       Get.find<LocationController>().getLocalityList();
+      Get.to(SellerDashboardScreen(pageIndex: 0));
       _isLoading = false;
       update();
     }
@@ -698,7 +829,7 @@ class PropertyController extends GetxController implements GetxService {
   // }
 
   List<PropertyModel>? _propertyLatList;
-  List<PropertyModel>? get propertyLatList => _propertyList;
+  List<PropertyModel>? get propertyLatList => _propertyLatList;
 
 
   List<LatLng> markerCoordinates = [];
@@ -723,6 +854,7 @@ class PropertyController extends GetxController implements GetxService {
     String? space,
     String? distance,
   }) async {
+    print('===================>>>> Api Call Start');
     _isPropertyLoading = true;
     try {
       if (page == '1') {
@@ -791,9 +923,5 @@ class PropertyController extends GetxController implements GetxService {
       update();
     }
   }
-
-
-
-
 
 }

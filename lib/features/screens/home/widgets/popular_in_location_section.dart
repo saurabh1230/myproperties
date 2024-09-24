@@ -36,21 +36,23 @@ class PopularInLocationSectionSection extends StatelessWidget {
         return isLoading ?
         const RecommendedSectionShimmer(title: 'Top Properties ',)
             :
-          isListEmpty && !isLoading
-            ? RecommendedSectionShimmer(title: 'Top Properties ',)
-        //   Padding(
-        //   padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
-        //   child: Center(
-        //       child: EmptyDataWidget(
-        //         image: Images.emptyDataImage,
-        //         fontColor: Theme.of(context).disabledColor,
-        //         text: 'No Popular Properties yet',
-        //       )),
-        // )
-              :  Column(crossAxisAlignment: CrossAxisAlignment.start,
+           Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Top Properties",style: senBold.copyWith(fontSize: Dimensions.fontSizeDefault),),
             sizedBox12(),
+            isListEmpty && !isLoading
+                ?
+            // RecommendedSectionShimmer(title: 'Top Properties ',)
+              Padding(
+              padding: const EdgeInsets.only(top: 0),
+              child: Center(
+                  child: EmptyDataWidget(
+                    image: Images.icEmptyPropertyPlaceHolder,
+                    fontColor: Theme.of(context).disabledColor,
+                    text: 'No Properties Near You',
+                  )),
+            )
+                :
             SizedBox(
               height: Get.size.height * 0.30,
               child: ListView.separated(

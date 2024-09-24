@@ -41,7 +41,7 @@ class MapPropertySheet extends StatelessWidget {
         )
       ),
       child: GetBuilder<PropertyController>(builder: (propertyControl) {
-        final list = propertyControl.propertyList;
+        final list = propertyControl.propertyLatList;
         final isListEmpty = list == null || list.isEmpty;
         final isLoading = propertyControl.isPropertyLoading;
         return  Column(

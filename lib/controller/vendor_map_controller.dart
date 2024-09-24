@@ -117,7 +117,6 @@ class VendorMapController extends GetxController {
           Placemark placemark = placemarks.first;
           address = '${placemark.street ?? ''}, ${placemark.locality ?? ''}, ${placemark.administrativeArea ?? ''}, ${placemark.postalCode ?? ''}, ${placemark.country ?? ''}';
           print('Address =>>>>: $address');
-
           print('City =>>>>: ${placemark.locality ?? 'Not available'}');
           print('State =>>>>: ${placemark.administrativeArea ?? 'Not available'}');
           print('Locality =>>>> : ${placemark.subLocality ?? 'Not available'}');
@@ -129,9 +128,9 @@ class VendorMapController extends GetxController {
           print('========> mainLongitude ${_mainLng}');
           _localities ??= [];
 
-          // Create a new LocalityMapData object
+          // Create a new LocalityMapData objects
           LocalityMapData newLoc = LocalityMapData(
-            name: placemark.subLocality ?? 'Unknown',
+            name: placemark.locality ?? 'Unknown',
             lat: latitude!,
             lng: longitude!,
           );

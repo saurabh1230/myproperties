@@ -44,13 +44,13 @@ class UserMapController extends GetxController {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       isLoading.value = false; // Stop loading
-      Get.snackbar(
-        'Location Services Disabled',
-        'Please enable location services to continue.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      // Get.snackbar(
+      //   'Location Services Disabled',
+      //   'Please enable location services to continue.',
+      //   snackPosition: SnackPosition.BOTTOM,
+      //   backgroundColor: Colors.red,
+      //   colorText: Colors.white,
+      // );
       return;
     }
 

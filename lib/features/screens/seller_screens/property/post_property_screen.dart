@@ -77,7 +77,7 @@ class PostPropertyScreen extends StatelessWidget {
                 return   GetBuilder<LocationController>(builder: (locationControl) {
                     final data = locationControl.stateList;
                     final list = data == null  || authControl.homeData!.propertyTypes == null ||
-                        authControl.homeData!.propertyTypes!.isEmpty;
+                        authControl.homeData!.propertyTypes!.isEmpty || locationControl.cityList == null;
                     return list ?
                     const Center(child: CircularProgressIndicator()) : Padding(
                       padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault,horizontal: Dimensions.paddingSizeDefault),
@@ -515,24 +515,15 @@ class PostPropertyScreen extends StatelessWidget {
                               style: senRegular.copyWith(fontSize: Dimensions.fontSize15),
                             ),
                             sizedBox10(),
-                            CustomDropdown<String>(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Select State';
-                                }
-                                return null;
-                              },
+                            CustomDropdown<String>.search(
                               hintText: 'Select State',
-                              items: locationControl.stateList!
-                                  .map((purpose) => purpose.name)
-                                  .toList(),
+                              items: locationControl.stateList!.map((state) => state.name).toList(),
+                              excludeSelected: false,
                               onChanged: (value) {
                                 if (value != null) {
-                                  var selectedPurpose = locationControl.stateList!
-                                      .firstWhere((purpose) => purpose.name == value);
-                                  locationControl.setStateId(
-                                      selectedPurpose.id.toString()
-                                  );
+                                  var selectedState = locationControl.stateList!
+                                      .firstWhere((state) => state.name == value);
+                                  locationControl.setStateId(selectedState.id.toString());
                                   Get.find<LocationController>().getCityList(locationControl.stateId);
                                   print(locationControl.stateId);
                                 }
@@ -544,27 +535,22 @@ class PostPropertyScreen extends StatelessWidget {
                               style: senRegular.copyWith(fontSize: Dimensions.fontSize15),
                             ),
                             sizedBox10(),
-                            CustomDropdown<String>(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Select City';
-                                }
-                                return null;
-                              },
+                            CustomDropdown<String>.search(
                               hintText: 'Select City',
                               items: locationControl.cityList!
-                                  .map((purpose) => purpose.name)
+                                  .map((city) => city.name)
                                   .toList(),
+                              excludeSelected: false,
                               onChanged: (value) {
                                 if (value != null) {
-                                  var selectedPurpose = locationControl.cityList!
-                                      .firstWhere((purpose) => purpose.name == value);
-                                  locationControl.setCityId(selectedPurpose.id.toString());
+                                  var selectedCity = locationControl.cityList!
+                                      .firstWhere((city) => city.name == value);
+                                  locationControl.setCityId(selectedCity.id.toString());
                                   print(locationControl.cityId);
-
                                 }
                               },
                             ),
+
                             // sizedBoxDefault(),
                             // Text(
                             //   "Locality",
@@ -872,7 +858,7 @@ class PostPropertyScreen extends StatelessWidget {
                                       buildYear: controller.buildYearController.text,
                                       area: _areaController.text,
                                       // direction: controller.selectedDirection,
-                                      direction: 'east',
+                                      direction: controller.selectedDirection,
                                       price: _priceController.text,
                                       marketPrice: _marketPriceController.text,
                                       isFeatured: 'false',
@@ -890,6 +876,7 @@ class PostPropertyScreen extends StatelessWidget {
                                       localityLng:vendorMapController.initialLng.toString(),
                                       amenityIds: authControl.amenityIds.join(','),
                                     );
+
                                   }
 
 

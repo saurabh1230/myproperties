@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+
+import '../controller/auth_controller.dart';
+import '../controller/property_controller.dart';
 
 class MapController extends GetxController {
   GoogleMapController? mapController;
@@ -29,6 +31,7 @@ class MapController extends GetxController {
 
   List<LatLng> markerCoordinates = [];
   RxList<Map<String, String>> suggestions = <Map<String, String>>[].obs;
+  RxMap<LatLng, String> markerNames = <LatLng, String>{}.obs;
 
   String apiKey = 'AIzaSyBNB2kmkXSOtldNxPdJ6vPs_yaiXBG6SSU';
 
@@ -41,16 +44,37 @@ class MapController extends GetxController {
   }
 
   Future<void> fetchInitialProperties() async {
-    await Get.find<PropertyController>().getPropertyLatLngList(
-      page: '1',
-      distance: '10',
-    );
-    updateMarkerCoordinates(); // Update the markers after fetching the properties
+    double? latitude = Get.find<AuthController>().getExploreLatitude();
+    double? longitude = Get.find<AuthController>().getExploreLongitude();
+
+    if (latitude == null || longitude == null) {
+      Get.find<PropertyController>().getPropertyLatLngList(
+        page: '1',
+        distance: '10',
+      );
+    } else {
+      Get.find<PropertyController>().getPropertyLatLngList(
+        page: '1',
+        lat: latitude.toString(),
+        long: longitude.toString(),
+      );
+    }
+    updateMarkerCoordinates();
   }
 
   Future<void> updateMarkerCoordinates() async {
     markerCoordinates = Get.find<PropertyController>().markerCoordinates;
+    markerNames.clear(); // Clear existing names
+    var propertyList = Get.find<PropertyController>().propertyLatList;
+    if (propertyList != null) {
+      for (var property in propertyList) {
+        double latitude = property.latitude ?? 0;
+        double longitude = property.longitude ?? 0;
+        markerNames[LatLng(latitude, longitude)] = property.title ?? 'No Name';
+      }
+    }
     update();
+    focusOnMarkers();
   }
 
   void onMapCreated(GoogleMapController controller) {
@@ -60,8 +84,21 @@ class MapController extends GetxController {
 
   void focusOnMarkers() {
     if (mapController != null && markerCoordinates.isNotEmpty) {
-      LatLngBounds bounds = getBounds();
-      mapController!.animateCamera(CameraUpdate.newLatLngBounds(bounds, 100));
+      if (markerCoordinates.length == 1) {
+        // If there's only one marker, focus on it with a zoom level
+        mapController!.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: markerCoordinates.first,
+              zoom: 14.0, // Adjust the zoom level to your preference
+            ),
+          ),
+        );
+      } else {
+        // If there are multiple markers, calculate the bounds
+        LatLngBounds bounds = getBounds();
+        mapController!.animateCamera(CameraUpdate.newLatLngBounds(bounds, 70));
+      }
     }
   }
 
@@ -121,7 +158,6 @@ class MapController extends GetxController {
         selectedLatitude = location['lat'];
         selectedLongitude = location['lng'];
 
-        // Update markerCoordinates with the new location and fetch properties
         await Get.find<PropertyController>().getPropertyLatLngList(
           page: '1',
           distance: '10',
@@ -134,7 +170,7 @@ class MapController extends GetxController {
     }
   }
 
-  // Check if the given location is within West Bengal
+
   bool isWithinWestBengal(double lat, double long) {
     double minLat = 21.5422;
     double maxLat = 27.6217;

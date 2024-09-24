@@ -76,6 +76,9 @@ class AuthRepo {
     return await apiClient.getData(AppConstants.vendorDashboardDataUrl,method: 'GET');
   }
 
+  Future<Response> userDeleteRepo(String? userId,) async {
+    return await apiClient.getData('${AppConstants.userProfileDelete}/$userId',method: 'DELETE');
+  }
 
 
 }

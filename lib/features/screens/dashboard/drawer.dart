@@ -30,6 +30,7 @@ class CustomDrawer extends StatelessWidget {
           return authControl.homeData == null ||
                  authControl.profileData == null
                 ? const Center(child: CircularProgressIndicator()) :
+
            SafeArea(
             child: Container(
               width: Get.size.width,
@@ -118,7 +119,6 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   ),
                   // sizedBoxDefault(),
-      
                   Expanded(
                     child: SingleChildScrollView(
                       child: Padding(
@@ -138,7 +138,8 @@ class CustomDrawer extends StatelessWidget {
                                     Get.toNamed(RouteHelper.getExploreRoute(isBrowser: true,
                                         propertyTypeId: authControl.homeData!.propertyTypes![i].sId.toString(),
                                         title: authControl.homeData!.propertyTypes![i].name.toString(),
-                                        purposeId: ''
+                                        purposeId: '',
+                                        direction: ''
                                     ));
                                     // Get.toNamed(RouteHelper.getSellAndRentDashboardRoute(
                                     //     "Sale",
@@ -259,9 +260,27 @@ class CustomDrawer extends StatelessWidget {
                                 }),
                               ],
                             ): const SizedBox(),
+                            buildContainer(context,"Delete Account", tap: () {
+                              Get.dialog(
+                                  ConfirmationDialog(icon: Images.icTrash,
+                                    title: 'Are you Sure to Delete You Account',
+                                    description: 'All Data Will Be Permanently Deleted',
+                                    loading: authControl.deleteProfileLoading,
+                                    onYesPressed: () {
+                                    authControl.getDeleteProfile();
+
+                                    },));
+                            }),
                             buildContainer(color:redColor.withOpacity(0.08),
                                 context,"Logout", tap: () {
-                                  Get.dialog(ConfirmationDialog(icon: Images.icLogout, description: 'Are you Sure to Logout', onYesPressed: () {Get.toNamed(RouteHelper.getSignUpRoute());},));
+                                  Get.dialog(ConfirmationDialog(
+                                    icon: Images.icLogout,
+                                    description: 'Are you Sure to Logout',
+                                    onYesPressed: () {
+                                      authControl.clearSharedData();
+                                      Get.toNamed(RouteHelper.getSignUpRoute());
+                                      },
+                                  ));
                                 }),
                             // Row(
                             //   children: [
@@ -328,5 +347,4 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
-
 }

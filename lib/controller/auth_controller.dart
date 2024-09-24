@@ -17,6 +17,12 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+
+import 'dart:convert';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:app_settings/app_settings.dart';
 class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;
   final SharedPreferences sharedPreferences;
@@ -61,10 +67,59 @@ class AuthController extends GetxController implements GetxService {
 
   Future<void> saveAddress(String address) async {
     await sharedPreferences.setString(AppConstants.address, address);
+    update();
   }
 
   String? getSaveAddress() {
     return sharedPreferences.getString(AppConstants.address);
+  }
+
+
+  Future<void> saveExploreLatitude(double latitude) async {
+    await sharedPreferences.setDouble(AppConstants.exploreLatitude, latitude);
+  }
+
+  double? getExploreLatitude() {
+    return sharedPreferences.getDouble(AppConstants.exploreLatitude);
+  }
+
+  Future<void> saveExploreLongitude(double latitude) async {
+    await sharedPreferences.setDouble(AppConstants.exploreLongitude, latitude);
+  }
+
+  double? getExploreLongitude() {
+    return sharedPreferences.getDouble(AppConstants.exploreLongitude);
+  }
+
+  Future<void> saveExploreAddress(String address) async {
+    await sharedPreferences.setString(AppConstants.exploreAddress, address);
+  }
+
+  String? getExploreAddress() {
+    return sharedPreferences.getString(AppConstants.exploreAddress);
+  }
+
+
+  var address = ''.obs;
+  @override
+  void onInit() {
+    super.onInit();
+    loadAddress(); // Load the address when the controller is initialized
+  }
+
+
+  Future<void> saveHomeAddress(String newAddress) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString(AppConstants.address, newAddress);
+    address.value = newAddress; // Update the RxString value
+  }
+
+  Future<void> loadAddress() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? savedAddress = sharedPreferences.getString(AppConstants.address);
+    if (savedAddress != null) {
+      address.value = savedAddress; // Update the RxString value
+    }
   }
 
 
@@ -103,6 +158,7 @@ class AuthController extends GetxController implements GetxService {
         if (responseData['status'] == true) {
           String otp = responseData['data']['otp'].toString();
           Get.toNamed(RouteHelper.getOtpVerificationRoute(phoneNo));
+          getUserLocation();
           showCustomSnackBar('OTP: $otp');
         } else {
           String errorMessage = responseData['message'] ?? 'Something went wrong.';
@@ -139,6 +195,9 @@ class AuthController extends GetxController implements GetxService {
   //     update();
   //   }
   // }
+  double? latitude;
+  double? longitude;
+  String? savedAddress;
 
   Future<void> userOtpApi(String? phoneNo,String? otp,{bool isVendor = false}) async {
     _isLoginLoading = true;
@@ -158,8 +217,9 @@ class AuthController extends GetxController implements GetxService {
         if (isVendor) {
           Get.toNamed(RouteHelper.getAdminDashboardRoute());
         } else {
-          Get.toNamed(RouteHelper.getLocationPickerRoute());
-          // Get.toNamed(RouteHelper.getDashboardRoute());
+          // getUserLocation();
+          // Get.toNamed(RouteHelper.getLocationPickerRoute());
+          Get.toNamed(RouteHelper.getDashboardRoute());
         }
       } else {
         showCustomSnackBar(responseData['message']);
@@ -371,4 +431,133 @@ class AuthController extends GetxController implements GetxService {
     return Future.value(true);
   }
 
+  RxBool isloading = false.obs;
+  Future<void> getUserLocation() async {
+    isloading.value = true; // Start loading
+
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      isloading.value = false; // Stop loading
+      // Get.snackbar(
+      //   'Location Services Disabled',
+      //   'Please enable location services to continue.',
+      //   snackPosition: SnackPosition.BOTTOM,
+      //   backgroundColor: Colors.red,
+      //   colorText: Colors.white,
+      // );
+      return;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.deniedForever) {
+      isloading.value = false; // Stop loading
+      Get.snackbar(
+        'Location Permission Denied',
+        'Please enable location permission from settings.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+        isloading.value = false; // Stop loading
+        Get.snackbar(
+          'Location Permission Denied',
+          'Please grant location permission to continue.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          mainButton: TextButton(
+            onPressed: () => AppSettings.openAppSettings(), // Open app settings
+            child: Text('Open Settings', style: TextStyle(color: Colors.white)),
+          ),
+        );
+        return;
+      }
+    }
+
+    Position currentPosition = await Geolocator.getCurrentPosition();
+    latitude = currentPosition.latitude;
+    longitude = currentPosition.longitude;
+    await updateAddress();
+    isloading.value = false; // Stop loading
+    update();
+  }
+
+  Future<void> updateAddress() async {
+    if (latitude != null && longitude != null) {
+      try {
+        List<Placemark> placemarks = await placemarkFromCoordinates(latitude!, longitude!);
+        if (placemarks.isNotEmpty) {
+          Placemark placemark = placemarks.first;
+          savedAddress = '${placemark.street ?? ''}, ${placemark.locality ?? ''}, ${placemark.administrativeArea ?? ''}, ${placemark.postalCode ?? ''}, ${placemark.country ?? ''}';
+          print('Address =>>>>: $savedAddress');
+          print('City =>>>>: ${placemark.locality ?? 'Not available'}');
+          print('State =>>>>: ${placemark.administrativeArea ?? 'Not available'}');
+          print('Locality =>>>> :${placemark.subLocality ?? 'Not available'}');
+          print('==========> Address ${address}');
+          print('==========> Latitude ${latitude}');
+          print('==========> Longitude ${longitude}');
+          saveLatitude(latitude ?? 0.0);
+          saveLongitude(longitude ?? 0.0);
+          saveAddress(savedAddress.toString());
+          saveHomeAddress(savedAddress.toString());
+
+        } else {
+          print('No placemarks found');
+        }
+      } catch (e) {
+        print("Error occurred while converting coordinates to address: $e");
+      }
+    } else {
+      print('Latitude or Longitude is null');
+    }
+    update();
+  }
+
+
+  bool _deleteProfileLoading = false;
+  bool get deleteProfileLoading => _deleteProfileLoading;
+
+
+  Future<void> getDeleteProfile() async {
+    _deleteProfileLoading = true;
+    update();
+    try {
+      Response response = await authRepo.userDeleteRepo(profileData!.sId.toString());
+      if (response.statusCode == 200) {
+        var responseData = response.body;
+        if (responseData["status"] == true) {
+          showCustomSnackBar('Profile Deleted Successfully');
+          Get.back();
+          clearSharedData();
+          Get.toNamed(RouteHelper.getSignUpRoute());
+
+        } else {
+          Get.back();
+          print("Error while deleting profile: ");
+        }
+      } else {
+        Get.back();
+        print("Error while deleting profile ");
+      }
+    } catch (error) {
+      Get.back();
+      print("Error while deleting profile: ");
+    }
+    _deleteProfileLoading = false;
+    update();
+  }
+
+  Future<bool> clearSharedData() async {
+    return await authRepo.clearSharedData();
+  }
 }

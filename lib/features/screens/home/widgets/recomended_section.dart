@@ -21,8 +21,9 @@ class RecomendedSection extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<PropertyController>().getPropertyList(page: '1',
-        direction: '',
-
+          lat: Get.find<AuthController>().getLatitude().toString(),
+          long: Get.find<AuthController>().getLongitude().toString(),
+          direction: ''
       );
     });
     return GetBuilder<PropertyController>(builder: (propertyControl) {
@@ -31,19 +32,7 @@ class RecomendedSection extends StatelessWidget {
       final isLoading = propertyControl.isPropertyLoading;
       return Column(
         children: [
-          isListEmpty && !isLoading
-              ? const RecommendedSectionShimmer(title: 'Recommended For You"',)
-          // Padding(
-          //         padding:
-          //             const EdgeInsets.only(top: Dimensions.paddingSize100),
-          //         child: Center(
-          //             child: EmptyDataWidget(
-          //           image: Images.emptyDataImage,
-          //           fontColor: Theme.of(context).disabledColor,
-          //           text: 'No Recommended Properties yet',
-          //         )),
-          //       )
-              : isLoading
+          isLoading
                   ? const RecommendedSectionShimmer(title: 'Recommended For You"',)
                   : Padding(
                       padding: const EdgeInsets.only(
@@ -60,6 +49,20 @@ class RecomendedSection extends StatelessWidget {
                                 fontSize: Dimensions.fontSizeDefault),
                           ),
                           sizedBox12(),
+                          isListEmpty && !isLoading
+                              ?
+                          // const RecommendedSectionShimmer(title: 'Recommended For You"',)
+                          Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 0),
+                                  child: Center(
+                                      child: EmptyDataWidget(
+                                    image: Images.icEmptyPropertyPlaceHolder,
+                                    fontColor: Theme.of(context).disabledColor,
+                                    text: 'No Properties Near You',
+                                  )),
+                                )
+                              :
                           SizedBox(
                             height: Get.size.height * 0.30,
                             child: ListView.separated(

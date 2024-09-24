@@ -22,6 +22,7 @@ class AppConstants {
   static const String userCreateInquiryUrl = 'user/inquiry';
   static const String userSearchSuggestionUrl = 'search/suggestion';
   static const String userPropertyLatLngUrl = 'user/property/lat_long';
+  static const String userProfileDelete = 'user/profile';
 
 
 
@@ -55,6 +56,9 @@ class AppConstants {
   static const String latitude = 'latitude';
   static const String longitude = 'longitude';
   static const String address = 'address';
+  static const String exploreLatitude = 'explore-latitude';
+  static const String exploreLongitude = 'explore-longitude';
+  static const String exploreAddress = 'explore-address';
 
 
 }
