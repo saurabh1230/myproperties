@@ -268,7 +268,6 @@ class CustomDrawer extends StatelessWidget {
                                     loading: authControl.deleteProfileLoading,
                                     onYesPressed: () {
                                     authControl.getDeleteProfile();
-
                                     },));
                             }),
                             buildContainer(color:redColor.withOpacity(0.08),

@@ -144,7 +144,7 @@ class PropertiesDetailsScreen extends StatelessWidget {
                       sizedBoxDefault(),
                       const Divider(),
                       sizedBoxDefault(),
-                      EmiCalculator(),
+                      // EmiCalculator(),
                       // const RatingAndReviewSection(),
                       const BrowseOtherConstructionsSection()
 
