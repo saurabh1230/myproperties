@@ -28,7 +28,7 @@ def flutterVersionName = localProperties.getProperty("flutter.versionName")
 if (flutterVersionName == null) {
     flutterVersionName = "1.0"
 }
-
+//com.getmyproperties.app
 android {
     namespace = "com.getmyproperties.getmyproperties"
     compileSdk = flutter.compileSdkVersion

@@ -7,18 +7,12 @@ import 'package:get_my_properties/controller/explore_controller.dart';
 import 'package:get_my_properties/controller/location_controller.dart';
 import 'package:get_my_properties/controller/property_controller.dart';
 import 'package:get_my_properties/controller/vendor_map_controller.dart';
-import 'package:get_my_properties/data/models/response/home_data_model.dart';
 import 'package:get_my_properties/features/screens/Maps/vendor_map_view.dart';
 import 'package:get_my_properties/features/screens/dashboard/drawer.dart';
-import 'package:get_my_properties/features/screens/dashboard/seller_dashboard.dart';
-import 'package:get_my_properties/features/screens/seller_screens/property/widgets/add_property_map_view.dart';
 import 'package:get_my_properties/features/widgets/custom_app_bar.dart';
 import 'package:get_my_properties/features/widgets/custom_app_button.dart';
 import 'package:get_my_properties/features/widgets/custom_buttons.dart';
-import 'package:get_my_properties/features/widgets/custom_dropdown_button.dart';
 import 'package:get_my_properties/features/widgets/custom_textfield.dart';
-import 'package:get_my_properties/features/widgets/multiple_data_field.dart';
-import 'package:get_my_properties/helper/route_helper.dart';
 import 'package:get_my_properties/utils/dimensions.dart';
 import 'package:get_my_properties/utils/styles.dart';
 import 'package:get/get.dart';
@@ -61,16 +55,14 @@ class PostPropertyScreen extends StatelessWidget {
     });
     return Scaffold(
       drawer: const CustomDrawer(),
-      appBar:  CustomAppBar(title: "Post Property",isBackButtonExist: isBackButton == true  ? true : false ,),
+      appBar: CustomAppBar(title: "Post Property",isBackButtonExist: isBackButton == true  ? true : false ,),
       body: GetBuilder<VendorMapController>(builder: (vendorMapController) {
         _addressController.text = vendorMapController.address ?? 'Add Address';
-        // _localityController.text = vendorMapController.locality ?? 'Pick Address';
         return  GetBuilder<AuthController>(builder: (authControl) {
           final data = authControl.homeData;
           final list = data == null  || authControl.homeData!.propertyTypes == null ||
               authControl.homeData!.propertyTypes!.isEmpty;
-          return list ?
-          const Center(child: CircularProgressIndicator()) :
+          return list ? const Center(child: CircularProgressIndicator()) :
           SingleChildScrollView(
             child: GetBuilder<PropertyController>(builder: (propertyController) {
               return  GetBuilder<ExploreController>(builder: (controller) {
