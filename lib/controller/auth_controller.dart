@@ -23,6 +23,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:app_settings/app_settings.dart';
+
 class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;
   final SharedPreferences sharedPreferences;

@@ -31,6 +31,7 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<PropertyController>().getRecentSearchList();
     });
