@@ -39,6 +39,7 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -52,6 +53,7 @@ class MyHttpOverrides extends HttpOverrides {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -61,7 +63,6 @@ class MyApp extends StatelessWidget {
       initialRoute: RouteHelper.getInitialRoute(),
       getPages: RouteHelper.routes,
       defaultTransition: Transition.topLevel,
-      // home: UserCurrentLocation(),
       transitionDuration: const Duration(milliseconds: 500),
       builder: (BuildContext context, widget) {
         return MediaQuery(data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0), child: widget!);

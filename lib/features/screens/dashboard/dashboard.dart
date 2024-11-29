@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:upgrader/upgrader.dart';
 import 'package:get/get.dart';
 import 'package:get_my_properties/controller/auth_controller.dart';
 import 'package:get_my_properties/features/screens/dashboard/nav_bar_item.dart';
@@ -27,8 +27,7 @@ class DashboardScreenState extends State<DashboardScreen> {
   PageController? _pageController;
   int _pageIndex = 0;
   late List<Widget> _screens;
-  // Timer _timer;
-  // int _orderCount;
+
 
   @override
   void initState() {
@@ -64,58 +63,97 @@ class DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if(_pageIndex != 0) {
+        if (_pageIndex != 0) {
           _setPage(0);
           return false;
-        }else {
+        } else {
           return true;
         }
       },
       child: WillPopScope(
         onWillPop: Get.find<AuthController>().handleOnWillPop,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          floatingActionButton: !GetPlatform.isMobile ? null : FloatingActionButton(
-            elevation: 5,
-            backgroundColor: _pageIndex == 2 ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
-            onPressed: () => _setPage(2),
-            child: Icon(
-              CupertinoIcons.search, size: Dimensions.paddingSize34,
-              color: _pageIndex == 2 ? Theme.of(context).cardColor : Theme.of(context).disabledColor.withOpacity(0.30),
-            ),
+        child: UpgradeAlert(
+          showIgnore: false,
+          showLater: false,
+          shouldPopScope: () => false,
+          dialogStyle: UpgradeDialogStyle.cupertino,
+          upgrader: Upgrader(
+            minAppVersion: '1.0.6',
           ),
-          floatingActionButtonLocation: !GetPlatform.isMobile ? null : FloatingActionButtonLocation.centerDocked,
-
-          bottomNavigationBar: !GetPlatform.isMobile ? const SizedBox() : BottomAppBar(
-            elevation: 5,
-            notchMargin: 5,
-            shape: const CircularNotchedRectangle(),
-
-            child: Padding(
-              padding: const EdgeInsets.all(0),
-              child: Row(children: [
-                BottomNavItem(img: Images.navBarHome, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home',),
-                BottomNavItem(img: Images.navBarExplore, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Explore',),
-                const Expanded(child: SizedBox()),
-                BottomNavItem(img: Images.navBarSave, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Saved',),
-                BottomNavItem(img:Images.navBarProfile, isSelected: _pageIndex == 4, tap: () {
-                  _setPage(4);
-                }, title: 'Profile',),
-              ]),
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            floatingActionButton: !GetPlatform.isMobile
+                ? null
+                : FloatingActionButton(
+              elevation: 5,
+              backgroundColor: _pageIndex == 2
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).cardColor,
+              onPressed: () => _setPage(2),
+              child: Icon(
+                CupertinoIcons.search,
+                size: Dimensions.paddingSize34,
+                color: _pageIndex == 2
+                    ? Theme.of(context).cardColor
+                    : Theme.of(context).disabledColor.withOpacity(0.30),
+              ),
             ),
-          ),
-          body: PageView.builder(
-            controller: _pageController,
-            itemCount: _screens.length,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return _screens[index];
-            },
+            floatingActionButtonLocation: !GetPlatform.isMobile
+                ? null
+                : FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: !GetPlatform.isMobile
+                ? const SizedBox()
+                : BottomAppBar(
+              elevation: 5,
+              notchMargin: 5,
+              shape: const CircularNotchedRectangle(),
+              child: Padding(
+                padding: const EdgeInsets.all(0),
+                child: Row(children: [
+                  BottomNavItem(
+                    img: Images.navBarHome,
+                    isSelected: _pageIndex == 0,
+                    tap: () => _setPage(0),
+                    title: 'Home',
+                  ),
+                  BottomNavItem(
+                    img: Images.navBarExplore,
+                    isSelected: _pageIndex == 1,
+                    tap: () => _setPage(1),
+                    title: 'Explore',
+                  ),
+                  const Expanded(child: SizedBox()),
+                  BottomNavItem(
+                    img: Images.navBarSave,
+                    isSelected: _pageIndex == 3,
+                    tap: () => _setPage(3),
+                    title: 'Saved',
+                  ),
+                  BottomNavItem(
+                    img: Images.navBarProfile,
+                    isSelected: _pageIndex == 4,
+                    tap: () {
+                      _setPage(4);
+                    },
+                    title: 'Profile',
+                  ),
+                ]),
+              ),
+            ),
+            body: PageView.builder(
+              controller: _pageController,
+              itemCount: _screens.length,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return _screens[index];
+              },
+            ),
           ),
         ),
       ),
     );
   }
+
 
   void _setPage(int pageIndex) {
     setState(() {
